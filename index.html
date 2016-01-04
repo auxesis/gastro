@@ -32,10 +32,12 @@ title: "Gastro"
 
     <div class="col-md-12">
       <p>
-        <button type="submit" class="btn btn-warning report">
-          <i class="fa fa-fw fa-bug"></i>
-          Report a food safety problem
-        </button>
+        <a href="{{ '/report' | prepend: site.baseurl }}">
+          <button type="submit" class="btn btn-warning report">
+            <i class="fa fa-fw fa-bug"></i>
+            Report a food safety problem
+          </button>
+        </a>
       </p>
     </div>
 

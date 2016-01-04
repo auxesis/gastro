@@ -29,3 +29,7 @@ div.row.results div.result {
 div.row.report {
   margin-top: 7.5px;
 }
+
+div.row.nav button {
+  font-size: 90%;
+}
