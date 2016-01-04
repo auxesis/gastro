@@ -1,0 +1,26 @@
+body {
+  font-size: 180%;
+}
+
+button.geolocation,
+button.report {
+  font-size: 80%;
+  font-size: 4vw;
+  width: 100%;
+}
+
+div.row.landing p {
+  margin-bottom: 15px;
+}
+
+div.row p.map img {
+  width: 100%;
+}
+
+div.row.results h4 {
+  font-weight: bold;
+}
+
+div.row.results div.result {
+  border-bottom: 1px solid lightgray;
+}
