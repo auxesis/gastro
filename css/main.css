@@ -25,3 +25,7 @@ div.row.detail h4 {
 div.row.results div.result {
   border-bottom: 1px solid lightgray;
 }
+
+div.row.report {
+  margin-top: 7.5px;
+}
