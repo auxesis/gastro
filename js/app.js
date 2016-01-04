@@ -17,4 +17,9 @@ $(document).ready(function() {
   $('button.geolocation').on('click', function() {
     getLocation()
   })
+
+  $('div.results div.result').on('click', function() {
+    var redirect = location.href.slice(0,-1) + '/detail'
+    location.href = redirect
+  })
 })
