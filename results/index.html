@@ -1,6 +1,8 @@
 ---
 layout: default
 title: "Results"
+img_src: "https://maps.googleapis.com/maps/api/staticmap?scale=2&size=400x200&maptype=roadmap"
+markers: "size:mid%7C-33.8650,151.2094%7C-33.8450,151.2064%7C-33.8550,151.1864&markers=icon:http://i.stack.imgur.com/orZ4x.png%7C-33.8630,151.1850"
 ---
 
 <div class="container">
@@ -9,7 +11,7 @@ title: "Results"
   <div class="row">
     <div class="col-md-12">
       <p class="map">
-        <img src="https://maps.googleapis.com/maps/api/staticmap?center=Sydney,NSW,Australia&zoom=13&size=300x300&maptype=roadmap&markers=color:blue%7Clabel:S%7C151.20346571543243,-33.8674568264209&markers=color:green%7Clabel:G%7C40.711614,-74.012318&markers=color:red%7Clabel:C%7C40.718217,-73.998284&key={{ site.gmaps_api_key }}"/>
+        <img src="{{ page.img_src }}&markers={{ page.markers }}&key={{ site.gmaps_api_key }}"/>
       </p>
     </div>
   </div>

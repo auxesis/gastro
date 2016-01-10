@@ -1,7 +1,8 @@
 ---
 layout: default
 title: "Results"
-detail_img_src: "https://maps.googleapis.com/maps/api/staticmap?center=61 York Street, Sydney, NSW, Australia&scale=2&size=400x200&maptype=roadmap"
+img_src: "https://maps.googleapis.com/maps/api/staticmap?center=-33.8650,151.2094&scale=2&size=400x200&maptype=roadmap"
+markers: "size:mid%7Clabel:me%7C61 York St Sydney NSW 2000&markers=icon:http://i.stack.imgur.com/orZ4x.png%7C-33.8650,151.2094"
 ---
 
 <div class="container">
@@ -10,7 +11,7 @@ detail_img_src: "https://maps.googleapis.com/maps/api/staticmap?center=61 York S
   <div class="row">
     <div class="col-md-12">
       <p class="map">
-        <img src="{{ page.detail_img_src }}&key={{ site.gmaps_api_key }}"/>
+        <img src="{{ page.img_src }}&markers={{ page.markers }}&key={{ site.gmaps_api_key }}"/>
       </p>
     </div>
   </div>
