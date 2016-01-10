@@ -1,0 +1,2 @@
+web: bundle exec puma -e production -p $PORT -S ~/puma
+build: bundle exec jekyll serve
