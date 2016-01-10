@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "Results"
+detail_img_src: "https://maps.googleapis.com/maps/api/staticmap?center=61 York Street, Sydney, NSW, Australia&scale=2&size=400x200&maptype=roadmap"
 ---
 
 <div class="container">
@@ -9,7 +10,7 @@ title: "Results"
   <div class="row">
     <div class="col-md-12">
       <p class="map">
-        <img src="https://maps.googleapis.com/maps/api/staticmap?center=61 York Street, Sydney, NSW, Australia&zoom=16&size=300x300&maptype=roadmap&key={{ site.gmaps_api_key }}"/>
+        <img src="{{ page.detail_img_src }}&key={{ site.gmaps_api_key }}"/>
       </p>
     </div>
   </div>
