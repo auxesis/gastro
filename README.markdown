@@ -19,7 +19,7 @@ bundle
 Serve the app locally:
 
 ```
-jekyll serve
+foreman start -f Procfile.development
 ```
 
 Then visit [http://localhost:4000/](http://localhost:4000/)
