@@ -28,14 +28,13 @@ Then visit [http://localhost:4000/](http://localhost:4000/)
 
 Gastro is MIT licensed.
 
-
 ## Documentation
 
 ### Data sources
 
-Each state and territory publishes their data sets differently, from HTML, to artisinally hand crafted PDFs for each breach. 
+Each state and territory publishes their data sets differently, from HTML, to artisinally hand crafted PDFs for each breach.
 
-NT and Queensland don't publish their data. 
+NT and Queensland don't publish their data.
 
 | State | Format | URL |
 | ----- | ------ | :-- |
