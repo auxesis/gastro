@@ -1,0 +1,21 @@
+$: << File.expand_path(File.join(__FILE__, '..', 'lib'))
+
+require 'sinatra/base'
+require 'gastro'
+require 'rack-google-analytics'
+
+def root
+  @root ||= Pathname.new(__FILE__).parent.parent.parent
+end
+
+def public_folder
+  @public ||= root + 'lib' + 'radalert' + 'public'
+end
+
+# Serve static assets before everything else
+use Rack::Static, :urls => %w(/css /img /fonts /js), :root => public_folder
+# Google Analytics
+#use Rack::GoogleAnalytics, :tracker => 'UA-58647844-1' if environment == 'production'
+
+use Gastro::App
+run Sinatra::Application

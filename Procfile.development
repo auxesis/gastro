@@ -1,2 +1,2 @@
-web: bundle exec puma -e production -p $PORT -S ~/puma
+web: pkill -f rackup ; bundle exec rerun --pattern='**/*.{rb,ru}' -- rackup -o 0.0.0.0
 build: bundle exec jekyll serve
