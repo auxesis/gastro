@@ -26,6 +26,8 @@ GEM
     ffi (1.9.10)
     foreman (0.78.0)
       thor (~> 0.19.1)
+    haml (4.0.7)
+      tilt
     i18n (0.7.0)
     jekyll (3.0.1)
       colorator (~> 0.1)
@@ -94,6 +96,7 @@ PLATFORMS
 DEPENDENCIES
   bundler
   foreman
+  haml
   jekyll
   puma
   rack-google-analytics

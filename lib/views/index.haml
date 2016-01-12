@@ -1,0 +1,21 @@
+%div.container
+  %h1 Gastro
+  %div.row.landing
+    %div.col-md-12
+      %p
+        Gastro helps you find out about potential food safety problems when eating out or buying food.
+    %div.col-md-12
+      %p
+        %a{:href => "/results"}
+          %button.btn.btn-success.geolocation{:type => "submit"}
+            %i.fa.fa-fw.fa-location-arrow
+            Find food safety problems near me
+    %div.col-md-12
+      %p
+        %input.form-control{:placeholder => "Search for food safety problems near...", :type => "text"}/
+    %div.col-md-12
+      %p
+        %a{:href => "/report"}
+          %button.btn.btn-warning.report{:type => "submit"}
+            %i.fa.fa-fw.fa-bug
+            Report a food safety problem

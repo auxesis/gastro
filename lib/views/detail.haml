@@ -1,0 +1,52 @@
+- img_src = "https://maps.googleapis.com/maps/api/staticmap?scale=2&size=400x200&amp;maptype=roadmap"
+- markers = "size:mid%7C-33.8650,151.2094%7C-33.8450,151.2064%7C-33.8550,151.1864&markers=icon:http://i.stack.imgur.com/orZ4x.png%7C-33.8630,151.1850"
+- gmaps_api_key = "AIzaSyBxaCRguM2pvw9HOLybx5ZP6Cuo94KnJwg"
+- map_url = "#{img_src}&markers=#{markers}&key=#{gmaps_api_key}"
+
+%div.container
+  %h1 Stitch Bar
+  %div.row
+    %div.col-md-12
+      %p.map
+        %img{:src => map_url}/
+  %div.row.detail
+    %div.col-md-12
+      %div.pull-right
+        100m away
+      %p.text-muted
+        %small 61 YORK STREET SYDNEY 2000
+      %h4
+        Offences: 5
+    %div.col-md-12
+      %h4 Date of alleged offences
+      %ul.list-unstyled
+        %li 2015-03-07
+    %div.col-md-12
+      %h4 Offence details
+      %ul.list
+        %li Fail to maintain the food premises to the required standard of cleanliness - previous warning given
+        %li Fail to maintain at or near each hand washing facility a supply of - warm running water - previous warning given
+        %li Fail to maintain all fixtures, fittings and equipment to the required standard of cleanliness - previous warning given
+        %li Fail to maintain easily accessible hand washing facilities on the food premises - previous warning given
+        %li Fail to ensure copy of the food safety supervisor certificate is kept on the premises and produced for inspection on request by an authorised officer - previous warning given
+  %div.row
+    %div.col-md-12
+      %ul.list-inline
+        %li
+          %strong Share:
+        %li
+          %button.btn.btn-info
+            %i.fa.fa-fw.fa-lg.fa-twitter
+        %li
+          %button.btn.btn-primary
+            %i.fa.fa-fw.fa-lg.fa-facebook
+        %li
+          %button.btn.btn-warning
+            %i.fa.fa-fw.fa-lg.fa-envelope
+  %div.row.nav
+    %div.col-md-12
+      %p
+        %a{:href => "/results"}
+          %button.btn.btn-default.btn-lg{:type => "button"}
+            %i.fa.fa-fw.fa-arrow-circle-o-left
+            Back

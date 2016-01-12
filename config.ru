@@ -5,11 +5,11 @@ require 'gastro'
 require 'rack-google-analytics'
 
 def root
-  @root ||= Pathname.new(__FILE__).parent.parent.parent
+  @root ||= Pathname.new(__FILE__).parent.join('lib')
 end
 
 def public_folder
-  @public ||= root + 'lib' + 'radalert' + 'public'
+  @public ||= root + 'public'
 end
 
 # Serve static assets before everything else
