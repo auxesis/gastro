@@ -1,6 +1,6 @@
 require 'helpers'
 
-module Gastro
+module GotGastro
   class App < Sinatra::Base
     set :root, Pathname.new(__FILE__).parent
 

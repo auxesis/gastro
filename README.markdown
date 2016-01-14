@@ -1,8 +1,8 @@
-# Gastro
+# Got Gastro
 
-Gastro helps inform people about food safety problems when eating out or buying food.
+Got Gastro helps inform people about food safety problems when eating out or buying food.
 
-Gastro is currently a prototype.
+Got Gastro is currently a prototype.
 
 ## Setup
 
@@ -26,7 +26,7 @@ Then visit [http://localhost:4000/](http://localhost:4000/)
 
 ## License
 
-Gastro is MIT licensed.
+Got Gastro is MIT licensed.
 
 ## Documentation
 

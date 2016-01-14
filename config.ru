@@ -1,7 +1,7 @@
 $: << File.expand_path(File.join(__FILE__, '..', 'lib'))
 
 require 'sinatra/base'
-require 'gastro'
+require 'gotgastro'
 require 'rack-google-analytics'
 
 def root
@@ -17,5 +17,5 @@ use Rack::Static, :urls => %w(/css /img /fonts /js), :root => public_folder
 # Google Analytics
 #use Rack::GoogleAnalytics, :tracker => 'UA-58647844-1' if environment == 'production'
 
-use Gastro::App
+use GotGastro::App
 run Sinatra::Application
