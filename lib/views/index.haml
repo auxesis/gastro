@@ -1,3 +1,5 @@
+- require_js 'index'
+
 %div.container
   %h1 Got Gastro
   %div.row.landing
@@ -6,10 +8,9 @@
         Got Gastro helps you find out about potential food safety problems when eating out or buying food.
     %div.col-md-12
       %p
-        %a{:href => "/results"}
-          %button.btn.btn-success.geolocation{:type => "submit"}
-            %i.fa.fa-fw.fa-location-arrow
-            Find food safety problems near me
+        %button.btn.btn-success.geolocation{:type => "submit"}
+          %i.fa.fa-fw.fa-location-arrow
+          Find food safety problems near me
     %div.col-md-12
       %p
         %input.form-control{:placeholder => "Search for food safety problems near...", :type => "text"}/
