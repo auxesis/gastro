@@ -14,8 +14,8 @@ module GotGastro
       haml :index
     end
 
-    get '/results' do
-      haml :results
+    get '/search' do
+      haml :search
     end
 
     get '/detail' do
