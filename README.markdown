@@ -22,7 +22,7 @@ Serve the app locally:
 foreman start -f Procfile.development
 ```
 
-Then visit [http://localhost:4000/](http://localhost:4000/)
+Then visit [http://localhost:9292/](http://localhost:9292/)
 
 ## License
 
