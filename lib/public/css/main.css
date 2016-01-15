@@ -2,11 +2,16 @@ body {
   font-size: 180%;
 }
 
+.container {
+  max-width: 680px;
+}
+
 button.geolocation,
 button.report {
-  font-size: 80%;
+  /*font-size: 80%;*/
   font-size: 4vw;
   width: 100%;
+  /*max-width: 680px;*/
 }
 
 div.row.landing p {
@@ -33,3 +38,4 @@ div.row.report {
 div.row.nav button {
   font-size: 90%;
 }
+
