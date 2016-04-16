@@ -10,5 +10,8 @@ gem 'haml'
 group :development do
   gem 'foreman'
   gem 'rerun'
+end
+
+group :test do
   gem 'rake'
 end
