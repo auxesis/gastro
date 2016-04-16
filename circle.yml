@@ -1,3 +1,6 @@
+dependencies:
+  override:
+    - echo 'Skipping in favour of bin/cibuild.sh'
 test:
   override:
     - bin/cibuild.sh
