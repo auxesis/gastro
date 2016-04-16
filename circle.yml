@@ -1,3 +1,8 @@
 test:
   override:
     - bin/cibuild.sh
+deployment:
+  production:
+    branch: master
+    commands:
+      - bin/cideploy.sh
