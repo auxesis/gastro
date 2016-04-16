@@ -9,4 +9,4 @@ export PATH=$PATH:$(pwd)/bin
 cf login -a $CF_API -u $CF_USERNAME -p $CF_PASSWORD -o $CF_ORG -s $CF_SPACE
 
 # Deploy the app
-cf push
+cf push gotgastro
