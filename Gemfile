@@ -10,4 +10,5 @@ gem 'haml'
 group :development do
   gem 'foreman'
   gem 'rerun'
+  gem 'rake'
 end
