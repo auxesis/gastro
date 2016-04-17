@@ -1,8 +1,10 @@
 $: << File.expand_path(File.join(__FILE__, '..', 'lib'))
 
 require 'sinatra/base'
+require 'gotgastro/initializer'
 require 'gotgastro'
 require 'rack-google-analytics'
+require 'tilt/haml'
 
 def root
   @root ||= Pathname.new(__FILE__).parent.join('lib')

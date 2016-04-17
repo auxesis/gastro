@@ -1,0 +1,80 @@
+require 'pathname'
+require 'yaml'
+require 'ostruct'
+require 'erb'
+
+def root
+  @root ||= Pathname.new(__FILE__).parent.parent.parent
+end
+
+def public_folder
+  @public ||= root + 'lib' + 'public'
+end
+
+def environment
+  ENV['RACK_ENV'] || 'development'
+end
+
+def config
+  return @config if @config
+  config_file = root + 'config' + 'database.yaml'
+  template = ERB.new(config_file.read, nil, '%')
+  @config = YAML.load(template.result(binding))[environment]
+end
+
+def database_config
+  return config['database_uri'] if config['database_uri']
+  return config
+end
+
+# Silence deprecation warnings
+require 'i18n'
+I18n.enforce_available_locales = true
+
+# Setup database connection + models
+require 'sequel'
+Sequel.extension :core_extensions
+DB = ::Sequel.connect(database_config)
+
+# Run the migrations in all environments. YOLO.
+Sequel.extension :migration
+migrations_path = root + 'db' + 'migrations'
+Sequel::Migrator.run(DB, migrations_path)
+
+# Load up the models after we've run migrations, per
+# http://osdir.com/ml/sequel-talk/2012-01/msg00076.html
+require 'gotgastro/models'
+
+# Add dataset method to return points ordered by distance from an origin
+module Sequel
+  module Plugins
+    module Mappable
+      module DatasetMethods
+        def by_distance(origin, limit=10)
+          sql = model.distance_sql(origin).lit
+          self.select_append {
+            Sequel::SQL::AliasedExpression.new(sql.lit, :distance)
+          }.order(:distance).limit(limit)
+        end
+      end
+    end
+  end
+end
+
+
+# Stub out any data backfilling we need to do.
+class Backfill
+  def self.run!
+    if Business.count == 0 then
+      [
+        { :name => 'IGA SUPERMARKET', :lat => -32.09885, :lng => 152.376998 },
+        { :name => 'HOUSE OF BAMBOO RESTAURANT', :lat => -34.057137984649593, :lng => 150.82408573180018 },
+        { :name => 'HOOKED SEAFOOD AND GRILL', :lat => -33.74404, :lng => 150.833205},
+        { :name => 'HONG KONG BAKERY', :lat => -33.961438, :lng => 151.135329},
+      ].each do |attrs|
+        Business.create(attrs)
+      end
+    end
+  end
+end
+Backfill.run!

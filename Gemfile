@@ -6,10 +6,15 @@ gem 'sinatra'
 gem 'puma'
 gem 'rack-google-analytics'
 gem 'haml'
+gem 'sequel'
+gem 'sequel_mappable'
+gem 'geokit'
+gem 'mysql2'
 
 group :development do
   gem 'foreman'
   gem 'rerun'
+  gem 'pry'
 end
 
 group :test do

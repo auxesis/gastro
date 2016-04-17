@@ -1,0 +1,8 @@
+---
+test:
+  database_uri: sqlite:/// # in memory
+development:
+  database_uri: mysql2://root:@localhost/gastro_development
+production:
+  # Leave ENV lookup in, so deploys to heroku work in parallel.
+  database_uri: <%= ENV["DATABASE_URL"] %>
