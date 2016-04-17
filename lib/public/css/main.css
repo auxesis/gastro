@@ -8,10 +8,22 @@ body {
 
 button.geolocation,
 button.report {
-  /*font-size: 80%;*/
-  font-size: 4vw;
   width: 100%;
-  /*max-width: 680px;*/
+  font-size: 4vw;
+}
+
+@media (min-width: 768px) {
+  button.geolocation,
+  button.report {
+    font-size: 3vw;
+  }
+}
+
+@media (min-width: 992px) {
+  button.geolocation,
+  button.report {
+    font-size: 24px;
+  }
 }
 
 div.row.landing p {
