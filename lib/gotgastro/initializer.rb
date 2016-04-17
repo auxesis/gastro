@@ -23,8 +23,14 @@ def config
 end
 
 def database_config
-  return config['database_uri'] if config['database_uri']
-  return config
+  case
+  when config['database_uri']
+    config['database_uri']
+  when config
+    config
+  else
+    raise "No database config present"
+  end
 end
 
 # Silence deprecation warnings
