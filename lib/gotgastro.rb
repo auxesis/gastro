@@ -16,7 +16,7 @@ module GotGastro
 
     get '/search' do
       @location = Business.new(:lat => params[:lat], :lng => params[:lng])
-      @points = Business.dataset.by_distance(@location).limit(5).all
+      @points = Business.dataset.by_distance(@location).limit(10).all
       haml :search
     end
 
