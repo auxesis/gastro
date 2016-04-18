@@ -12,7 +12,7 @@
   %div.row.detail
     %div.col-md-12
       %div.pull-right
-        100m away
+        = "%.1f" % @business.distance_from(@location) + "km away"
       %p.text-muted
         %small= @business.address
       %h4
