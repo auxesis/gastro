@@ -20,7 +20,8 @@ module GotGastro
       haml :search
     end
 
-    get '/detail' do
+    get '/business/:id' do
+      @business = Business[params[:id]]
       haml :detail
     end
   end
