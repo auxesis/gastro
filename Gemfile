@@ -10,6 +10,7 @@ gem 'sequel'
 gem 'sequel_mappable'
 gem 'geokit'
 gem 'mysql2'
+gem 'sinatra-contrib'
 
 group :development do
   gem 'foreman'
