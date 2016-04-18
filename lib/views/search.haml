@@ -18,7 +18,8 @@
         %div.pull-right
           = "%.1f" % point.distance_from(@location) + "km away"
         %h4
-          = point.name
+          %a{:href => link_to("/business/#{point.id}")}
+            = point.name
           %small= "#{point.problems.size} problems"
         %p.text-muted
           %small= point.address

@@ -35,8 +35,11 @@ div.row p.map img {
 }
 
 div.row.results h4,
-div.row.detail h4 {
+div.row.results h4 a,
+div.row.detail h4,
+div.row.detail h4 a {
   font-weight: bold;
+  color: #333;
 }
 
 div.row.results div.result {
