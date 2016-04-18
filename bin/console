@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+$: << File.expand_path(File.join(__FILE__, '..', '..', 'lib'))
+
+require 'gotgastro/initializer'
+require 'pry'
+
+Pry.config.prompt_name = "gotgastro[#{environment}]"
+Pry.config.should_load_rc = false
+Pry.config.history.should_save = true
+Pry.config.history.should_load = true
+
+binding.pry :quiet => true
+binding.pry :quiet => true
