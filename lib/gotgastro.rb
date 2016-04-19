@@ -17,6 +17,7 @@ module GotGastro
       #
       # This allows us to keep track of location across requests, so we don't
       # have to keep prompting the user for where they are.
+      cookies[:location] ||= "-33.8675,151.207" # set default location to Sydney
       cookies[:location] = "#{params[:lat]},#{params[:lng]}" if params[:lat] && params[:lng]
       lat, lng = URI.decode(cookies[:location]).split(',')
       # Create a location object for lookups.
@@ -28,13 +29,19 @@ module GotGastro
     end
 
     get '/search' do
-      @points = Business.dataset.by_distance(@location).limit(10).all
+      #@businesses = Business.dataset.by_distance(@location).all
+      @businesses = Business.dataset.around(@location,25).all
       haml :search
     end
 
     get '/business/:id' do
       @business = Business[params[:id]]
-      haml :detail
+      if @business
+        haml :detail
+      else
+        status '404'
+        "not found"
+      end
     end
 
     get '/reset' do
