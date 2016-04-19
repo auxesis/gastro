@@ -1,6 +1,6 @@
 ---
 test:
-  database_uri: mysql2://gotgastro_test:test@localhost/gotgastro_test
+  database_uri: <%= ENV["DATABASE_URL"] || "mysql2://gotgastro_test:test@localhost/gotgastro_test" %>
 development:
   database_uri: mysql2://gotgastro_dev:dev@localhost/gotgastro_development
 production:
