@@ -2,7 +2,7 @@ $: << File.expand_path(File.join(__FILE__, '..', 'lib'))
 
 at_exit do
   p ENV
-end
+end if ENV['RACK_ENV'] == 'production'
 
 require 'sinatra/base'
 require 'gotgastro/initializer'
