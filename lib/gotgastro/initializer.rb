@@ -25,7 +25,7 @@ end
 def database_config
   case
   when config.size > 1
-    config
+    config.reject {|k,v| k == 'database_uri'}
   when config['database_uri']
     config['database_uri']
   when config
