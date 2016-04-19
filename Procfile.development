@@ -1,1 +1,1 @@
-web: pkill -f rackup ; bundle exec rerun --pattern='**/*.{rb,ru}' -- rackup -o 0.0.0.0
+web: pkill -f rackup ; bundle exec rerun --pattern='**/*.{rb,ru}' --ignore='spec/*' -- rackup -o 0.0.0.0

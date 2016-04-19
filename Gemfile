@@ -21,4 +21,5 @@ end
 group :test do
   gem 'rake'
   gem 'rspec'
+  gem 'capybara'
 end
