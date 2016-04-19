@@ -6,23 +6,34 @@ Got Gastro is currently a prototype.
 
 ## Setup
 
-Ensure you have Git, Ruby:
+Ensure you have Git, Ruby, and MySQL:
 
 ``` bash
 git clone git@github.com:auxesis/gastro.git
 cd gastro
 bundle
+rake db:setup
 ```
+
+_MySQL is required due to OGC spatial analysis functions. In theory it should work with Postgres too, but is untested._
 
 ## Running
 
 Serve the app locally:
 
 ```
-foreman start -f Procfile.development
+bundle exec foreman start -f Procfile.development
 ```
 
 Then visit [http://localhost:9292/](http://localhost:9292/)
+
+## Testing
+
+Run the tests with:
+
+```
+bundle exec rake
+```
 
 ## License
 
