@@ -17,7 +17,7 @@ end
 
 def config
   return @config if @config
-  config_file = root + 'config' + 'database.yaml'
+  config_file = root + 'config' + 'database.yml'
   template = ERB.new(config_file.read, nil, '%')
   @config = YAML.load(template.result(binding))[environment]
 end
