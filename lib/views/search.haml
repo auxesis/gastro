@@ -15,16 +15,16 @@
 
   %div.row.results
     - if @businesses.size > 0
-      - @businesses.each do |point|
+      - @businesses.each do |business|
         %div.col-md-12.result
           %div.pull-right.distance
-            = "%.1f" % point.distance_from(@location) + "km away"
+            = "%.1f" % business.distance_from(@location) + "km away"
           %h4
-            %a{:href => link_to("/business/#{point.id}")}
-              = point.name
-            %small= "#{point.problems.size} problems"
+            %a{:href => link_to("/business/#{business.id}")}
+              = business.name
+            %small= "#{business.problems.size} problems"
           %p.text-muted
-            %small= point.address
+            %small= business.address
     - else
       %div.col-md-12.result.text-center.empty
         %i.fa.fa-thumbs-o-up.fa-fw.fa-lg
