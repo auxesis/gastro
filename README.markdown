@@ -17,6 +17,8 @@ rake db:setup
 
 _MySQL is required due to OGC spatial analysis functions. In theory it should work with Postgres too, but is untested._
 
+_The Rake tasks assume you have a root user with no password set_
+
 ## Running
 
 Serve the app locally:
