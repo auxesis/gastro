@@ -18,17 +18,13 @@
       %h4
         Offences: 5
     %div.col-md-12
-      %h4 Date of alleged offences
+      %h4 Date of offences
       %ul.list-unstyled
-        %li 2015-03-07
+        %li= @business.date
     %div.col-md-12
       %h4 Offence details
-      %ul.list
-        %li Fail to maintain the food premises to the required standard of cleanliness - previous warning given
-        %li Fail to maintain at or near each hand washing facility a supply of - warm running water - previous warning given
-        %li Fail to maintain all fixtures, fittings and equipment to the required standard of cleanliness - previous warning given
-        %li Fail to maintain easily accessible hand washing facilities on the food premises - previous warning given
-        %li Fail to ensure copy of the food safety supervisor certificate is kept on the premises and produced for inspection on request by an authorised officer - previous warning given
+      %pre
+        = @business.description
   %div.row
     %div.col-md-12
       %ul.list-inline
