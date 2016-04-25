@@ -28,6 +28,14 @@ describe 'Business search', :type => :feature do
       Business.create(:name => "#{lat},#{lng}", :lat => lat, :lng => lng)
     end
   }
+  let(:thousands_of_results) {
+    lats = (1..1000).map {|i| origin.lat + i * 0.0001 }
+    lngs = (1..1000).map {|i| origin.lng + i * 0.0001 }
+
+    lats.zip(lngs).each do |lat, lng|
+      Business.create(:name => "#{lat},#{lng}", :lat => lat, :lng => lng)
+    end
+  }
 
   it 'should only show results in the surrounding 25km' do
     within_25km && within_150km
@@ -53,5 +61,13 @@ describe 'Business search', :type => :feature do
   it 'should handle a business not existing' do
     visit '/business/aoesntaoesnaotesnaoetasonetsaonet'
     expect(status_code).to be 404
+  end
+
+  it "shouldn't genenerate img urls longer than 2000 characters" do
+    thousands_of_results
+
+    visit "/search?lat=#{origin.lat}&lng=#{origin.lng}"
+
+    expect(find('img')['src'].size).to be <= 2000
   end
 end
