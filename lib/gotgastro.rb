@@ -46,8 +46,8 @@ module GotGastro
 
     get '/reset' do
       Business.dataset.destroy
-      datasets = %w(vic).map do |state|
-        p JSON.parse(root.join("db/datasets/#{state}.join").read)
+      datasets = %w(vic nsw).map do |state|
+        JSON.parse(root.join("db/datasets/#{state}.json").read)
       end
 
       datasets.each do |dataset|
