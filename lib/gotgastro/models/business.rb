@@ -8,4 +8,10 @@ class Business < Sequel::Model
   def problems
     Array.new((rand(4) + 1))
   end
+
+  def self.find_near(location, opts={})
+    within = opts[:within] || 25
+    limit  = opts[:limit]  || 50
+    self.dataset.around(location,within).limit(limit).all
+  end
 end
