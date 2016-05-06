@@ -9,6 +9,7 @@ require 'gotgastro/initializer'
 require 'gotgastro'
 require 'rack-google-analytics'
 require 'tilt/haml'
+require 'rack/ssl'
 
 def root
   @root ||= Pathname.new(__FILE__).parent.join('lib')
