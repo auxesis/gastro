@@ -1,12 +1,13 @@
 class Business < Sequel::Model
   plugin :mappable
+  one_to_many :offences
 
   def distance_from(loc)
     self.class.distance_between(self, loc, :units => :kms)
   end
 
   def problems
-    Array.new((rand(4) + 1))
+    offences.size
   end
 
   def self.find_near(location, opts={})
