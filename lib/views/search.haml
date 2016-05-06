@@ -23,7 +23,9 @@
           %h4
             %a{:href => link_to("/business/#{business.id}")}
               = business.name
-            %small= "#{business.problems} problems"
+            %small
+              - word = business.problems == 1 ? "problem" : "problems"
+              = "#{business.problems} #{word}"
           %p.text-muted
             %small= business.address
     - else
