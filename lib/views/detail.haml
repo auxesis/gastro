@@ -16,15 +16,18 @@
       %p.text-muted
         %small= @business.address
       %h4
-        Offences: 5
+        Offences:
+        = @business.problems
     %div.col-md-12
       %h4 Date of offences
-      %ul.list-unstyled
-        %li= @business.date
+      %ul
+        - @business.offences.map(&:date).uniq.each do |date|
+          %li= date
     %div.col-md-12
       %h4 Offence details
-      %pre
-        = @business.description
+      %ul
+        - @business.offences.each do |offence|
+          %li= offence.description
   %div.row
     %div.col-md-12
       %ul.list-inline
