@@ -63,6 +63,8 @@ GEM
       activesupport
     rack-protection (1.5.3)
       rack
+    rack-ssl (1.4.1)
+      rack
     rack-test (0.6.3)
       rack (>= 1.0)
     rails-deprecated_sanitizer (1.0.3)
@@ -128,6 +130,7 @@ DEPENDENCIES
   pry
   puma
   rack-google-analytics
+  rack-ssl
   rake
   rerun
   rspec

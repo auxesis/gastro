@@ -11,6 +11,7 @@ gem 'sequel_mappable'
 gem 'geokit'
 gem 'mysql2'
 gem 'sinatra-contrib'
+gem 'rack-ssl'
 
 group :development do
   gem 'foreman'
