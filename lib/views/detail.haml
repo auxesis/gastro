@@ -28,7 +28,11 @@
       %h4 Offence details
       %ul
         - @business.offences.each do |offence|
-          %li= offence.description
+          - if offence.description =~ /\n/
+            %li
+              %pre= offence.description
+          - else
+            %li= offence.description
   %div.row
     %div.col-md-12
       %ul.list-inline
