@@ -43,6 +43,10 @@ module GotGastro
       end
     end
 
+    get '/privacy' do
+      haml :privacy
+    end
+
     get '/reset' do
       Business.dataset.destroy
       datasets = %w(vic nsw).map do |state|
