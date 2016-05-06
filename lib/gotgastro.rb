@@ -51,7 +51,12 @@ module GotGastro
 
       datasets.each do |dataset|
         dataset.each do |attrs|
-          Business.create(attrs)
+          offences = attrs.delete('offences')
+          biz = Business.create(attrs)
+          offences.each do |attrs|
+            offence = Offence.create(attrs)
+            biz.add_offence(offence)
+          end
         end
       end
 
