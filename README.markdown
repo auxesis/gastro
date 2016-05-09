@@ -50,7 +50,7 @@ Each state and territory publishes their data sets differently, from HTML, to ar
 NT and Queensland don't publish their data.
 
 | State | Format | URL | Scraper |
-| ----- | ------ | :-- |
+| ----- | ------ | :-- | ------- |
 | New South Wales   | HTML   | http://foodauthority.nsw.gov.au/penalty-notices/ | https://morph.io/auxesis/nsw_food_authority_prosecution_notices and https://morph.io/auxesis/nsw_food_authority_penalty_notices |
 | Victoria | HTML | https://www2.health.vic.gov.au/public-health/food-safety/convictions-register | https://morph.io/auxesis/vic_health_register_of_convictions |
 | Queensland | nil |  |
