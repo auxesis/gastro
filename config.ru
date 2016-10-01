@@ -1,5 +1,6 @@
 $: << File.expand_path(File.join(__FILE__, '..', 'lib'))
 
+# So we know what production looked like when we exit
 at_exit do
   p ENV
 end if ENV['RACK_ENV'] == 'production'
