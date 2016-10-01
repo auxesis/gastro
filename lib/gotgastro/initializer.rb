@@ -46,7 +46,14 @@ DB = ::Sequel.connect(database_config)
 # Run the migrations in all environments. YOLO.
 Sequel.extension :migration
 migrations_path = root + 'db' + 'migrations'
-Sequel::Migrator.run(DB, migrations_path)
+begin
+  Sequel::Migrator.run(DB, migrations_path)
+rescue Sequel::DatabaseConnectionError => e
+  puts "Couldn't establish connection to database!"
+  puts e.message
+  puts "Exiting."
+  exit(1)
+end
 
 # Load up the models after we've run migrations, per
 # http://osdir.com/ml/sequel-talk/2012-01/msg00076.html
