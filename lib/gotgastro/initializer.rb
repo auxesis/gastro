@@ -40,7 +40,7 @@ I18n.enforce_available_locales = true
 # Setup database connection + models
 require 'sequel'
 Sequel.extension :core_extensions
-p ['database_config', database_config]
+puts "[debug] database_config: #{database_config.inspect}"
 DB = ::Sequel.connect(database_config)
 
 # Run the migrations in all environments. YOLO.
