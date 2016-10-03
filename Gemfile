@@ -12,6 +12,7 @@ gem 'geokit'
 gem 'mysql2'
 gem 'sinatra-contrib'
 gem 'rack-ssl'
+gem 'rest-client'
 
 group :development do
   gem 'foreman'

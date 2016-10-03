@@ -1,5 +1,6 @@
 require 'helpers'
 require 'sinatra/cookies'
+require 'rest-client'
 
 module GotGastro
   class App < Sinatra::Base
@@ -11,6 +12,10 @@ module GotGastro
     helpers Sinatra::RequireCSSHelper
     helpers Sinatra::MetaTagHelper
     helpers Sinatra::Cookies
+
+    configure do
+      set :morph_api_key, ENV['MORPH_API_KEY']
+    end
 
     before do
       # Set the location cookie if we've got a new lat/lng param.
@@ -49,19 +54,28 @@ module GotGastro
 
     get '/reset' do
       Business.dataset.destroy
-      datasets = %w(vic nsw).map do |state|
-        JSON.parse(root.join("db/datasets/#{state}.json").read)
+      Offence.dataset.destroy
+
+      url = 'https://api.morph.io/auxesis/gotgastro_scraper/data.json'
+
+      # Create Businesses
+      params = { :key => settings.morph_api_key, :query => "select * from 'businesses'" }
+      result = RestClient.get(url, :params => params)
+      businesses = JSON.parse(result)
+
+      Business.unrestrict_primary_key
+      businesses.each do |business|
+        Business.create(business)
       end
 
-      datasets.each do |dataset|
-        dataset.each do |attrs|
-          offences = attrs.delete('offences')
-          biz = Business.create(attrs)
-          offences.each do |attrs|
-            offence = Offence.create(attrs)
-            biz.add_offence(offence)
-          end
-        end
+      # Create Offences
+      params = { :key => settings.morph_api_key, :query => "select * from 'offences'" }
+      result = RestClient.get(url, :params => params)
+      offences = JSON.parse(result)
+
+      Offence.unrestrict_primary_key
+      offences.each do |offence|
+        Offence.create(offence)
       end
 
       "OK"

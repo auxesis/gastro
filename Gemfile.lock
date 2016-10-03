@@ -30,6 +30,8 @@ GEM
       xpath (~> 2.0)
     coderay (1.1.0)
     diff-lcs (1.2.5)
+    domain_name (0.5.24)
+      unf (>= 0.0.5, < 1.0.0)
     erubis (2.7.0)
     ffi (1.9.10)
     foreman (0.78.0)
@@ -37,6 +39,8 @@ GEM
     geokit (1.10.0)
     haml (4.0.7)
       tilt
+    http-cookie (1.0.2)
+      domain_name (~> 0.5)
     i18n (0.7.0)
     json (1.8.3)
     listen (3.0.5)
@@ -50,6 +54,7 @@ GEM
     minitest (5.8.3)
     multi_json (1.11.2)
     mysql2 (0.4.3)
+    netrc (0.11.0)
     nokogiri (1.6.7.1)
       mini_portile2 (~> 2.0.0.rc2)
     pry (0.10.3)
@@ -81,6 +86,10 @@ GEM
       ffi (>= 0.5.0)
     rerun (0.11.0)
       listen (~> 3.0)
+    rest-client (2.0.0)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 4.0)
+      netrc (~> 0.8)
     rspec (3.4.0)
       rspec-core (~> 3.4.0)
       rspec-expectations (~> 3.4.0)
@@ -114,6 +123,9 @@ GEM
     tilt (2.0.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.1)
     xpath (2.0.0)
       nokogiri (~> 1.3)
 
@@ -133,6 +145,7 @@ DEPENDENCIES
   rack-ssl
   rake
   rerun
+  rest-client
   rspec
   sequel
   sequel_mappable
