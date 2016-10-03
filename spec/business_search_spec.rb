@@ -8,8 +8,8 @@ describe 'Business search', :type => :feature do
     lats = (1..16).map {|i| origin.lat + i * 0.01 }
     lngs = (1..16).map {|i| origin.lng + i * 0.01 }
 
-    lats.zip(lngs).each do |lat, lng|
-      Business.create(:name => "#{lat},#{lng}", :lat => lat, :lng => lng)
+    lats.zip(lngs).each_with_index do |(lat, lng), i|
+      Business.create(:name => "#{lat},#{lng},#{i}", :lat => lat, :lng => lng)
     end
   }
   let(:within_150km) {
@@ -24,16 +24,16 @@ describe 'Business search', :type => :feature do
     lats = (3..16).map {|i| origin.lat + i * 0.1 }
     lngs = (3..16).map {|i| origin.lng + i * 0.1 }
 
-    lats.zip(lngs).each do |lat, lng|
-      Business.create(:name => "#{lat},#{lng}", :lat => lat, :lng => lng)
+    lats.zip(lngs).each_with_index do |(lat, lng), i|
+      Business.create(:name => "#{lat},#{lng},#{i}", :lat => lat, :lng => lng)
     end
   }
   let(:thousands_of_results) {
     lats = (1..1000).map {|i| origin.lat + i * 0.0001 }
     lngs = (1..1000).map {|i| origin.lng + i * 0.0001 }
 
-    lats.zip(lngs).each do |lat, lng|
-      Business.create(:name => "#{lat},#{lng}", :lat => lat, :lng => lng)
+    lats.zip(lngs).each_with_index do |(lat, lng), i|
+      Business.create(:name => "#{lat},#{lng},#{i}", :lat => lat, :lng => lng)
     end
   }
 
