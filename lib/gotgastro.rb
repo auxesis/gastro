@@ -66,5 +66,13 @@ module GotGastro
 
       "OK"
     end
+
+    get '/metrics' do
+      content_type :json
+      {
+        'businesses' => Business.count,
+        'offences' => Offence.count,
+      }.to_json
+    end
   end
 end
