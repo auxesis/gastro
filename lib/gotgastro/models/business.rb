@@ -2,6 +2,13 @@ class Business < Sequel::Model
   plugin :mappable
   one_to_many :offences
 
+  def before_create
+    if not self.id
+      hash = Digest::MD5
+      self.id = hash.hexdigest(self.name)
+    end
+  end
+
   def distance_from(loc)
     self.class.distance_between(self, loc, :units => :kms)
   end
