@@ -14,7 +14,7 @@
           Find food safety problems near me
     %div.col-md-12
       %p
-        %input.form-control{:placeholder => "Search for food safety problems near...", :type => "text"}/
+        %input#autocomplete.form-control{:placeholder => "Search for food safety problems near...", :type => "text"}/
     %div.col-md-12
       %p
         %a{:href => "/report"}
@@ -26,3 +26,6 @@
     %p.text-center
       %small
         %a{:href => link_to('/privacy')} Privacy policy
+
+- google_api_key = 'AIzaSyDBvlmNsUERDKkeQWX6OCsfR5VoPaD3nWo'
+%script{:src => "https://maps.googleapis.com/maps/api/js?key=#{google_api_key}&libraries=places&callback=initAutocomplete",:async => :async, :defer => :defer}
