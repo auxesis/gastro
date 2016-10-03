@@ -48,6 +48,10 @@ module GotGastro
       end
     end
 
+    get '/report' do
+      haml :report
+    end
+
     get '/privacy' do
       haml :privacy
     end
