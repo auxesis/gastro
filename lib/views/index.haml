@@ -14,7 +14,7 @@
           Find food safety problems near me
     %div.col-md-12
       %p
-        %input#autocomplete.form-control{:placeholder => "Search for food safety problems near...", :type => "text"}/
+        %input#autocomplete.form-control{:placeholder => "Search for food safety problems near...", :type => "text", :onFocus => "geolocate()"}/
     %div.col-md-12
       %p
         %a{:href => "/report"}
