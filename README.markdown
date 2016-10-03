@@ -45,9 +45,9 @@ Got Gastro is MIT licensed.
 
 ### Data sources
 
-Each state and territory publishes their data sets differently, from HTML, to artisinally hand crafted PDFs for each breach.
+Each state and territory publishes their data sets differently: from nothing, to HTML, to artisinally hand crafted PDFs for each breach.
 
-NT and Queensland don't publish their data.
+NT, Tasmania, and Queensland don't publish their data.
 
 | State | Format | URL | Scraper |
 | ----- | ------ | :-- | ------- |
