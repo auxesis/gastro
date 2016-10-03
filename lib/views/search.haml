@@ -13,6 +13,17 @@
     %div.col-md-12
       %p.map
         %img{:src => map_url}/
+  - if params[:alert]
+    %div.row
+      %div.col-md-12
+        %div.well.well-lg
+          %p
+            Get alerts for new food problems near here straight in your email. It's free!
+          %p
+            %input.form-control.input-lg{:placeholder => 'me@example.org', :type => 'email'}
+            %input{:type => 'hidden', :lat => @location.lat, :lng => @location.lng}
+          %p
+            %input{:class => 'form-control btn btn-success', :type => 'submit', :value => "Create alert"}
 
   %div.row.results
     - if @businesses.size > 0
