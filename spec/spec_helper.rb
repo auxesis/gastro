@@ -6,6 +6,7 @@ $LOAD_PATH << lib
 require 'capybara/rspec'
 require 'rack/test'
 require 'pry'
+require 'webmock/rspec'
 
 RSpec.configure do |config|
   # Use color not only in STDOUT but also in pagers and files

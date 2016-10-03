@@ -24,4 +24,5 @@ group :test do
   gem 'rake'
   gem 'rspec'
   gem 'capybara'
+  gem 'webmock'
 end
