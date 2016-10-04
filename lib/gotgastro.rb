@@ -15,6 +15,7 @@ module GotGastro
 
     configure do
       set :morph_api_key, ENV['MORPH_API_KEY']
+      set :reset_token, ENV['GASTRO_RESET_TOKEN']
     end
 
     before do
@@ -60,7 +61,19 @@ module GotGastro
       haml :privacy
     end
 
-    get '/reset' do
+    def self.get_or_post(url,&block)
+      get(url,&block)
+      post(url,&block)
+    end
+
+    get_or_post '/reset' do
+      if params[:token] != settings.reset_token
+        status 404
+        return "ERROR"
+      end
+
+      status 201
+
       reset = Reset.create(:token => params[:token])
 
       Business.dataset.destroy

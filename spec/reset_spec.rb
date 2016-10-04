@@ -18,16 +18,24 @@ describe 'Data reset', :type => :feature do
       ).to_return(:status => 200, :body => offence_json)
   end
 
+  it 'should require a token' do
+    visit '/reset'
+    expect(page.status_code).to be 404
+
+    visit "/reset?token=#{ENV['GASTRO_RESET_TOKEN']}"
+    expect(page.status_code).to be 201
+  end
+
   it 'should create records' do
     before = Business.count
-    visit '/reset'
+    visit "/reset?token=#{ENV['GASTRO_RESET_TOKEN']}"
     after = Business.count
 
     expect(after).to be > before
   end
 
   it 'should create associations' do
-    visit '/reset'
+    visit "/reset?token=#{ENV['GASTRO_RESET_TOKEN']}"
 
     Business.each do |biz|
       expect(biz.offences.size).to be > 0
@@ -36,14 +44,14 @@ describe 'Data reset', :type => :feature do
 
   it 'should create a record of the reset' do
     before = Reset.count
-    visit '/reset'
+    visit "/reset?token=#{ENV['GASTRO_RESET_TOKEN']}"
     after = Reset.count
 
     expect(after).to be > before
   end
 
   it 'should report the duration of the reset' do
-    visit '/reset'
+    visit "/reset?token=#{ENV['GASTRO_RESET_TOKEN']}"
 
     expect(Reset.last.duration).to_not be nil
   end

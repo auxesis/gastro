@@ -25,7 +25,7 @@ describe 'Got Gastro metrics', :type => :feature do
       "https://api.morph.io/auxesis/gotgastro_scraper/data.json?key&query=select%20*%20from%20'offences'"
       ).to_return(:status => 200, :body => offence_json)
 
-    visit '/reset'
+    visit "/reset?token=#{ENV['GASTRO_RESET_TOKEN']}"
     visit '/metrics'
 
     metrics = JSON.parse(body)
