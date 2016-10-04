@@ -20,45 +20,6 @@ Tap an entry to see details of the food safety problem:
 
 ![Tap to see details](https://c1.staticflickr.com/9/8393/29813271210_864c650fca_z.jpg)
 
-## Setup
-
-Ensure you have Git, Ruby, and MySQL:
-
-``` bash
-git clone git@github.com:auxesis/gastro.git
-cd gastro
-bundle
-rake db:setup
-```
-
-_MySQL is required due to OGC spatial analysis functions. In theory it should work with Postgres too, but is untested._
-
-_The Rake tasks assume you have a root user with no password set_
-
-## Running
-
-Serve the app locally:
-
-```
-bundle exec foreman start -f Procfile.development
-```
-
-Then visit [http://localhost:9292/](http://localhost:9292/)
-
-## Testing
-
-Run the tests with:
-
-```
-bundle exec rake
-```
-
-## License
-
-Got Gastro is MIT licensed.
-
-## Documentation
-
 ### Data sources
 
 Each state and territory publishes their data sets differently: from nothing, to HTML, to artisinally hand crafted PDFs for each breach.
@@ -76,32 +37,42 @@ NT, Tasmania, and Queensland don't publish their data.
 | Australian Capital Territory | PDF | http://www.health.act.gov.au/sites/default/files//Register%20of%20Food%20Offences.pdf |
 | Northern Territory | nil |  |
 
+## Developing
 
-### Personas
+### Setup
 
-```
-Name: Jane Baker
-Age: 46
-Role: Take away orderer
-Demographic: Nurse, Married, family of 4
-Goals: Order dinner for family
-Technical: Tablet, desktop
-```
+Ensure you have Git, Ruby, and MySQL:
 
-```
-Name: Mohammed al-Faiz
-Age: 23
-Role: Lunch shopper
-Demographic: Labourer, Single
-Goals: Report dodgy sandwich shop
-Technical: Smart phone
+``` bash
+git clone git@github.com:auxesis/gastro.git
+cd gastro
+bundle
+rake db:setup
 ```
 
-### Scenarios
+_MySQL is required due to OGC spatial analysis functions. In theory it should work with Postgres too, but is untested._
+
+_The Rake tasks assume you have a root user with no password set_
+
+### Running
+
+Serve the app locally:
 
 ```
-Scenario: Search for shop nearby
-Scenario: Search for shop by address
-Scenario: Share found breach
-Scenario: Report breach
+bundle exec foreman start -f Procfile.development
 ```
+
+Then visit [http://localhost:9292/](http://localhost:9292/)
+
+### Testing
+
+Run the tests with:
+
+```
+bundle exec rake
+```
+
+## License
+
+Got Gastro is MIT licensed.
+
