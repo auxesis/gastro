@@ -11,8 +11,17 @@
       %p
         Got Gastro provides data for these states:
       %ul
-        %li New South Wales
-        %li Victoria
+        %li
+          %strong> New South Wales
+          , from the NSW Food Authority's
+          %a{:href => "http://foodauthority.nsw.gov.au/offences/prosecutions/"} prosecution
+          and
+          %a{:href => "http://foodauthority.nsw.gov.au/penalty-notices/default.aspx?template=results"} penalty
+          notices.
+        %li
+          %strong> Victoria
+          , from vic.health's
+          %a{:href => "https://www2.health.vic.gov.au/public-health/food-safety/convictions-register"} convictions register.
 
   %h1 Credits
   %div.row
@@ -21,12 +30,20 @@
         %li
           %a{:href => "https://morph.io/"} Morph
           for providing a reliable scraping and data infrastructure, for
-          getting the published notices from all the states into
-          %a{:href => "https://morph.io/auxesis/gotgastro_scraper"} one format
+          getting the published notices from the states from
+          %a{:href => "https://morph.io/auxesis/vic_health_register_of_convictions"} many
+          %a{:href => "https://morph.io/auxesis/nsw_food_authority_penalty_notices"} different
+          %a{:href => "https://morph.io/auxesis/nsw_food_authority_prosecution_notices"} sources
+          into
+          %a{:href => "https://morph.io/auxesis/gotgastro_scraper"} one format.
         %li
           Source code is
           %a{:href => "https://github.com/auxesis/gastro/"} on GitHub
           and available under the MIT license.
+        %li
+          All code changes to Got Gastro are
+          %a{:href => "https://circleci.com/gh/auxesis/gastro"} continuously deployed
+          using CircleCI.
 
 
   %div.row.nav
