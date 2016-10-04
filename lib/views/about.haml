@@ -1,0 +1,40 @@
+- page_title "About"
+
+%div.container
+  %h1 About
+  %div.row
+    %div.col-md-12
+      %p
+        Got Gastro helps you find out about potential food safety problems when eating out or buying food.
+      %p
+        It combines data from various state sources and makes it easily searchable.
+      %p
+        Got Gastro provides data for these states:
+      %ul
+        %li New South Wales
+        %li Victoria
+
+  %h1 Credits
+  %div.row
+    %div.col-md-12
+      %ul
+        %li
+          %a{:href => "https://morph.io/"} Morph
+          for providing a reliable scraping and data infrastructure, for
+          getting the published notices from all the states into
+          %a{:href => "https://morph.io/auxesis/gotgastro_scraper"} one format
+        %li
+          Source code is
+          %a{:href => "https://github.com/auxesis/gotgastro/"} on GitHub
+          and available under the MIT license.
+
+
+  %div.row.nav
+    %div.col-md-12
+      %p
+        %a{:href => "/"}
+          %button.btn.btn-default.btn-lg{:type => "button"}
+            %i.fa.fa-fw.fa-arrow-circle-o-left
+            Back
+
+  = haml :footer
