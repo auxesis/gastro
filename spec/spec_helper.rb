@@ -29,4 +29,6 @@ def app
   return app
 end
 
+ENV['GASTRO_RESET_TOKEN'] = Digest::MD5.new.hexdigest(Time.now.to_i.to_s)
+
 Capybara.app, _ = app
