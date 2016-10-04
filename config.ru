@@ -23,7 +23,7 @@ end
 # Serve static assets before everything else
 use Rack::Static, :urls => %w(/css /img /fonts /js), :root => public_folder
 # Google Analytics
-#use Rack::GoogleAnalytics, :tracker => 'UA-58647844-1' if environment == 'production'
+use Rack::GoogleAnalytics, :tracker => 'UA-85193424-1' if environment == 'production'
 
 use Rack::SSL if environment == 'production'
 use GotGastro::App
