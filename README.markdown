@@ -39,6 +39,16 @@ NT, Tasmania, and Queensland don't publish their data.
 
 ## Developing
 
+![CircleCI build status](https://circleci.com/gh/auxesis/gastro.png?circle-token=27a395741dc9cb515e2c74222f015b2ffc6c8e2f)
+
+### Pipeline
+
+Got Gastro is continuously deployed, using [using CircleCI](https://circleci.com/gh/auxesis/gastro).
+
+Builds and deploys are controlled by `bin/cibuild.sh` and `bin/cideploy.sh`.
+
+Got Gastro runs on [Pivotal Web Services](https://run.pivotal.io/).
+
 ### Setup
 
 Ensure you have Git, Ruby, and MySQL:
