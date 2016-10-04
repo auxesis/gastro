@@ -44,19 +44,12 @@
         %i.fa.fa-thumbs-o-up.fa-fw.fa-lg
         No reported food safety problems near me.
 
-  %div.row.report
+  %div.row.nav.report
     %div.col-md-12
-      %p
-        Have a complaint about a business?
-      %p
-        %a{:href => "/report"}
-          %button.btn.btn-warning.report{:type => "submit"}
-            %i.fa.fa-fw.fa-bug
-            Report a food safety problem
-  %div.row.nav
-    .col-md-12
       %p
         %a{:href => "/"}
           %button.btn.btn-default{:type => "button"}
             %i.fa.fa-fw.fa-arrow-circle-o-left
             Back
+
+  = haml :footer

@@ -7,25 +7,20 @@
     %div.col-md-12
       %p
         Got Gastro helps you find out about potential food safety problems when eating out or buying food.
-    %div.col-md-12
+    %div.col-md-12.locate
       %p
         %button.btn.btn-success.geolocation{:type => "submit"}
           %i.fa.fa-fw.fa-location-arrow
           Find food safety problems near me
     %div.col-md-12
+      %p.text-center
+        %strong – OR –
+    %div.col-md-12.search
       %p
-        %input#autocomplete.form-control{:placeholder => "Search for food safety problems near...", :type => "text", :onFocus => "geolocate()"}/
-    %div.col-md-12
-      %p
-        %a{:href => "/report"}
-          %button.btn.btn-warning.report{:type => "submit"}
-            %i.fa.fa-fw.fa-bug
-            Report a food safety problem
+        %input#autocomplete.input-lg.form-control{:placeholder => "Search for food safety problems near...", :type => "text", :onFocus => "geolocate()"}/
 
-  %footer
-    %p.text-center
-      %small
-        %a{:href => link_to('/privacy')} Privacy policy
+  = haml :footer
 
+-# FIXME(auxesis): refactor this into a variable
 - google_api_key = 'AIzaSyDBvlmNsUERDKkeQWX6OCsfR5VoPaD3nWo'
 %script{:src => "https://maps.googleapis.com/maps/api/js?key=#{google_api_key}&libraries=places&callback=initAutocomplete",:async => :async, :defer => :defer}

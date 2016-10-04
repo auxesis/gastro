@@ -6,22 +6,19 @@ body {
   max-width: 680px;
 }
 
-button.geolocation,
-button.report {
+button.geolocation {
   width: 100%;
   font-size: 4vw;
 }
 
 @media (min-width: 768px) {
-  button.geolocation,
-  button.report {
+  button.geolocation {
     font-size: 3vw;
   }
 }
 
 @media (min-width: 992px) {
-  button.geolocation,
-  button.report {
+  button.geolocation {
     font-size: 24px;
   }
 }
@@ -52,10 +49,17 @@ div.row.results div.result.empty {
   padding: 16px 24px 24px;
 }
 
-div.row.report {
+div.row.nav {
   margin-top: 7.5px;
 }
 
 div.row.nav button {
   font-size: 90%;
+}
+
+/* footer */
+footer span.delimiter {
+  color: #aaa;
+  padding-left: 4px;
+  padding-right: 4px;
 }
