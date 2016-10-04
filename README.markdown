@@ -37,6 +37,27 @@ NT, Tasmania, and Queensland don't publish their data.
 | Australian Capital Territory | PDF | http://www.health.act.gov.au/sites/default/files//Register%20of%20Food%20Offences.pdf |
 | Northern Territory | nil |  |
 
+### Metrics
+
+Calls to `/metrics` will return information about how Got Gastro is currently running:
+
+``` json
+{
+  "businesses": 1349,
+  "offences": 2366,
+  "last_reset_at": "2016-10-04T12:01:26.000+00:00",
+  "last_reset_duration": 84
+}
+```
+
+`businesses` and `offences` show counts of each of those data types.
+
+`last_reset_at` is the last time a data reset was performed via API.
+
+`last_reset_duration` is the time it took for the last data reset to complete.
+
+If `last_reset_duration` is `-1`, this means a reset is currently occuring.
+
 ## Developing
 
 ![CircleCI build status](https://circleci.com/gh/auxesis/gastro.png?circle-token=27a395741dc9cb515e2c74222f015b2ffc6c8e2f)
@@ -85,4 +106,3 @@ bundle exec rake
 ## License
 
 Got Gastro is MIT licensed.
-
