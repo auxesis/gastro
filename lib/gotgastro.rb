@@ -61,6 +61,8 @@ module GotGastro
     end
 
     get '/reset' do
+      reset = Reset.create(:token => params[:token])
+
       Business.dataset.destroy
       Offence.dataset.destroy
 
@@ -86,15 +88,27 @@ module GotGastro
         Offence.create(offence)
       end
 
+      reset.save
+
       "OK"
     end
 
     get '/metrics' do
       content_type :json
-      {
+
+      metrics = {
         'businesses' => Business.count,
         'offences' => Offence.count,
-      }.to_json
+      }
+
+      if Reset.last
+        metrics.merge!({
+          'last_reset_at' => Reset.last.created_at,
+          'last_reset_duration' => Reset.last.duration,
+        })
+      end
+
+      metrics.to_json
     end
   end
 end
