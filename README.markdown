@@ -74,6 +74,38 @@ bundle exec foreman start -f Procfile.development
 
 Then visit [http://localhost:9292/](http://localhost:9292/)
 
+### Data
+
+Got Gastro depends on data pulled in from Morph.
+
+The `[gotgastro_scraper](https://morph.io/auxesis/gotgastro_scraper)` normalises data from all the dependent scrapers, converting it to a standard format that the Got Gastro app can consume.
+
+The `gotgastro_scraper` uses the webhook functionality of Morph to trigger a data reset in the Got Gastro app whenever data is updated.
+
+The update process looks like this:
+
+1. Individual scrapers (like the [NSW Penalty Notices](https://morph.io/auxesis/nsw_food_authority_penalty_notices)) run once a day on Morph. These collect data from the various state registries.
+2. The `gotgastro_scraper` runs once a day on Morph.
+3. When the `gotgastro_scraper` finishes, it makes a call to https://gotgastroagain.com/reset with a `?token=secret` query parameter.
+4. The Got Gastro app fetches the latest data from the `gotgastro_scraper`, and ingests it.
+
+For this multi-step process to work, you need to set two environment variables:
+
+ - `MORPH_API_KEY`, your API key on Morph, for the Got Gastro app to query the Morph API for the latest data.
+ - `GASTRO_RESET_TOKEN`, a private token that the `/reset` URL needs to be called with, to trigger a reset. Calls to `/reset` without the `?token=` query parameter will return a with a HTTP status code of 404.
+
+For local development, set the `MORPH_API_KEY` to your own Morph API key, and set `GASTRO_RESET_TOKEN` to something easy to remember like `wheresthepizza`.
+
+```
+MORPH_API_KEY='something' GASTRO_RESET_TOKEN=wheresthepizza bundle exec foreman start -f Procfile.development
+```
+
+Then, to trigger a data import:
+
+```
+curl http://localhost:9292/reset?token=wheresthepizza
+```
+
 ### Testing
 
 Run the tests with:
