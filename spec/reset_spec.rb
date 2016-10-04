@@ -33,4 +33,18 @@ describe 'Data reset', :type => :feature do
       expect(biz.offences.size).to be > 0
     end
   end
+
+  it 'should create a record of the reset' do
+    before = Reset.count
+    visit '/reset'
+    after = Reset.count
+
+    expect(after).to be > before
+  end
+
+  it 'should report the duration of the reset' do
+    visit '/reset'
+
+    expect(Reset.last.duration).to_not be nil
+  end
 end
