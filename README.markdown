@@ -56,7 +56,7 @@ Calls to `/metrics` will return information about how Got Gastro is currently ru
 
 `last_reset_duration` is the time it took for the last data reset to complete.
 
-If `last_reset_duration` is `-1`, this means a reset is currently occuring.
+If `last_reset_duration` is `-1`, this means a reset started, and has not finished. This can indicate that a reset is currently running, or it has failed.
 
 ## Developing
 
