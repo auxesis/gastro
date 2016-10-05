@@ -18,11 +18,11 @@ describe 'Got Gastro metrics', :type => :feature do
 
   it 'should expose metrics from last reset' do
     stub_request(:get,
-      "https://api.morph.io/auxesis/gotgastro_scraper/data.json?key&query=select%20*%20from%20'businesses'"
+      %r{https://api\.morph\.io/auxesis/gotgastro_scraper/data\.json\?key.*&query=select%20\*%20from%20'businesses'}
       ).to_return(:status => 200, :body => business_json)
 
     stub_request(:get,
-      "https://api.morph.io/auxesis/gotgastro_scraper/data.json?key&query=select%20*%20from%20'offences'"
+      %r{https://api\.morph\.io/auxesis/gotgastro_scraper/data\.json\?key.*&query=select%20\*%20from%20'offences'}
       ).to_return(:status => 200, :body => offence_json)
 
     visit "/reset?token=#{ENV['GASTRO_RESET_TOKEN']}"

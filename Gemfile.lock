@@ -142,6 +142,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activesupport
   bundler
   capybara
   foreman

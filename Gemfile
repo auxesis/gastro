@@ -13,6 +13,7 @@ gem 'mysql2'
 gem 'sinatra-contrib'
 gem 'rack-ssl'
 gem 'rest-client'
+gem 'activesupport'
 
 group :development do
   gem 'foreman'

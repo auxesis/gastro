@@ -10,12 +10,20 @@ describe 'Data reset', :type => :feature do
 
   before(:each) do
     stub_request(:get,
-      "https://api.morph.io/auxesis/gotgastro_scraper/data.json?key&query=select%20*%20from%20'businesses'"
+      %r{https://api\.morph\.io/auxesis/gotgastro_scraper/data\.json\?key=.*&query=select%20\*%20from%20'businesses'}
       ).to_return(:status => 200, :body => business_json)
 
     stub_request(:get,
-      "https://api.morph.io/auxesis/gotgastro_scraper/data.json?key&query=select%20*%20from%20'offences'"
+      %r{https://api\.morph\.io/auxesis/gotgastro_scraper/data\.json\?key.*&query=select%20\*%20from%20'offences'}
       ).to_return(:status => 200, :body => offence_json)
+  end
+
+  it 'should error if setttings value is not set' do
+    # This isn't so great, because we're testing implementation (set_or_raise)
+    # not the interface (booting the app without environment variables).
+    expect {
+      GotGastro::App.new.settings.set_or_raise(:hello, nil)
+    }.to raise_error(ArgumentError)
   end
 
   it 'should require a token' do

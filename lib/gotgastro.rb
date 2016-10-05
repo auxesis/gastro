@@ -1,6 +1,8 @@
 require 'helpers'
 require 'sinatra/cookies'
 require 'rest-client'
+require 'active_support'
+require 'active_support/core_ext'
 
 module GotGastro
   class App < Sinatra::Base
@@ -13,9 +15,17 @@ module GotGastro
     helpers Sinatra::MetaTagHelper
     helpers Sinatra::Cookies
 
+    def self.set_or_raise(key, value)
+      if value.nil? or value.blank?
+        raise ArgumentError, "Value for '#{key}' was not specified"
+      else
+        set(key, value)
+      end
+    end
+
     configure do
-      set :morph_api_key, ENV['MORPH_API_KEY']
-      set :reset_token, ENV['GASTRO_RESET_TOKEN']
+      set_or_raise :morph_api_key, ENV['MORPH_API_KEY']
+      set_or_raise :reset_token, ENV['GASTRO_RESET_TOKEN']
     end
 
     before do
