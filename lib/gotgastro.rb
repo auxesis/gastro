@@ -73,10 +73,11 @@ module GotGastro
     end
 
     post '/alert' do
-      @alert = OpenStruct.new(params[:alert])
-      @alert.confirmation_id = Digest::MD5.new.hexdigest(Time.now.to_s + params[:alert][:email])
+      @alert = Alert.create(params[:alert])
+
       email = @alert.email
       link = link_to("/alerts/confirm/#{@alert.confirmation_id}")
+
       mail = Mail.new do
         from     'alerts-confirm@gotgastroagain.com'
         to       email
