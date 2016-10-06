@@ -12,20 +12,40 @@
         %img{:src => map_url}/
   %div.row.detail
     %div.col-md-12
-      %div.pull-right
-        = "%.1f" % @business.distance_from(@location) + "km away"
-      %p.text-muted
-        %small= @business.address
-      %h4
-        Offences:
+      %p.text-muted= @business.address
+      - c = case
+      - when @business.problems <= 2; 'warning'
+      - when @business.problems > 2; 'danger'
+    %div.col-md-6
+      %div.alert{:class => "alert-#{c}"}
+        %i.fa.fa-fw.fa-lg.fa-exclamation-circle
         = @business.problems
+        = @business.problems == 1 ? 'problem' : 'problems'
+    %div.col-md-6
+      %div.alert.alert-info
+        %i.fa.fa-fw.fa-lg.fa-location-arrow
+        = "%.1f" % @business.distance_from(@location) + "km away"
+
+  %div.row.detail
     %div.col-md-12
-      %h4 Date of offences
+      - dates = @business.offences.map(&:date).uniq
+      %h4
+        - case
+        - when @business.offences.count == 1
+          Date of offence
+        - when @business.offences.count > 1 && dates.size == 1
+          Date of offences
+        - else
+          Dates of offences
       %ul
-        - @business.offences.map(&:date).uniq.each do |date|
+        - dates.each do |date|
           %li= date
     %div.col-md-12
-      %h4 Offence details
+      %h4
+        - if @business.offences.count == 1
+          Details of offence
+        - else
+          Details of offences
       %ul
         - @business.offences.each do |offence|
           - if offence.description =~ /\n/
@@ -33,20 +53,6 @@
               %pre= offence.description
           - else
             %li= offence.description
-  %div.row
-    %div.col-md-12
-      %ul.list-inline
-        %li
-          %strong Share:
-        %li
-          %button.btn.btn-info
-            %i.fa.fa-fw.fa-lg.fa-twitter
-        %li
-          %button.btn.btn-primary
-            %i.fa.fa-fw.fa-lg.fa-facebook
-        %li
-          %button.btn.btn-warning
-            %i.fa.fa-fw.fa-lg.fa-envelope
   %div.row.nav
     %div.col-md-12
       %p

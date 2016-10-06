@@ -44,23 +44,37 @@ div.row.results h4.business-name {
   text-transform: uppercase;
 }
 
-div.row.results p.problem-count {
+div.row.results p.problem-count, /* search */
+div.row.detail p.problem-count /* detail */
+{
   margin-bottom: 5px;
   font-size: 95%;
 }
 
 
-div.row.results p.problem-count.text-warning,
-div.row.results p.problem-count.text-danger {
+div.row.results p.problem-count.text-warning, /* search */
+div.row.results p.problem-count.text-danger,
+div.row.detail p.problem-count.text-warning, /* detail */
+div.row.detail p.problem-count.text-danger
+{
   opacity: 0.8;
 }
 
-div.row.results p.problem-count.text-danger span.badge {
+div.row.results p.problem-count.text-danger span.badge, /* search */
+div.row.detail p.problem-count.text-danger span.badge   /* detail */
+{
   background-color: #ff4136;
 }
 
-div.row.results p.problem-count.text-warning span.badge {
+div.row.results p.problem-count.text-warning span.badge, /* search */
+div.row.detail  p.problem-count.text-warning span.badge  /* detail */
+{
   background-color: #ff851b;
+}
+
+div.row.detail h3.problem-count {
+  font-weight: bold;
+  margin-top: 10px;
 }
 
 div.row.results div.result {
