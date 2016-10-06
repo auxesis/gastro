@@ -23,16 +23,24 @@ button.geolocation {
   }
 }
 
-div.row {
-  cursor: pointer;
-}
-
 div.row.landing p {
   margin-bottom: 15px;
 }
 
 div.row p.map img {
   width: 100%;
+}
+
+div.row.results {
+  cursor: pointer;
+}
+
+div.row.results div.result:hover {
+  background-color: #f9f9f9;
+}
+
+div.row.results a:hover {
+  text-decoration: none;
 }
 
 div.row.results h4,
