@@ -72,11 +72,6 @@ div.row.detail  p.problem-count.text-warning span.badge  /* detail */
   background-color: #ff851b;
 }
 
-div.row.detail h3.problem-count {
-  font-weight: bold;
-  margin-top: 10px;
-}
-
 div.row.results div.result {
   border-bottom: 1px solid lightgray;
 }
