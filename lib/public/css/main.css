@@ -31,6 +31,18 @@ div.row p.map img {
   width: 100%;
 }
 
+div.row.results {
+  cursor: pointer;
+}
+
+div.row.results div.result:hover {
+  background-color: #f9f9f9;
+}
+
+div.row.results a:hover {
+  text-decoration: none;
+}
+
 div.row.results h4,
 div.row.results h4 a,
 div.row.detail h4,
@@ -44,22 +56,31 @@ div.row.results h4.business-name {
   text-transform: uppercase;
 }
 
-div.row.results p.problem-count {
+div.row.results p.problem-count, /* search */
+div.row.detail p.problem-count /* detail */
+{
   margin-bottom: 5px;
   font-size: 95%;
 }
 
 
-div.row.results p.problem-count.text-warning,
-div.row.results p.problem-count.text-danger {
+div.row.results p.problem-count.text-warning, /* search */
+div.row.results p.problem-count.text-danger,
+div.row.detail p.problem-count.text-warning, /* detail */
+div.row.detail p.problem-count.text-danger
+{
   opacity: 0.8;
 }
 
-div.row.results p.problem-count.text-danger span.badge {
+div.row.results p.problem-count.text-danger span.badge, /* search */
+div.row.detail p.problem-count.text-danger span.badge   /* detail */
+{
   background-color: #ff4136;
 }
 
-div.row.results p.problem-count.text-warning span.badge {
+div.row.results p.problem-count.text-warning span.badge, /* search */
+div.row.detail  p.problem-count.text-warning span.badge  /* detail */
+{
   background-color: #ff851b;
 }
 
@@ -71,6 +92,17 @@ div.row.results div.result.empty {
   font-weight: bold;
   font-size: 120%;
   padding: 16px 24px 24px;
+}
+
+div.row.results div.distance {
+  padding-left: 5px;
+  margin-top: 6px;
+}
+
+@media (max-width: 768px) {
+  div.row.results div.distance {
+    margin-top: -3px;
+  }
 }
 
 div.row.nav {
