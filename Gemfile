@@ -14,6 +14,7 @@ gem 'sinatra-contrib'
 gem 'rack-ssl'
 gem 'rest-client'
 gem 'activesupport'
+gem 'mail'
 
 group :development do
   gem 'foreman'

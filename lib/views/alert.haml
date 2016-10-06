@@ -1,0 +1,30 @@
+- page_title 'Now check your email'
+
+%div.container
+  %div.row
+    %div.col-md-12
+      %h1
+        Now check your email
+      %p
+        You should shortly receive an email from&nbsp;
+        %code> alerts-confirm@gotgastroagain.com
+        \.
+      %p
+        %strong Click on the link in the email
+        to confirm and start receiving alerts about food safety problems in
+        your area.
+      %p
+        If you don't get an email in the next few minutes, try checking your spam filter.
+
+      %pre
+        = params.inspect
+
+  %div.row.nav
+    %div.col-md-12
+      %p
+        %a{:href => "/search?lat=#{@location.lat}&lng=#{@location.lng}"}
+          %button.btn.btn-default{:type => 'button'}
+            %i.fa.fa-fw.fa-arrow-circle-o-left
+            Back to search results
+
+  = haml :footer
