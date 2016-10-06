@@ -82,6 +82,17 @@ div.row.results div.result.empty {
   padding: 16px 24px 24px;
 }
 
+div.row.results div.distance {
+  padding-left: 5px;
+  margin-top: 6px;
+}
+
+@media (max-width: 768px) {
+  div.row.results div.distance {
+    margin-top: -3px;
+  }
+}
+
 div.row.nav {
   margin-top: 7.5px;
 }
