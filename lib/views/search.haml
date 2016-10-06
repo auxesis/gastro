@@ -31,13 +31,17 @@
         %div.col-md-12.result
           %div.pull-right.distance
             = "%.1f" % business.distance_from(@location) + "km away"
-          %h4
+          %h4.business-name
             %a{:href => link_to("/business/#{business.id}")}
               = business.name
+          - c = case
+          - when business.problems <= 2; 'warning'
+          - when business.problems > 2; 'danger'
+          %p.problem-count{:class => "text-#{c}"}
             %small
-              - word = business.problems == 1 ? "problem" : "problems"
-              = "#{business.problems} #{word}"
-          %p.text-muted
+              %span.badge= business.problems
+              = business.problems == 1 ? 'problem' : 'problems'
+          %p.address.text-muted
             %small= business.address
     - else
       %div.col-md-12.result.text-center.empty

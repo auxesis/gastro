@@ -39,6 +39,29 @@ div.row.detail h4 a {
   color: #333;
 }
 
+div.row.results h4.business-name {
+  margin-bottom: 2px;
+}
+
+div.row.results p.problem-count {
+  margin-bottom: 5px;
+  font-size: 95%;
+}
+
+
+div.row.results p.problem-count.text-warning,
+div.row.results p.problem-count.text-danger {
+  opacity: 0.8;
+}
+
+div.row.results p.problem-count.text-danger span.badge {
+  background-color: #ff4136;
+}
+
+div.row.results p.problem-count.text-warning span.badge {
+  background-color: #ff851b;
+}
+
 div.row.results div.result {
   border-bottom: 1px solid lightgray;
 }
