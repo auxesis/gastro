@@ -13,17 +13,22 @@
     %div.col-md-12
       %p.map
         %img{:src => map_url}/
-  - if params[:alert]
-    %div.row
-      %div.col-md-12
-        %div.well.well-lg
-          %p
-            Get alerts for new food problems near here straight in your email. It's free!
-          %p
-            %input.form-control.input-lg{:placeholder => 'me@example.org', :type => 'email'}
-            %input{:type => 'hidden', :lat => @location.lat, :lng => @location.lng}
-          %p
-            %input{:class => 'form-control btn btn-success', :type => 'submit', :value => "Create alert"}
+    - if params[:alert]
+      %div.row.email-alert
+        %div.col-md-12
+          %div.well.well-lg
+            %form{:action => link_to('/alert'), :method => 'post'}
+              %div.form-group
+                %p
+                  Get alerts for new food problems near here straight in your email. It's free!
+              %div.form-group
+                %p
+                  %input.form-control.input-lg{:name => 'alert[email]', :placeholder => 'me@example.org', :type => 'email'}
+                  %input{:type => 'hidden', :name => "alert[location]", :value => "#{@location.lat},#{@location.lng}"}
+                  %input{:type => 'hidden', :name => "alert[distance]", :value => "25"}
+              %button{:class => 'btn btn-success btn-lg btn-block', :type => 'submit'}
+                %i.fa.fa-fw.fa-envelope
+                Create alert
 
   %div.row.results
     - if @businesses.size > 0
@@ -54,6 +59,6 @@
         %a{:href => "/"}
           %button.btn.btn-default{:type => "button"}
             %i.fa.fa-fw.fa-arrow-circle-o-left
-            Back
+            Back to search
 
   = haml :footer

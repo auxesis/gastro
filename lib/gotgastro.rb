@@ -3,6 +3,7 @@ require 'sinatra/cookies'
 require 'rest-client'
 require 'active_support'
 require 'active_support/core_ext'
+require 'mail'
 
 module GotGastro
   class App < Sinatra::Base
@@ -69,6 +70,22 @@ module GotGastro
 
     get '/privacy' do
       haml :privacy
+    end
+
+    post '/alert' do
+      @alert = OpenStruct.new(params[:alert])
+      @alert.confirmation_id = Digest::MD5.new.hexdigest(Time.now.to_s + params[:alert][:email])
+      email = @alert.email
+      link = link_to("/alerts/confirm/#{@alert.confirmation_id}")
+      mail = Mail.new do
+        from     'alerts-confirm@gotgastroagain.com'
+        to       email
+        subject  'Please confirm your Got Gastro alert'
+        body     link
+      end
+      mail.deliver!
+
+      haml :alert
     end
 
     def self.get_or_post(url,&block)

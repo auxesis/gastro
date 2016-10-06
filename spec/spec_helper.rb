@@ -7,6 +7,7 @@ require 'capybara/rspec'
 require 'rack/test'
 require 'pry'
 require 'webmock/rspec'
+require 'mail'
 
 RSpec.configure do |config|
   # Use color not only in STDOUT but also in pagers and files
@@ -21,6 +22,10 @@ RSpec.configure do |config|
   config.around(:each) do |example|
     DB.transaction(:rollback=>:always, :auto_savepoint=>true){example.run}
   end
+end
+
+Mail.defaults do
+  delivery_method :test
 end
 
 # Define the Rack::Test/Capybara app by reading in the config.ru
