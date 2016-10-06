@@ -46,13 +46,14 @@
           Details of offence
         - else
           Details of offences
-      %ul
+      - if @business.offences.map {|o| o.description }.join =~ /\n/
         - @business.offences.each do |offence|
-          - if offence.description =~ /\n/
-            %li
-              %pre= offence.description
-          - else
+          %pre= offence.description
+      - else
+        %ul
+          - @business.offences.each do |offence|
             %li= offence.description
+
   %div.row.nav
     %div.col-md-12
       %p
