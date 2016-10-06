@@ -41,6 +41,7 @@ div.row.detail h4 a {
 
 div.row.results h4.business-name {
   margin-bottom: 2px;
+  text-transform: uppercase;
 }
 
 div.row.results p.problem-count {
