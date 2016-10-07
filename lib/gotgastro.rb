@@ -161,5 +161,15 @@ module GotGastro
 
       metrics.to_json
     end
+
+    get '/env' do
+      if params[:token] != settings.reset_token
+        status 404
+        return "ERROR"
+      end
+
+      content_type :json
+      ENV.to_json
+    end
   end
 end
