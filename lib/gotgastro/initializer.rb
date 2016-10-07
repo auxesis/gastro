@@ -84,6 +84,8 @@ module Sequel
   end
 end
 
+# Initialise services for handling data
+require 'gotgastro/services'
 
 # Stub out any data backfilling we need to do.
 class Backfill
@@ -91,3 +93,4 @@ class Backfill
   end
 end
 Backfill.run!
+

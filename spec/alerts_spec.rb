@@ -35,7 +35,7 @@ describe 'Alerts', :type => :feature do
 
     expect(Mail::TestMailer.deliveries.size).to be 1
 
-    confirmation_link = Mail::TestMailer.deliveries.first.body.to_s
+    confirmation_link = Mail::TestMailer.deliveries.first.body.to_s.match(/^(http.*)$/, 1)
     visit(confirmation_link)
     expect(page.status_code).to be 200
     expect(page.body).to match(/your alert is now activated/i)

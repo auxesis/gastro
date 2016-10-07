@@ -73,28 +73,27 @@ module GotGastro
     end
 
     post '/alert' do
-      @alert = Alert.create(params[:alert])
+      attrs = params[:alert].dup.merge({
+        :host => "#{request.env['rack.url_scheme']}://#{request.env['HTTP_HOST']}"
+      })
+      @alert = AlertSignupService.new(attrs)
 
-      email = @alert.email
-      link = link_to("/alert/#{@alert.confirmation_id}/confirm")
-
-      mail = Mail.new do
-        from     'alerts-confirm@gotgastroagain.com'
-        to       email
-        subject  'Please confirm your Got Gastro alert'
-        body     link
+      if @alert.save
+        haml :alert
+      else
+        status 500
       end
-      mail.deliver!
-
-      haml :alert
     end
 
     get '/alert/:confirmation_id/confirm' do
-      @alert = Alert.first(:confirmation_id => params[:confirmation_id])
+      @alert = AlertSignupService.find(params[:confirmation_id])
       if @alert
-        @alert.confirmed_at = Time.now
-        @alert.save
-        haml :alert_confirmation
+        if @alert.confirm!
+          haml :alert_confirmation
+        else
+          puts "[debug] Couldn't confirm this alert: #{@alert.inspect}"
+          status 500
+        end
       else
         status 404
       end
