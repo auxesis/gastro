@@ -22,7 +22,7 @@ def config
   template = ERB.new(config_file.read, nil, '%')
   @config = YAML.load(template.result(binding))[environment]
 
-  @config.merge!('vcap_application' => JSON.parse(ENV['VCAP_application'])) if ENV['VCAP_APPLICATION']
+  @config.merge!('vcap_application' => JSON.parse(ENV['VCAP_APPLICATION'])) if ENV['VCAP_APPLICATION']
   @config.merge!('vcap_services' => JSON.parse(ENV['VCAP_SERVICES'])) if ENV['VCAP_SERVICES']
 
   @config
