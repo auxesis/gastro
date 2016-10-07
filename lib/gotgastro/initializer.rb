@@ -2,6 +2,7 @@ require 'pathname'
 require 'yaml'
 require 'ostruct'
 require 'erb'
+require 'json'
 
 def root
   @root ||= Pathname.new(__FILE__).parent.parent.parent
@@ -20,6 +21,11 @@ def config
   config_file = root + 'config' + 'database.yml'
   template = ERB.new(config_file.read, nil, '%')
   @config = YAML.load(template.result(binding))[environment]
+
+  @config.merge!('vcap_application' => JSON.parse(ENV['VCAP_application'])) if ENV['VCAP_APPLICATION']
+  @config.merge!('vcap_services' => JSON.parse(ENV['VCAP_SERVICES'])) if ENV['VCAP_SERVICES']
+
+  @config
 end
 
 def database_config
