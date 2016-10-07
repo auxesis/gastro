@@ -1,0 +1,30 @@
+- page_title 'Your alert is activated'
+
+%div.container
+  %div.row
+    %div.col-md-12
+      %h1
+        %i.fa.fa-check-circle-o
+        Thank you! Your alert is now activated.
+      %p
+        You will now receive email alerts for any planning applications
+        we find within
+        = "#{@alert.distance}km"
+        of
+        = @alert.location
+      %p
+        You can change the size of the area covered by the alert now or
+        at a later time. Every email alert will have this link.
+      %p
+        If you want alerts around another address, you can
+        %a{:href => '/'} sign up for multiple alerts.
+
+  %div.row.nav
+    %div.col-md-12
+      %p
+        %a{:href => "/"}
+          %button.btn.btn-default{:type => 'button'}
+            %i.fa.fa-fw.fa-arrow-circle-o-left
+            Back to search
+
+  = haml :footer

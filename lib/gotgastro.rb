@@ -76,7 +76,7 @@ module GotGastro
       @alert = Alert.create(params[:alert])
 
       email = @alert.email
-      link = link_to("/alerts/confirm/#{@alert.confirmation_id}")
+      link = link_to("/alert/#{@alert.confirmation_id}/confirm")
 
       mail = Mail.new do
         from     'alerts-confirm@gotgastroagain.com'
@@ -87,6 +87,17 @@ module GotGastro
       mail.deliver!
 
       haml :alert
+    end
+
+    get '/alert/:confirmation_id/confirm' do
+      @alert = Alert.first(:confirmation_id => params[:confirmation_id])
+      if @alert
+        @alert.confirmed_at = Time.now
+        @alert.save
+        haml :alert_confirmation
+      else
+        status 404
+      end
     end
 
     def self.get_or_post(url,&block)
