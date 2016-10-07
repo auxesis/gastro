@@ -22,6 +22,8 @@ def config
   template = ERB.new(config_file.read, nil, '%')
   @config = YAML.load(template.result(binding))[environment]
 
+  puts "[debug] VCAP_APPLICATION: #{ENV['VCAP_APPLICATION'].inspect}"
+  puts "[debug] VCAP_SERVICES: #{ENV['VCAP_SERVICES'].inspect}"
   @config.merge!('vcap_application' => JSON.parse(ENV['VCAP_APPLICATION'])) if ENV['VCAP_APPLICATION']
   @config.merge!('vcap_services' => JSON.parse(ENV['VCAP_SERVICES'])) if ENV['VCAP_SERVICES']
 
