@@ -26,7 +26,7 @@ describe 'Alerts', :type => :feature do
     Mail::TestMailer.deliveries.clear
   end
 
-  it 'should send a confirmation mail on sign up' do
+  it 'should allow a user to subscribe' do
     within_25km && within_150km
 
     visit "/search?lat=#{origin.lat}&lng=#{origin.lng}&alert=hello"
@@ -34,5 +34,19 @@ describe 'Alerts', :type => :feature do
     click_on 'Create alert'
 
     expect(Mail::TestMailer.deliveries.size).to be 1
+
+    confirmation_link = Mail::TestMailer.deliveries.first.body.to_s.match(/^(http.*)$/, 1)
+    visit(confirmation_link)
+    expect(page.status_code).to be 200
+    expect(page.body).to match(/your alert is now activated/i)
+  end
+
+  it 'should mail notifications when new offences are added'
+  it 'should not send notifications if the alert is not confirmed'
+  it 'should allow a user to unsubscribe'
+
+  it 'should deny unknown confirmations' do
+    visit '/alert/12345/confirm'
+    expect(page.status_code).to be 404
   end
 end

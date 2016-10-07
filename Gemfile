@@ -15,6 +15,8 @@ gem 'rack-ssl'
 gem 'rest-client'
 gem 'activesupport'
 gem 'mail'
+gem 'virtus'
+gem 'activemodel'
 
 group :development do
   gem 'foreman'
