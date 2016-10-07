@@ -169,7 +169,10 @@ module GotGastro
       end
 
       content_type :json
-      ENV.to_json
+      {
+        :config => config,
+        :env    => ENV,
+      }.to_json
     end
   end
 end
