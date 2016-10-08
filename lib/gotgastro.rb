@@ -170,9 +170,10 @@ module GotGastro
 
       content_type :json
       {
-        :config => config,
-        :env    => Hash[ENV.sort],
-        :mail   => Mail.delivery_method.settings,
+        :config   => config,
+        :database => database_config,
+        :env      => Hash[ENV.sort],
+        :mail     => Mail.delivery_method.settings,
       }.to_json
     end
   end

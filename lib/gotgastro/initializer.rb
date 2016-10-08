@@ -18,25 +18,29 @@ def environment
 end
 
 def config
-  return @config if @config
-  config_file = root + 'config' + 'database.yml'
-  template = ERB.new(config_file.read, nil, '%')
-  @config = YAML.load(template.result(binding))[environment]
+  return @vcap if @vcap
 
+  @vcap = {}
   puts "[debug] VCAP_APPLICATION: #{ENV['VCAP_APPLICATION'].inspect}"
   puts "[debug] VCAP_SERVICES: #{ENV['VCAP_SERVICES'].inspect}"
-  @config.merge!('vcap_application' => JSON.parse(ENV['VCAP_APPLICATION'])) if ENV['VCAP_APPLICATION']
-  @config.merge!('vcap_services' => JSON.parse(ENV['VCAP_SERVICES'])) if ENV['VCAP_SERVICES']
+  @vcap.merge!('vcap_application' => JSON.parse(ENV['VCAP_APPLICATION'])) if ENV['VCAP_APPLICATION']
+  @vcap.merge!('vcap_services' => JSON.parse(ENV['VCAP_SERVICES'])) if ENV['VCAP_SERVICES']
 
-  @config
+  @vcap
 end
 
 def database_config
+  if not @database_config
+    config_file = root + 'config' + 'database.yml'
+    template = ERB.new(config_file.read, nil, '%')
+    @database_config = YAML.load(template.result(binding))[environment]
+  end
+
   case
-  when config['database_uri']
-    config['database_uri']
-  when config
-    config
+  when @database_config['database_uri']
+    @database_config['database_uri']
+  when @database_config
+    @database_config
   else
     raise "No database config present"
   end
