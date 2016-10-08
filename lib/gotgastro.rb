@@ -99,6 +99,17 @@ module GotGastro
       end
     end
 
+    get '/alert/:confirmation_id/unsubscribe' do
+      @alert = Alert.first(:confirmation_id => params[:confirmation_id])
+      if @alert
+        @alert.unsubscribed_at = Time.now
+        @alert.save
+        haml :alert_unsubscribe
+      else
+        status 404
+      end
+    end
+
     def self.get_or_post(url,&block)
       get(url,&block)
       post(url,&block)

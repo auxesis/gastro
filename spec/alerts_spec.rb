@@ -43,7 +43,28 @@ describe 'Alerts', :type => :feature do
 
   it 'should mail notifications when new offences are added'
   it 'should not send notifications if the alert is not confirmed'
-  it 'should allow a user to unsubscribe'
+  it 'should allow a user to unsubscribe' do
+    within_25km && within_150km
+
+    # subscribe
+    visit "/search?lat=#{origin.lat}&lng=#{origin.lng}&alert=hello"
+    fill_in 'alert[email]', :with => 'hello@example.org'
+    click_on 'Create alert'
+
+    expect(Mail::TestMailer.deliveries.size).to be 1
+
+    confirmation_link = Mail::TestMailer.deliveries.first.body.to_s.match(/^(http.*)$/, 1)
+    visit(confirmation_link)
+    expect(page.status_code).to be 200
+    expect(page.body).to match(/your alert is now activated/i)
+
+    # unsubscribe
+    unsubscribe_link = confirmation_link.to_s.gsub(/confirm/, 'unsubscribe')
+    visit(unsubscribe_link)
+    expect(page.status_code).to be 200
+    expect(page.body).to match(/you have unsubscribed from your alert/i)
+
+  end
 
   it 'should deny unknown confirmations' do
     visit '/alert/12345/confirm'

@@ -1,0 +1,27 @@
+- page_title 'Your have unsubscribed from your alert'
+
+%div.container
+  %div.row
+    %div.col-md-12
+      %h1
+        %i.fa.fa-check-circle-o
+        You have unsubscribed from your alert
+      %p
+        You will no longer receive email alerts for any food safety problems
+        we find within
+        = "#{@alert.distance}km"
+        of
+        = @alert.location
+      %p
+        If you want alerts around another address, you can
+        %a{:href => '/'} sign up for multiple alerts.
+
+  %div.row.nav
+    %div.col-md-12
+      %p
+        %a{:href => "/"}
+          %button.btn.btn-default{:type => 'button'}
+            %i.fa.fa-fw.fa-arrow-circle-o-left
+            Back to search
+
+  = haml :footer
