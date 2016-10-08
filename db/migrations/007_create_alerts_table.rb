@@ -4,7 +4,6 @@ class CreateAlertsTable < Sequel::Migration
       primary_key :id
       Time        :created_at
       Time        :updated_at
-      Time        :confirmed_at
       String      :email
       Float       :lat
       Float       :lng
