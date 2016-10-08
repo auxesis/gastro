@@ -172,6 +172,7 @@ module GotGastro
       {
         :config => config,
         :env    => ENV.to_hash,
+        :mail   => Mail.delivery_method.settings,
       }.to_json
     end
   end
