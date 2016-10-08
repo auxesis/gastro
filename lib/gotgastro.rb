@@ -171,7 +171,7 @@ module GotGastro
       content_type :json
       {
         :config => config,
-        :env    => ENV.to_hash,
+        :env    => Hash[ENV.sort],
         :mail   => Mail.delivery_method.settings,
       }.to_json
     end
