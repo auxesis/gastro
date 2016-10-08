@@ -22,6 +22,7 @@ group :development do
   gem 'foreman'
   gem 'rerun'
   gem 'pry'
+  gem 'mailcatcher'
 end
 
 group :test do

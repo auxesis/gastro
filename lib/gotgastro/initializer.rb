@@ -3,6 +3,7 @@ require 'yaml'
 require 'ostruct'
 require 'erb'
 require 'json'
+require 'mail'
 
 def root
   @root ||= Pathname.new(__FILE__).parent.parent.parent
@@ -102,3 +103,26 @@ class Backfill
 end
 Backfill.run!
 
+case environment
+when 'development'
+  require 'pry'
+  # Mailcatcher mail delivery locally
+  Mail.defaults do
+    delivery_method :smtp, address: 'localhost', port: 1025
+  end
+when 'production'
+  credentials = config['vcap_services']['sendgrid'].first['credentials']
+
+  # Sendgrid mail delivery
+  Mail.defaults do
+    delivery_method :smtp, {
+      :address   => credentials['hostname'],
+      :port      => '2525',
+      :user_name => credentials['username'],
+      :password  => credentials['password'],
+      :domain    => 'gotgastroagain.com',
+      :authentication       => :plain,
+      :enable_starttls_auto => true
+    }
+  end
+end
