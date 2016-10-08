@@ -25,7 +25,7 @@
                 %p
                   %input.form-control.input-lg{:name => 'alert[email]', :placeholder => 'me@example.org', :type => 'email'}
                   %input{:type => 'hidden', :name => "alert[location]", :value => "#{@location.lat},#{@location.lng}"}
-                  %input{:type => 'hidden', :name => "alert[distance]", :value => "25"}
+                  %input{:type => 'hidden', :name => "alert[distance]", :value => "5"}
               %button{:class => 'btn btn-success btn-lg btn-block', :type => 'submit'}
                 %i.fa.fa-fw.fa-envelope
                 Create alert

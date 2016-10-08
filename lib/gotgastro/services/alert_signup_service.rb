@@ -10,6 +10,7 @@ class AlertSignupService
   attribute :email, String
   attribute :location, String
   attribute :distance, Float
+  attribute :alert, Alert
 
   validates :email, presence: { :message => 'Bummer! We need an email address to create an alert for you.' }
   validates :location, presence: {}
@@ -19,6 +20,16 @@ class AlertSignupService
     @host = opts[:host] || 'https://gotgastroagain.com'
     @alert = opts[:alert] if opts[:alert]
     super(opts)
+  end
+
+  def distance
+    return @alert.distance if @alert
+    super
+  end
+
+  def location
+    return @alert.location if @alert
+    super
   end
 
   def persisted?
