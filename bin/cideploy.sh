@@ -6,9 +6,8 @@ set -e
 set -x
 
 # Download + cache the cf cli
-if [ ! -e "$(pwd)/bin/cf" ]; then
-  mkdir ~/cf
-  wget 'https://cli.run.pivotal.io/stable?release=linux64-binary&source=github' -O ~/cf/cf.tar.gz
+if [ ! -e "~/bin/cf" ]; then
+  wget 'https://cli.run.pivotal.io/stable?release=linux64-binary&source=github' -O cf.tar.gz
   tar zxvf ~/cf/cf.tar.gz -C ~/bin
 fi
 export PATH=$PATH:~/bin
