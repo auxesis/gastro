@@ -5,10 +5,13 @@ set -e
 # Output the commands we run
 set -x
 
-# Download the cf cli
-wget 'https://cli.run.pivotal.io/stable?release=linux64-binary&source=github' -O cf.tar.gz
-tar zxvf cf.tar.gz -C bin
-export PATH=$PATH:$(pwd)/bin
+# Download + cache the cf cli
+if [ ! -e "$(pwd)/bin/cf" ]; then
+  mkdir ~/cf
+  wget 'https://cli.run.pivotal.io/stable?release=linux64-binary&source=github' -O ~/cf/cf.tar.gz
+  tar zxvf ~/cf/cf.tar.gz -C ~/bin
+fi
+export PATH=$PATH:~/bin
 
 # Login to cf (these environment variables must be exported by CI)
 cf login -a $CF_API -u $CF_USERNAME -p $CF_PASSWORD -o $CF_ORG -s $CF_SPACE
