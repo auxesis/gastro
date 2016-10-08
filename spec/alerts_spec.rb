@@ -41,8 +41,15 @@ describe 'Alerts', :type => :feature do
     expect(page.body).to match(/your alert is now activated/i)
   end
 
+  it 'should deny unknown confirmations' do
+    visit '/alert/12345/confirm'
+    expect(page.status_code).to be 404
+  end
+
   it 'should mail notifications when new offences are added'
   it 'should not send notifications if the alert is not confirmed'
+  it 'should not send notifications if the alert is unsubscribed'
+
   it 'should allow a user to unsubscribe' do
     within_25km && within_150km
 
@@ -66,8 +73,9 @@ describe 'Alerts', :type => :feature do
 
   end
 
-  it 'should deny unknown confirmations' do
-    visit '/alert/12345/confirm'
+  it 'should deny unknown unsubscribes' do
+    visit '/alert/12345/unsubscribe'
     expect(page.status_code).to be 404
   end
+
 end
