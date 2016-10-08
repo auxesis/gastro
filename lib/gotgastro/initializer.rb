@@ -111,18 +111,16 @@ when 'development'
     delivery_method :smtp, address: 'localhost', port: 1025
   end
 when 'production'
-  credentials = config['vcap_services']['sendgrid'].first['credentials']
-
   # Sendgrid mail delivery
   Mail.defaults do
     delivery_method :smtp, {
-      :address   => credentials['hostname'],
-      :port      => '2525',
-      :user_name => credentials['username'],
-      :password  => credentials['password'],
-      :domain    => 'gotgastroagain.com',
+      :address => 'smtp.sendgrid.net',
+      :port    => '587',
+      :domain  => 'gotgastroagain.com',
+      :user_name => ENV['SENDGRID_USERNAME'],
+      :password  => ENV['SENDGRID_PASSWORD'],
       :authentication       => :plain,
-      :enable_starttls_auto => true
+      :enable_starttls_auto => true,
     }
   end
 end
