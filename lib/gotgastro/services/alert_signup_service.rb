@@ -11,6 +11,7 @@ class AlertSignupService
   attribute :location, String
   attribute :distance, Float
   attribute :alert, Alert
+  attribute :mail, Mail
 
   validates :email, presence: { :message => 'Bummer! We need an email address to create an alert for you.' }
   validates :location, presence: {}
@@ -73,11 +74,11 @@ private
   end
 
   def notify!
-    mail = Mail.new
-    mail.from    = 'alert-confirm@gotgastroagain.com'
-    mail.to      = email
-    mail.subject = 'Please confirm your Got Gastro alert'
-    mail.body    = <<-BODY.gsub(/^ {6}/, '')
+    @mail = Mail.new
+    @mail.from    = 'alerts-confirm@gotgastroagain.com'
+    @mail.to      = email
+    @mail.subject = 'Please confirm your Got Gastro alert'
+    @mail.body    = <<-BODY.gsub(/^ {6}/, '')
       Hello!
       Please confirm your signup for a Got Gastro alert by following this link:
 
@@ -88,6 +89,6 @@ private
       Thanks,
       Got Gastro
     BODY
-    mail.deliver
+    @mail.deliver
   end
 end
