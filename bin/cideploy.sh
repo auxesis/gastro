@@ -14,7 +14,9 @@ fi
 export PATH=$PATH:~/bin
 
 # Login to cf (these environment variables must be exported by CI)
+set +x
 cf login -a $CF_API -u $CF_USERNAME -p $CF_PASSWORD -o $CF_ORG -s $CF_SPACE
+set -x
 
 # Update the blue app
 cf unmap-route blue cfapps.io -n gotgastro
