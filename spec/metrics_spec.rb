@@ -26,6 +26,7 @@ describe 'Got Gastro metrics', :type => :feature do
       ).to_return(:status => 200, :body => offence_json)
 
     visit "/reset?token=#{ENV['GASTRO_RESET_TOKEN']}"
+    GotGastro::Workers::ResetWorker.drain
     visit '/metrics'
 
     metrics = JSON.parse(body)

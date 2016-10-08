@@ -1,9 +1,7 @@
 require 'helpers'
 require 'sinatra/cookies'
-require 'rest-client'
 require 'active_support'
 require 'active_support/core_ext'
-require 'mail'
 
 module GotGastro
   class App < Sinatra::Base
@@ -15,19 +13,6 @@ module GotGastro
     helpers Sinatra::RequireCSSHelper
     helpers Sinatra::MetaTagHelper
     helpers Sinatra::Cookies
-
-    def self.set_or_raise(key, value)
-      if value.nil? or value.blank?
-        raise ArgumentError, "Value for '#{key}' was not specified"
-      else
-        set(key, value)
-      end
-    end
-
-    configure do
-      set_or_raise :morph_api_key, ENV['MORPH_API_KEY']
-      set_or_raise :reset_token, ENV['GASTRO_RESET_TOKEN']
-    end
 
     before do
       # Set the location cookie if we've got a new lat/lng param.
@@ -91,7 +76,7 @@ module GotGastro
         if @alert.confirm!
           haml :alert_confirmation
         else
-          puts "[debug] Couldn't confirm this alert: #{@alert.inspect}"
+          debug("Couldn't confirm this alert: #{@alert.inspect}")
           status 500
         end
       else
@@ -116,42 +101,14 @@ module GotGastro
     end
 
     get_or_post '/reset' do
-      if params[:token] != settings.reset_token
+      if params[:token] != config['settings']['reset_token']
         status 404
         return "ERROR"
       end
 
+      GotGastro::Workers::ResetWorker.perform_async(params[:token])
+
       status 201
-
-      reset = Reset.create(:token => params[:token])
-
-      Business.dataset.destroy
-      Offence.dataset.destroy
-
-      url = 'https://api.morph.io/auxesis/gotgastro_scraper/data.json'
-
-      # Create Businesses
-      params = { :key => settings.morph_api_key, :query => "select * from 'businesses'" }
-      result = RestClient.get(url, :params => params)
-      businesses = JSON.parse(result)
-
-      Business.unrestrict_primary_key
-      businesses.each do |business|
-        Business.create(business)
-      end
-
-      # Create Offences
-      params = { :key => settings.morph_api_key, :query => "select * from 'offences'" }
-      result = RestClient.get(url, :params => params)
-      offences = JSON.parse(result)
-
-      Offence.unrestrict_primary_key
-      offences.each do |offence|
-        Offence.create(offence)
-      end
-
-      reset.save
-
       "OK"
     end
 
@@ -174,7 +131,7 @@ module GotGastro
     end
 
     get '/env' do
-      if params[:token] != settings.reset_token
+      if params[:token] != config['settings']['reset_token']
         status 404
         return "ERROR"
       end
@@ -185,6 +142,7 @@ module GotGastro
         :database => database_config,
         :env      => Hash[ENV.sort],
         :mail     => Mail.delivery_method.settings,
+        :queues   => Sidekiq::Stats.new
       }.to_json
     end
   end

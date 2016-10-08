@@ -37,13 +37,14 @@ describe 'Data reset', :type => :feature do
   it 'should create records' do
     before = Business.count
     visit "/reset?token=#{ENV['GASTRO_RESET_TOKEN']}"
+    GotGastro::Workers::ResetWorker.drain
     after = Business.count
-
     expect(after).to be > before
   end
 
   it 'should create associations' do
     visit "/reset?token=#{ENV['GASTRO_RESET_TOKEN']}"
+    GotGastro::Workers::ResetWorker.drain
 
     Business.each do |biz|
       expect(biz.offences.size).to be > 0
@@ -53,6 +54,7 @@ describe 'Data reset', :type => :feature do
   it 'should create a record of the reset' do
     before = Reset.count
     visit "/reset?token=#{ENV['GASTRO_RESET_TOKEN']}"
+    GotGastro::Workers::ResetWorker.drain
     after = Reset.count
 
     expect(after).to be > before
@@ -60,6 +62,7 @@ describe 'Data reset', :type => :feature do
 
   it 'should report the duration of the reset' do
     visit "/reset?token=#{ENV['GASTRO_RESET_TOKEN']}"
+    GotGastro::Workers::ResetWorker.drain
 
     expect(Reset.last.duration).to_not be nil
   end

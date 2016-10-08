@@ -1,2 +1,4 @@
 web: pkill -f rackup ; bundle exec rerun --pattern='**/*.{rb,ru}' --ignore='spec/*' -- rackup -o 0.0.0.0
 mail: mailcatcher -f
+redis: redis-server
+sidekiq: bundle exec rerun --pattern=lib/gotgastro/workers* -- sidekiq -c 10 -v -r ./lib/gotgastro/workers.rb

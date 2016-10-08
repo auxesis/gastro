@@ -100,6 +100,9 @@ end
 # Initialise services for handling data
 require 'gotgastro/services'
 
+# Initialise workers for background jobs
+require 'gotgastro/workers'
+
 # Stub out any data backfilling we need to do.
 class Backfill
   def self.run!
