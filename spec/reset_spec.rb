@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 include Rack::Test::Methods
+include GotGastro::Env::Test
 
 describe 'Data reset', :type => :feature do
 
@@ -18,11 +19,19 @@ describe 'Data reset', :type => :feature do
       ).to_return(:status => 200, :body => offence_json)
   end
 
-  it 'should error if setttings value is not set' do
-    # This isn't so great, because we're testing implementation (set_or_raise)
-    # not the interface (booting the app without environment variables).
+  let(:gastro_reset_token) { Digest::MD5.new.hexdigest(rand(Time.now.to_i).to_s) }
+  let(:morph_api_key) { Digest::MD5.new.hexdigest(rand(Time.now.to_i).to_s) }
+
+  before(:each) do
+    set_environment_variable('GASTRO_RESET_TOKEN', gastro_reset_token)
+    set_environment_variable('MORPH_API_KEY', morph_api_key)
+  end
+
+  it 'should error if config is not set' do
     expect {
-      GotGastro::App.new.settings.set_or_raise(:hello, nil)
+      delete_environment_variable('GASTRO_RESET_TOKEN')
+      delete_environment_variable('MORPH_API_KEY')
+      config
     }.to raise_error(ArgumentError)
   end
 
@@ -30,20 +39,21 @@ describe 'Data reset', :type => :feature do
     visit '/reset'
     expect(page.status_code).to be 404
 
-    visit "/reset?token=#{ENV['GASTRO_RESET_TOKEN']}"
+    visit "/reset?token=#{gastro_reset_token}"
     expect(page.status_code).to be 201
   end
 
   it 'should create records' do
     before = Business.count
-    visit "/reset?token=#{ENV['GASTRO_RESET_TOKEN']}"
+    visit "/reset?token=#{gastro_reset_token}"
+    GotGastro::Workers::ResetWorker.drain
     after = Business.count
-
     expect(after).to be > before
   end
 
   it 'should create associations' do
-    visit "/reset?token=#{ENV['GASTRO_RESET_TOKEN']}"
+    visit "/reset?token=#{gastro_reset_token}"
+    GotGastro::Workers::ResetWorker.drain
 
     Business.each do |biz|
       expect(biz.offences.size).to be > 0
@@ -52,14 +62,16 @@ describe 'Data reset', :type => :feature do
 
   it 'should create a record of the reset' do
     before = Reset.count
-    visit "/reset?token=#{ENV['GASTRO_RESET_TOKEN']}"
+    visit "/reset?token=#{gastro_reset_token}"
+    GotGastro::Workers::ResetWorker.drain
     after = Reset.count
 
     expect(after).to be > before
   end
 
   it 'should report the duration of the reset' do
-    visit "/reset?token=#{ENV['GASTRO_RESET_TOKEN']}"
+    visit "/reset?token=#{gastro_reset_token}"
+    GotGastro::Workers::ResetWorker.drain
 
     expect(Reset.last.duration).to_not be nil
   end

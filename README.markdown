@@ -72,7 +72,7 @@ Got Gastro runs on [Pivotal Web Services](https://run.pivotal.io/).
 
 ### Setup
 
-Ensure you have Git, Ruby, and MySQL:
+Ensure you have Git, Ruby, MySQL, and Redis:
 
 ``` bash
 git clone git@github.com:auxesis/gastro.git
@@ -81,9 +81,17 @@ bundle
 rake db:setup
 ```
 
-_MySQL is required due to OGC spatial analysis functions. In theory it should work with Postgres too, but is untested._
+#### MySQL
 
-_The Rake tasks assume you have a root user with no password set_
+MySQL is required due to OGC spatial analysis functions. In theory it should work with Postgres too, but is untested.
+
+The Rake tasks assume your MySQL root user with no password set.
+
+#### Redis
+
+Redis is required for queueing jobs. It's started by Foreman automatically with the commands below in [Running](#running).
+
+Foreman assumes you have `redis-server` on your path.
 
 ### Running
 

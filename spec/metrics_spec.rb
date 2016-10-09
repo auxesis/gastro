@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 include Rack::Test::Methods
+include GotGastro::Env::Test
 
 describe 'Got Gastro metrics', :type => :feature do
   it 'should expose counts of core data' do
@@ -15,6 +16,8 @@ describe 'Got Gastro metrics', :type => :feature do
   let(:mocks) { Pathname.new(__FILE__).parent.join('mocks') }
   let(:business_json) { mocks.join('businesses.json').read }
   let(:offence_json) { mocks.join('offences.json').read }
+  let(:gastro_reset_token) { Digest::MD5.new.hexdigest(rand(Time.now.to_i).to_s) }
+  let(:morph_api_key) { Digest::MD5.new.hexdigest(rand(Time.now.to_i).to_s) }
 
   it 'should expose metrics from last reset' do
     stub_request(:get,
@@ -25,7 +28,11 @@ describe 'Got Gastro metrics', :type => :feature do
       %r{https://api\.morph\.io/auxesis/gotgastro_scraper/data\.json\?key.*&query=select%20\*%20from%20'offences'}
       ).to_return(:status => 200, :body => offence_json)
 
-    visit "/reset?token=#{ENV['GASTRO_RESET_TOKEN']}"
+    set_environment_variable('GASTRO_RESET_TOKEN', gastro_reset_token)
+    set_environment_variable('MORPH_API_KEY', morph_api_key)
+
+    visit "/reset?token=#{gastro_reset_token}"
+    GotGastro::Workers::ResetWorker.drain
     visit '/metrics'
 
     metrics = JSON.parse(body)

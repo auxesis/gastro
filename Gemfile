@@ -17,6 +17,7 @@ gem 'activesupport'
 gem 'mail'
 gem 'virtus'
 gem 'activemodel'
+gem 'sidekiq'
 
 group :development do
   gem 'foreman'

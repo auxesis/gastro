@@ -17,16 +17,53 @@ def environment
   ENV['RACK_ENV'] || 'development'
 end
 
+def debug?
+  environment != 'test'
+end
+
+def info?
+  environment != 'test'
+end
+
+def debug(msg)
+  puts('[debug] ' + msg) if debug?
+end
+
+def info(msg)
+  puts('[info] ' + msg) if info?
+end
+
+def set_or_error(config, key, value)
+  case
+  when value.nil? || value.blank?
+    raise ArgumentError, "Value for '#{key}' was not specified"
+  when value.respond_to?(:[]) && value[:env]
+    v = value[:env]
+    if ENV[v]
+      config[key] = ENV[v]
+    else
+      raise ArgumentError, "'#{v}' envvar (value for '#{key}') was not specified"
+    end
+  else
+    config[key] = value
+  end
+end
+
 def config
   return @vcap if @vcap
 
   @vcap = {}
-  puts "[debug] VCAP_APPLICATION: #{ENV['VCAP_APPLICATION'].inspect}"
-  puts "[debug] VCAP_SERVICES: #{ENV['VCAP_SERVICES'].inspect}"
+  debug("VCAP_APPLICATION: #{ENV['VCAP_APPLICATION'].inspect}")
+  debug("VCAP_SERVICES: #{ENV['VCAP_SERVICES'].inspect}")
   @vcap.merge!('vcap_application' => JSON.parse(ENV['VCAP_APPLICATION'])) if ENV['VCAP_APPLICATION']
   @vcap.merge!('vcap_services' => JSON.parse(ENV['VCAP_SERVICES'])) if ENV['VCAP_SERVICES']
 
-  @vcap
+  # FIXME(auxesis): refactor this to recursive openstruct
+  settings = {}
+  set_or_error(settings, 'reset_token',   :env => 'GASTRO_RESET_TOKEN')
+  set_or_error(settings, 'morph_api_key', :env => 'MORPH_API_KEY')
+  debug("settings: #{settings.inspect}")
+  @vcap.merge!('settings' => settings)
 end
 
 def database_config
@@ -53,7 +90,7 @@ I18n.enforce_available_locales = true
 # Setup database connection + models
 require 'sequel'
 Sequel.extension :core_extensions
-puts "[debug] database_config: #{database_config.inspect}"
+debug("database_config: #{database_config.inspect}")
 DB = ::Sequel.connect(database_config)
 
 # Run the migrations in all environments. YOLO.
@@ -100,6 +137,9 @@ end
 # Initialise services for handling data
 require 'gotgastro/services'
 
+# Initialise workers for background jobs
+require 'gotgastro/workers'
+
 # Stub out any data backfilling we need to do.
 class Backfill
   def self.run!
@@ -127,4 +167,13 @@ when 'production'
       :enable_starttls_auto => true,
     }
   end
+
+  credentials  = config['vcap_services']['rediscloud'].first['credentials']
+  redis_config = {
+    :url      => "redis://#{credentials['hostname']}:#{credentials['port']}/0",
+    :password => credentials['password']
+  }
+
+  Sidekiq.configure_server {|c| c.redis = redis_config }
+  Sidekiq.configure_client {|c| c.redis = redis_config }
 end
