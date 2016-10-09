@@ -17,16 +17,37 @@ def environment
   ENV['RACK_ENV'] || 'development'
 end
 
+def debug?
+  environment != 'test'
+end
+
+def info?
+  environment != 'test'
+end
+
+def debug(msg)
+  puts('[debug] ' + msg) if debug?
+end
+
+def info(msg)
+  puts('[info] ' + msg) if info?
+end
+
 def config
   return @vcap if @vcap
 
   @vcap = {}
-  puts "[debug] VCAP_APPLICATION: #{ENV['VCAP_APPLICATION'].inspect}"
-  puts "[debug] VCAP_SERVICES: #{ENV['VCAP_SERVICES'].inspect}"
+  debug("VCAP_APPLICATION: #{ENV['VCAP_APPLICATION'].inspect}")
+  debug("VCAP_SERVICES: #{ENV['VCAP_SERVICES'].inspect}")
   @vcap.merge!('vcap_application' => JSON.parse(ENV['VCAP_APPLICATION'])) if ENV['VCAP_APPLICATION']
   @vcap.merge!('vcap_services' => JSON.parse(ENV['VCAP_SERVICES'])) if ENV['VCAP_SERVICES']
 
-  @vcap
+  # FIXME(auxesis): refactor this to recursive openstruct
+  settings = {}
+  set_or_error(settings, 'reset_token',   :env => 'GASTRO_RESET_TOKEN')
+  set_or_error(settings, 'morph_api_key', :env => 'MORPH_API_KEY')
+  debug("settings: #{settings.inspect}")
+  @vcap.merge!('settings' => settings)
 end
 
 def database_config
@@ -53,7 +74,7 @@ I18n.enforce_available_locales = true
 # Setup database connection + models
 require 'sequel'
 Sequel.extension :core_extensions
-puts "[debug] database_config: #{database_config.inspect}"
+debug("database_config: #{database_config.inspect}")
 DB = ::Sequel.connect(database_config)
 
 # Run the migrations in all environments. YOLO.
