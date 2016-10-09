@@ -1,4 +1,18 @@
 ---
-instances: 1
-memory: 128M
-disk_quota: 256M
+applications:
+- name: blue
+  memory: 100M
+  disk: 200M
+  instances: 1
+  command: bundle exec foreman start web
+  services:
+    - gotgastro.redis
+    - gotgastro.production
+- name: green
+  memory: 100M
+  disk_quota: 200M
+  instances: 1
+  command: bundle exec foreman start web
+  services:
+    - gotgastro.redis
+    - gotgastro.production
