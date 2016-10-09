@@ -41,7 +41,7 @@ def app
   return app
 end
 
-ENV['GASTRO_RESET_TOKEN'] = Digest::MD5.new.hexdigest(Time.now.to_i.to_s)
-ENV['MORPH_API_KEY'] = Digest::MD5.new.hexdigest((Time.now.to_i + 10).to_s)
+ENV['GASTRO_RESET_TOKEN'] = Digest::MD5.new.hexdigest(rand(Time.now.to_i).to_s)
+ENV['MORPH_API_KEY'] = Digest::MD5.new.hexdigest(rand(Time.now.to_i).to_s)
 
 Capybara.app, _ = app
