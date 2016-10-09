@@ -33,6 +33,22 @@ def info(msg)
   puts('[info] ' + msg) if info?
 end
 
+def set_or_error(config, key, value)
+  case
+  when value.nil? || value.blank?
+    raise ArgumentError, "Value for '#{key}' was not specified"
+  when value.respond_to?(:[]) && value[:env]
+    v = value[:env]
+    if ENV[v]
+      config[key] = ENV[v]
+    else
+      raise ArgumentError, "'#{v}' envvar (value for '#{key}') was not specified"
+    end
+  else
+    config[key] = value
+  end
+end
+
 def config
   return @vcap if @vcap
 
