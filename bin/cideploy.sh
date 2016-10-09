@@ -30,3 +30,6 @@ cf unmap-route green gotgastroagain.com
 cf push green -f manifest.yml
 cf map-route green cfapps.io -n gotgastro
 cf map-route green gotgastroagain.com
+
+# Update the workers
+cf push workers -f manifest.yml
