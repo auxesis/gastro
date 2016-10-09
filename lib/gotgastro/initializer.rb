@@ -167,4 +167,13 @@ when 'production'
       :enable_starttls_auto => true,
     }
   end
+
+  credentials  = config['vcap_services']['rediscloud'].first['credentials']
+  redis_config = {
+    :url      => "redis://#{credentials['hostname']}:#{credentials['port']}/0",
+    :password => credentials['password']
+  }
+
+  Sidekiq.configure_server {|c| c.redis = redis_config }
+  Sidekiq.configure_client {|c| c.redis = redis_config }
 end
