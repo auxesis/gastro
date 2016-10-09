@@ -89,6 +89,6 @@ private
       Thanks,
       Got Gastro
     BODY
-    @mail.deliver
+    GotGastro::Workers::EmailWorker.perform_async(@mail)
   end
 end

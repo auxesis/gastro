@@ -32,6 +32,7 @@ describe 'Alerts', :type => :feature do
     visit "/search?lat=#{origin.lat}&lng=#{origin.lng}&alert=hello"
     fill_in 'alert[email]', :with => 'hello@example.org'
     click_on 'Create alert'
+    GotGastro::Workers::EmailWorker.drain
 
     expect(Mail::TestMailer.deliveries.size).to be 1
 
@@ -57,6 +58,7 @@ describe 'Alerts', :type => :feature do
     visit "/search?lat=#{origin.lat}&lng=#{origin.lng}&alert=hello"
     fill_in 'alert[email]', :with => 'hello@example.org'
     click_on 'Create alert'
+    GotGastro::Workers::EmailWorker.drain
 
     expect(Mail::TestMailer.deliveries.size).to be 1
 
