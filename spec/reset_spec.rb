@@ -18,11 +18,23 @@ describe 'Data reset', :type => :feature do
       ).to_return(:status => 200, :body => offence_json)
   end
 
-  it 'should error if setttings value is not set' do
-    # This isn't so great, because we're testing implementation (set_or_raise)
-    # not the interface (booting the app without environment variables).
+  after(:each) do
+    if @original
+      ENV.replace(@original)
+      @original = nil
+    end
+  end
+
+  def delete_environment_variable(name)
+    @original ||= ENV.to_hash
+    ENV.delete(name)
+  end
+
+  it 'should error if config is not set' do
     expect {
-      GotGastro::App.new.settings.set_or_raise(:hello, nil)
+      delete_environment_variable('GASTRO_RESET_TOKEN')
+      delete_environment_variable('MORPH_API_KEY')
+      config
     }.to raise_error(ArgumentError)
   end
 
