@@ -15,6 +15,8 @@ applications:
   disk: 200M
   instances: 1
   command: bundle exec foreman start web
+  no-route: true
+  no-hostname: true
   services:
     - gotgastro.redis
     - gotgastro.production
@@ -23,6 +25,8 @@ applications:
   disk_quota: 200M
   instances: 1
   command: bundle exec foreman start web
+  no-route: true
+  no-hostname: true
   services:
     - gotgastro.redis
     - gotgastro.production
