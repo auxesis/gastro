@@ -2,7 +2,7 @@
 applications:
 - name: workers
   memory: 150M
-  disk_quota_quota: 200M
+  disk_quota: 200M
   instances: 1
   no-route: true
   command: bundle exec foreman start worker
