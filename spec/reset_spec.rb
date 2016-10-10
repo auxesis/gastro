@@ -4,7 +4,6 @@ include Rack::Test::Methods
 include GotGastro::Env::Test
 
 describe 'Data reset', :type => :feature do
-
   let(:mocks) { Pathname.new(__FILE__).parent.join('mocks') }
   let(:business_json) { mocks.join('businesses.json').read }
   let(:offence_json) { mocks.join('offences.json').read }
