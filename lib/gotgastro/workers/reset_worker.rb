@@ -31,7 +31,10 @@ module GotGastro
         end
 
         # Create Offences
-        params = { :key => config['settings']['morph_api_key'], :query => "select * from 'offences'" }
+        params = {
+          :key => config['settings']['morph_api_key'],
+          :query => "select * from 'offences'"
+        }
         result = RestClient.get(url, :params => params)
         offences = JSON.parse(result)
 
@@ -41,6 +44,7 @@ module GotGastro
         end
 
         reset.save
+        EmailAlerts.perform_async
         info("Data reset completed at #{reset.updated_at}")
       end
     end

@@ -20,6 +20,6 @@ class Business < Sequel::Model
   def self.find_near(location, opts={})
     within = opts[:within] || 25
     limit  = opts[:limit]  || 50
-    self.dataset.around(location,within).limit(limit).all
+    self.dataset.around(location,within).limit(limit)
   end
 end
