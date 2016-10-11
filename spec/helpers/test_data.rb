@@ -1,6 +1,6 @@
 RSpec.shared_context 'test data' do
   # morph data
-  let(:mocks) { Pathname.new(__FILE__).parent.join('mocks') }
+  let(:mocks) { Pathname.new(__FILE__).parent.parent.join('mocks') }
   let(:business_json) { mocks.join('businesses.json').read }
   let(:offence_json) { mocks.join('offences.json').read }
 
