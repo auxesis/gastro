@@ -3,12 +3,15 @@ ENV['RACK_ENV'] = 'test'
 require 'pathname'
 lib = Pathname.new(__FILE__).parent.parent.join('lib').to_s
 $LOAD_PATH << lib
+spec = Pathname.new(__FILE__).parent.to_s
+$LOAD_PATH << spec
 require 'capybara/rspec'
 require 'rack/test'
 require 'pry'
 require 'webmock/rspec'
 require 'mail'
 require 'sidekiq/testing'
+require 'test_data'
 
 module GotGastro
   module Env

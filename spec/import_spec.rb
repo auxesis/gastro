@@ -4,9 +4,7 @@ include Rack::Test::Methods
 include GotGastro::Env::Test
 
 describe 'Data import', :type => :feature do
-  let(:mocks) { Pathname.new(__FILE__).parent.join('mocks') }
-  let(:business_json) { mocks.join('businesses.json').read }
-  let(:offence_json) { mocks.join('offences.json').read }
+  include_context 'test data'
 
   before(:each) do
     stub_request(:get,
@@ -17,9 +15,6 @@ describe 'Data import', :type => :feature do
       %r{https://api\.morph\.io/auxesis/gotgastro_scraper/data\.json\?key.*&query=select%20\*%20from%20'offences'}
       ).to_return(:status => 200, :body => offence_json)
   end
-
-  let(:gastro_reset_token) { Digest::MD5.new.hexdigest(rand(Time.now.to_i).to_s) }
-  let(:morph_api_key) { Digest::MD5.new.hexdigest(rand(Time.now.to_i).to_s) }
 
   before(:each) do
     set_environment_variable('GASTRO_RESET_TOKEN', gastro_reset_token)
