@@ -39,14 +39,6 @@ describe 'Alerts', :type => :feature do
     expect(page.status_code).to be 404
   end
 
-  # refactor into rspec shared context
-  let(:gastro_reset_token) { Digest::MD5.new.hexdigest(rand(Time.now.to_i).to_s) }
-  let(:morph_api_key) { Digest::MD5.new.hexdigest(rand(Time.now.to_i).to_s) }
-
-  let(:mocks) { Pathname.new(__FILE__).parent.join('mocks') }
-  let(:business_json) { mocks.join('businesses.json').read }
-  let(:new_offence_json) { mocks.join('new_offences.json').read }
-
   it 'should send notifications when new offences are added' do
     stub_request(:get,
       %r{https://api\.morph\.io/auxesis/gotgastro_scraper/data\.json\?key=.*&query=select%20\*%20from%20'businesses'}

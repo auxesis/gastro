@@ -3,6 +3,7 @@ RSpec.shared_context 'test data' do
   let(:mocks) { Pathname.new(__FILE__).parent.parent.join('mocks') }
   let(:business_json) { mocks.join('businesses.json').read }
   let(:offence_json) { mocks.join('offences.json').read }
+  let(:new_offence_json) { mocks.join('new_offences.json').read }
 
   # tokens
   let(:gastro_reset_token) { Digest::MD5.new.hexdigest(rand(Time.now.to_i).to_s) }
@@ -24,6 +25,22 @@ RSpec.shared_context 'test data' do
 
     lats.zip(lngs).each do |lat, lng|
       Business.create(:name => "#{lat},#{lng}", :lat => lat, :lng => lng)
+    end
+  }
+  let(:between_25km_and_150km) {
+    lats = (3..16).map {|i| origin.lat + i * 0.1 }
+    lngs = (3..16).map {|i| origin.lng + i * 0.1 }
+
+    lats.zip(lngs).each_with_index do |(lat, lng), i|
+      Business.create(:name => "#{lat},#{lng},#{i}", :lat => lat, :lng => lng)
+    end
+  }
+  let(:thousands_of_results) {
+    lats = (1..1000).map {|i| origin.lat + i * 0.0001 }
+    lngs = (1..1000).map {|i| origin.lng + i * 0.0001 }
+
+    lats.zip(lngs).each_with_index do |(lat, lng), i|
+      Business.create(:name => "#{lat},#{lng},#{i}", :lat => lat, :lng => lng)
     end
   }
 end
