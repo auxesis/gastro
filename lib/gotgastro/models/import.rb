@@ -1,4 +1,6 @@
-class Reset < Sequel::Model
+class Import < Sequel::Model
+  set_dataset :resets
+
   plugin :timestamps
 
   def duration

@@ -32,13 +32,13 @@ describe 'Got Gastro metrics', :type => :feature do
     set_environment_variable('MORPH_API_KEY', morph_api_key)
 
     visit "/reset?token=#{gastro_reset_token}"
-    GotGastro::Workers::ResetWorker.drain
+    GotGastro::Workers::Import.drain
     visit '/metrics'
 
     metrics = JSON.parse(body)
 
-    expect(metrics['last_reset_at']).to_not be nil
-    expect(metrics['last_reset_duration']).to_not be nil
+    expect(metrics['last_import_at']).to_not be nil
+    expect(metrics['last_import_duration']).to_not be nil
   end
 
   it 'should indicate if the current reset is still running' do
@@ -55,11 +55,11 @@ describe 'Got Gastro metrics', :type => :feature do
     #
     # The below is an OK trade off for now.
 
-    Reset.create
+    Import.create
     visit '/metrics'
 
     metrics = JSON.parse(body)
 
-    expect(metrics['last_reset_duration']).to be -1
+    expect(metrics['last_import_duration']).to be -1
   end
 end

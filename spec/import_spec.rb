@@ -3,7 +3,7 @@ require 'spec_helper'
 include Rack::Test::Methods
 include GotGastro::Env::Test
 
-describe 'Data reset', :type => :feature do
+describe 'Data import', :type => :feature do
   let(:mocks) { Pathname.new(__FILE__).parent.join('mocks') }
   let(:business_json) { mocks.join('businesses.json').read }
   let(:offence_json) { mocks.join('offences.json').read }
@@ -45,33 +45,33 @@ describe 'Data reset', :type => :feature do
   it 'should create records' do
     before = Business.count
     visit "/reset?token=#{gastro_reset_token}"
-    GotGastro::Workers::ResetWorker.drain
+    GotGastro::Workers::Import.drain
     after = Business.count
     expect(after).to be > before
   end
 
   it 'should create associations' do
     visit "/reset?token=#{gastro_reset_token}"
-    GotGastro::Workers::ResetWorker.drain
+    GotGastro::Workers::Import.drain
 
     Business.each do |biz|
       expect(biz.offences.size).to be > 0
     end
   end
 
-  it 'should create a record of the reset' do
-    before = Reset.count
+  it 'should create a record of the import' do
+    before = Import.count
     visit "/reset?token=#{gastro_reset_token}"
-    GotGastro::Workers::ResetWorker.drain
-    after = Reset.count
+    GotGastro::Workers::Import.drain
+    after = Import.count
 
     expect(after).to be > before
   end
 
-  it 'should report the duration of the reset' do
+  it 'should report the duration of the import' do
     visit "/reset?token=#{gastro_reset_token}"
-    GotGastro::Workers::ResetWorker.drain
+    GotGastro::Workers::Import.drain
 
-    expect(Reset.last.duration).to_not be nil
+    expect(Import.last.duration).to_not be nil
   end
 end

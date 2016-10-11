@@ -5,14 +5,12 @@ require 'rest-client'
 
 module GotGastro
   module Workers
-    # FIXME(auxesis): rename to Import, as it's no longer resetting
-    class ResetWorker
+    class Import
       include Sidekiq::Worker
 
       def perform(token)
-        # FIXME(auxesis): rename to Import, as it's no longer resetting
-        reset = Reset.create(:token => token)
-        info("Data import started at #{reset.created_at}")
+        import = ::Import.create(:token => token)
+        info("Data import started at #{import.created_at}")
 
         # Create Businesses
         Business.unrestrict_primary_key
@@ -26,9 +24,9 @@ module GotGastro
           Offence.create(offence) unless Offence.first(:link => offence['link'])
         end
 
-        reset.save
+        import.save
         EmailAlerts.perform_async
-        info("Data import completed at #{reset.updated_at}")
+        info("Data import completed at #{import.updated_at}")
       end
 
       def url
@@ -54,7 +52,6 @@ module GotGastro
         result = RestClient.get(url, :params => params)
         @offences = JSON.parse(result)
       end
-
     end
   end
 end

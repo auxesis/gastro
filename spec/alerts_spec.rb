@@ -78,7 +78,7 @@ describe 'Alerts', :type => :feature do
 
     before = Offence.count
     visit "/reset?token=#{gastro_reset_token}"
-    GotGastro::Workers::ResetWorker.drain
+    GotGastro::Workers::Import.drain
     after = Offence.count
     expect(before).to be < after
 
