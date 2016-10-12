@@ -36,7 +36,7 @@ RSpec.configure do |config|
 
   # Run all migrations before all tests
   config.before(:all) do
-    Sequel::Migrator.run(DB, "db/migrations")
+    Sequel::Migrator.run(DB, 'db/migrations')
   end
 
   # Roll back changes to database after each test
@@ -44,17 +44,21 @@ RSpec.configure do |config|
     DB.transaction(:rollback=>:always, :auto_savepoint=>true){example.run}
   end
 
+  # Clear queues
   config.before(:each) do
     Sidekiq::Worker.clear_all
   end
 
+  # Roll back environment variable changes
   config.after(:each) do
     restore_env
   end
 
   # Roll back the clock
   config.include Delorean
-  config.after(:each) { back_to_the_present }
+  config.after(:each) do
+    back_to_the_present
+  end
 end
 
 Mail.defaults do
