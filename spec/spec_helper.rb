@@ -11,6 +11,7 @@ require 'pry'
 require 'webmock/rspec'
 require 'mail'
 require 'sidekiq/testing'
+require 'delorean'
 require 'helpers/test_data'
 require 'helpers/env_test'
 
@@ -50,6 +51,10 @@ RSpec.configure do |config|
   config.after(:each) do
     restore_env
   end
+
+  # Roll back the clock
+  config.include Delorean
+  config.after(:each) { back_to_the_present }
 end
 
 Mail.defaults do

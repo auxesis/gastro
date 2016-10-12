@@ -69,4 +69,33 @@ describe 'Data import', :type => :feature do
 
     expect(Import.last.duration).to_not be nil
   end
+
+  let(:morph_api_key_for_update) {
+    Digest::MD5.new.hexdigest(rand(Time.now.to_i).to_s)
+  }
+
+  it 'should update when there is new data' do
+    # First import
+    visit "/reset?token=#{gastro_reset_token}"
+    GotGastro::Workers::Import.drain
+    expect(Offence.map(:created_at).uniq.size).to be 1
+    old_offences = Offence.map(:id)
+
+    # Time shift
+    time_travel_to('tomorrow')
+
+    # For second import
+    stub_request(:get,
+      "https://api.morph.io/auxesis/gotgastro_scraper/data.json?key=#{morph_api_key_for_update}&query=select%20*%20from%20'offences'"
+      ).to_return(:status => 200, :body => new_offence_json)
+
+    # Second import
+    set_environment_variable('MORPH_API_KEY', morph_api_key_for_update)
+    visit "/reset?token=#{gastro_reset_token}"
+    GotGastro::Workers::Import.drain
+    new_offences = Offence.map(:id)
+    expect(new_offences).to_not eq(old_offences)
+    expect(new_offences.size).to be > old_offences.size
+    expect(Offence.map(:created_at).uniq.size).to be 2
+  end
 end
