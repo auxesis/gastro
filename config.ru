@@ -6,6 +6,7 @@ at_exit do
 end if ENV['RACK_ENV'] == 'production'
 
 require 'sinatra/base'
+require 'newrelic_rpm'
 require 'gotgastro/initializer'
 require 'gotgastro'
 require 'rack-google-analytics'
