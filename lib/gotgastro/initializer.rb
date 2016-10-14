@@ -89,6 +89,8 @@ I18n.enforce_available_locales = true
 
 # Setup database connection + models
 require 'sequel'
+# Setup New Relic instrumentation for Sequel
+Sequel.extension :newrelic_instrumentation
 Sequel.extension :core_extensions
 debug("database_config: #{database_config.inspect}")
 DB = ::Sequel.connect(database_config)
