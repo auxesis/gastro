@@ -19,6 +19,7 @@ gem 'virtus'
 gem 'activemodel'
 gem 'sidekiq'
 gem 'foreman'
+gem 'newrelic_rpm'
 
 group :development do
   gem 'rerun'
