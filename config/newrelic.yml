@@ -5,7 +5,7 @@ common: &default_settings
   # You must specify the license key associated with your New Relic
   # account.  This key binds your Agent's data to your account in the
   # New Relic service.
-  license_key: '***REMOVED***'
+  license_key: '<%= config["settings"]["newrelic_license_key"] %>'
 
   # Agent Enabled (Ruby/Rails Only)
   # Use this setting to force the agent to run or not run.
@@ -181,15 +181,23 @@ common: &default_settings
 development:
   <<: *default_settings
   # Turn on communication to New Relic service in development mode
+<<<<<<< HEAD
   monitor_mode: true
   app_name: gotgastro (development)
+=======
+  monitor_mode: false
+>>>>>>> 4d45ec0e33f374382b653f88bf581d0f6807dd8c
 
   # Rails Only - when running in Developer Mode, the New Relic Agent will
   # present performance information on the last 100 transactions you have
   # executed since starting the mongrel.
   # NOTE: There is substantial overhead when running in developer mode.
   # Do not use for production or load testing.
+<<<<<<< HEAD
   developer_mode: true
+=======
+  developer_mode: false
+>>>>>>> 4d45ec0e33f374382b653f88bf581d0f6807dd8c
 
 test:
   <<: *default_settings

@@ -4,6 +4,7 @@ require 'ostruct'
 require 'erb'
 require 'json'
 require 'mail'
+require 'newrelic_rpm'
 
 def root
   @root ||= Pathname.new(__FILE__).parent.parent.parent
@@ -60,8 +61,14 @@ def config
 
   # FIXME(auxesis): refactor this to recursive openstruct
   settings = {}
-  set_or_error(settings, 'reset_token',   :env => 'GASTRO_RESET_TOKEN')
-  set_or_error(settings, 'morph_api_key', :env => 'MORPH_API_KEY')
+  begin
+    set_or_error(settings, 'reset_token',   :env => 'GASTRO_RESET_TOKEN')
+    set_or_error(settings, 'morph_api_key', :env => 'MORPH_API_KEY')
+    set_or_error(settings, 'newrelic_license_key', :env => 'NEWRELIC_LICENSE_KEY') if environment == 'production'
+  rescue ArgumentError => e
+    @vcap = nil
+    raise e
+  end
   debug("settings: #{settings.inspect}")
   @vcap.merge!('settings' => settings)
 end
