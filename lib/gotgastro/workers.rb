@@ -1,6 +1,7 @@
 $: << File.expand_path(File.join(__FILE__, '..', '..'))
 
 require 'rubygems'
+require 'newrelic_rpm'
 require 'gotgastro/initializer'
 require 'sidekiq'
 require 'redis'
