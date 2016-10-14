@@ -31,7 +31,7 @@ module GotGastro
     end
 
     get '/search' do
-      @businesses = Business.find_near(@location,:within => 25)
+      @businesses = Business.find_near(@location,:within => 25).all
       haml :search
     end
 
@@ -106,7 +106,7 @@ module GotGastro
         return "ERROR"
       end
 
-      GotGastro::Workers::ResetWorker.perform_async(params[:token])
+      GotGastro::Workers::Import.perform_async(params[:token])
 
       status 201
       "OK"
@@ -120,10 +120,10 @@ module GotGastro
         'offences' => Offence.count,
       }
 
-      if Reset.last
+      if Import.last
         metrics.merge!({
-          'last_reset_at' => Reset.last.created_at,
-          'last_reset_duration' => Reset.last.duration,
+          'last_import_at' => Import.last.created_at,
+          'last_import_duration' => Import.last.duration,
         })
       end
 
