@@ -107,7 +107,7 @@ Then visit [http://localhost:9292/](http://localhost:9292/)
 
 Got Gastro depends on data pulled in from Morph.
 
-The `[gotgastro_scraper](https://morph.io/auxesis/gotgastro_scraper)` normalises data from all the dependent scrapers, converting it to a standard format that the Got Gastro app can consume.
+The [`gotgastro_scraper`](https://morph.io/auxesis/gotgastro_scraper) normalises data from all the dependent scrapers, converting it to a standard format that the Got Gastro app can consume.
 
 The `gotgastro_scraper` uses the webhook functionality of Morph to trigger a data reset in the Got Gastro app whenever data is updated.
 
