@@ -21,14 +21,6 @@ describe 'Data import', :type => :feature do
     set_environment_variable('MORPH_API_KEY', morph_api_key)
   end
 
-  it 'should error if config is not set' do
-    expect {
-      delete_environment_variable('GASTRO_RESET_TOKEN')
-      delete_environment_variable('MORPH_API_KEY')
-      config
-    }.to raise_error(ArgumentError)
-  end
-
   it 'should require a token' do
     visit '/reset'
     expect(page.status_code).to be 404
