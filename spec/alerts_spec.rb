@@ -26,6 +26,18 @@ describe 'Alerts', :type => :feature do
     { :alert => Alert.first, :confirmation_link => confirmation_link }
   }
 
+  let(:unconfirmed_user) {
+    within_25km && within_150km
+
+    visit "/search?lat=#{origin.lat}&lng=#{origin.lng}&alert=hello"
+    fill_in 'alert[email]', :with => 'hello@example.org'
+    click_on 'Create alert'
+    GotGastro::Workers::EmailWorker.drain
+
+    expect(Mail::TestMailer.deliveries.size).to be 1
+    Mail::TestMailer.deliveries.pop
+  }
+
   before(:each) do
     Mail::TestMailer.deliveries.clear
   end
@@ -86,10 +98,6 @@ describe 'Alerts', :type => :feature do
     expect(alert_mail.body.to_s.scan(/(?=Description)/).count).to be(offences.size)
   end
 
-  it 'should not send notifications if the alert is not confirmed'
-  it 'should not send notifications if the alert is unsubscribed'
-  it 'should not send repeat notifications for the same offence'
-
   it 'should allow a user to unsubscribe' do
     # FIXME(auxesis) this is a smell. We should be getting the unsubscribe link
     # from an alert email.
@@ -106,5 +114,36 @@ describe 'Alerts', :type => :feature do
     visit '/alert/12345/unsubscribe'
     expect(page.status_code).to be 404
   end
+
+  it 'should not send notifications if the alert is not confirmed' do
+    stub_request(:get,
+      %r{https://api\.morph\.io/auxesis/gotgastro_scraper/data\.json\?key=.*&query=select%20\*%20from%20'businesses'}
+      ).to_return(:status => 200, :body => business_json)
+
+    stub_request(:get,
+      %r{https://api\.morph\.io/auxesis/gotgastro_scraper/data\.json\?key.*&query=select%20\*%20from%20'offences'}
+      ).to_return(:status => 200, :body => new_offence_json)
+
+    set_environment_variable('GASTRO_RESET_TOKEN', gastro_reset_token)
+    set_environment_variable('MORPH_API_KEY', morph_api_key)
+
+    unconfirmed_user && subscribed_user
+
+    before = Offence.count
+    visit "/reset?token=#{gastro_reset_token}"
+    GotGastro::Workers::Import.drain
+    after = Offence.count
+    expect(before).to be < after
+
+    expect(GotGastro::Workers::EmailAlerts.jobs.size).to be > 0
+
+    GotGastro::Workers::EmailAlerts.drain
+    GotGastro::Workers::EmailWorker.drain
+
+    expect(Mail::TestMailer.deliveries.size).to be 1
+  end
+
+  it 'should not send notifications if the alert is unsubscribed'
+  it 'should not send repeat notifications for the same offence'
 
 end

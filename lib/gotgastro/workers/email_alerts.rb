@@ -9,7 +9,7 @@ module GotGastro
       include Sidekiq::Worker
 
       def perform
-        Alert.each do |alert|
+        Alert.where{confirmed_at !~ nil}.each do |alert|
           businesses = Business.find_near(alert.location, :within => alert.distance)
           conditions = { Sequel.qualify(:offences, :created_at) => Time.now.beginning_of_day..Time.now.end_of_day }
           offences = Offence.join(businesses, :id => :business_id).where{conditions}.all
