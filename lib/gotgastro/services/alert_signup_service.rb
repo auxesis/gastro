@@ -17,6 +17,7 @@ class AlertSignupService
   validates :email, presence: { :message => 'Bummer! We need an email address to create an alert for you.' }
   validates :location, presence: {}
   validates :distance, presence: {}
+  validates :address, presence: { :message => "Sorry! We need an address to create an alert." }
 
   def initialize(opts)
     @host = opts[:host] || 'https://gotgastroagain.com'
