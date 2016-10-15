@@ -37,4 +37,23 @@ describe 'Business search', :type => :feature do
 
     expect(find('img')['src'].size).to be <= 2000
   end
+
+  it 'should show detail on individual busineses' do
+    within_25km && within_150km
+
+    visit "/search?lat=#{origin.lat}&lng=#{origin.lng}&address=#{origin.address}"
+
+    detail_link = all('div.result a').map {|a| a['href']}.first
+    expect(detail_link).to_not be nil
+
+    visit(detail_link)
+
+    search_link = all('div.row.nav a').map {|a| a['href']}.first
+    expect(search_link).to_not be nil
+
+    query = URI.decode(URI.parse(search_link).query)
+    expect(query).to include(origin.address)
+    expect(query).to include(origin.lat.to_s)
+    expect(query).to include(origin.lng.to_s)
+  end
 end

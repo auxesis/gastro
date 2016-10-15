@@ -167,6 +167,12 @@ module Sinatra
       end
       "#{base}#{url_fragment}"
     end
+
+    def nav_query(attrs)
+      a = Addressable::URI.new
+      a.query_values = attrs
+      a.query
+    end
   end
 
   module MetaTagHelper

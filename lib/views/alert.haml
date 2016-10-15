@@ -21,7 +21,7 @@
   %div.row.nav
     %div.col-md-12
       %p
-        %a{:href => "/search?lat=#{@location.lat}&lng=#{@location.lng}"}
+        %a{:href => "/search?#{nav_query(@location)}"}
           %button.btn.btn-default{:type => 'button'}
             %i.fa.fa-fw.fa-arrow-circle-o-left
             Back to search results
