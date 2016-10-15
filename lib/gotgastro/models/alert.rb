@@ -10,8 +10,4 @@ class Alert < Sequel::Model
     self.lat = lat
     self.lng = lng
   end
-
-  def address
-    "123 Straight Street, Greenway, 2001"
-  end
 end

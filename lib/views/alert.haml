@@ -11,8 +11,10 @@
         \.
       %p
         %strong Click on the link in the email
-        to confirm and start receiving alerts about food safety problems in
-        your area.
+        to confirm and start receiving alerts about food safety problems within
+        %em&= "#{@alert.distance}km"
+        of
+        %em&= @alert.address
       %p
         If you don't get an email in the next few minutes, try checking your spam filter.
 
