@@ -123,6 +123,7 @@ module GotGastro
       if Import.last
         metrics.merge!({
           'last_import_at' => Import.last.created_at,
+          'last_import_at_readable' => Kronic.format(Import.last.created_at),
           'last_import_duration' => Import.last.duration,
         })
       end

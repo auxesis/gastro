@@ -20,6 +20,7 @@ gem 'activemodel'
 gem 'sidekiq'
 gem 'foreman'
 gem 'newrelic_rpm'
+gem 'kronic'
 
 group :development do
   gem 'rerun'

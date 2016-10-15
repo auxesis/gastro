@@ -1,3 +1,5 @@
+require 'kronic'
+
 module Sinatra
   module PageTitleHelper
     def page_title(string, opts={})

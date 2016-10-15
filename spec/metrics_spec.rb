@@ -35,6 +35,7 @@ describe 'Got Gastro metrics', :type => :feature do
 
     expect(metrics['last_import_at']).to_not be nil
     expect(metrics['last_import_duration']).to_not be nil
+    expect(metrics['last_import_at_readable']).to_not be nil
   end
 
   it 'should indicate if the current reset is still running' do
