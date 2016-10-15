@@ -9,6 +9,7 @@ class AlertSignupService
 
   attribute :email, String
   attribute :location, String
+  attribute :address, String
   attribute :distance, Float
   attribute :alert, Alert
   attribute :mail, Mail
@@ -16,11 +17,17 @@ class AlertSignupService
   validates :email, presence: { :message => 'Bummer! We need an email address to create an alert for you.' }
   validates :location, presence: {}
   validates :distance, presence: {}
+  validates :address, presence: { :message => "Sorry! We need an address to create an alert." }
 
   def initialize(opts)
     @host = opts[:host] || 'https://gotgastroagain.com'
     @alert = opts[:alert] if opts[:alert]
     super(opts)
+  end
+
+  def address
+    return @alert.address if @alert
+    super
   end
 
   def distance
@@ -68,6 +75,7 @@ private
       :email    => email,
       :location => location,
       :distance => distance,
+      :address  => address,
       :confirmation_id => Digest::MD5.new.hexdigest("#{rand(Time.now.to_i).to_s}-#{email}")
     }
     @alert = Alert.create(attrs)

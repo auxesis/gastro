@@ -7,17 +7,16 @@
         Now check your email
       %p
         You should shortly receive an email from&nbsp;
-        %code>= @alert.mail.from
+        %code>= @alert.mail.from.first
         \.
       %p
         %strong Click on the link in the email
-        to confirm and start receiving alerts about food safety problems in
-        your area.
+        to confirm and start receiving alerts about food safety problems within
+        %em&= "#{@alert.distance}km"
+        of
+        %em&= @alert.address
       %p
         If you don't get an email in the next few minutes, try checking your spam filter.
-
-      %pre
-        = params.inspect
 
   %div.row.nav
     %div.col-md-12

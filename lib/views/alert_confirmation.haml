@@ -9,9 +9,9 @@
       %p
         You will now receive email alerts for any planning applications
         we find within
-        = "#{@alert.distance}km"
+        %em&= "#{@alert.distance}km"
         of
-        = @alert.location
+        %em&= @alert.address
       %p
         You can change the size of the area covered by the alert now or
         at a later time. Every email alert will have this link.

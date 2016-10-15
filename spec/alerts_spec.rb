@@ -9,7 +9,7 @@ describe 'Alerts', :type => :feature do
   let(:subscribed_user) {
     within_25km && within_150km
 
-    visit "/search?lat=#{origin.lat}&lng=#{origin.lng}&alert=hello"
+    visit "/search?lat=#{origin.lat}&lng=#{origin.lng}&address=foobar"
     fill_in 'alert[email]', :with => 'subscribed@example.org'
     click_on 'Create alert'
     GotGastro::Workers::EmailWorker.drain
@@ -29,7 +29,7 @@ describe 'Alerts', :type => :feature do
   let(:unconfirmed_user) {
     within_25km && within_150km
 
-    visit "/search?lat=#{origin.lat}&lng=#{origin.lng}&alert=hello"
+    visit "/search?lat=#{origin.lat}&lng=#{origin.lng}&address=foobar"
     fill_in 'alert[email]', :with => 'unconfirmed@example.org'
     click_on 'Create alert'
     GotGastro::Workers::EmailWorker.drain
@@ -41,7 +41,7 @@ describe 'Alerts', :type => :feature do
   let(:unsubscribed_user) {
     within_25km && within_150km
 
-    visit "/search?lat=#{origin.lat}&lng=#{origin.lng}&alert=hello"
+    visit "/search?lat=#{origin.lat}&lng=#{origin.lng}&address=foobar"
     fill_in 'alert[email]', :with => 'unsubscribed@example.org'
     click_on 'Create alert'
     GotGastro::Workers::EmailWorker.drain
