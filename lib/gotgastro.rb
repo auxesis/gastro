@@ -22,9 +22,12 @@ module GotGastro
       # have to keep prompting the user for where they are.
       cookies[:location] ||= "-33.8675,151.207" # set default location to Sydney
       cookies[:location] = "#{params[:lat]},#{params[:lng]}" if params[:lat] && params[:lng]
-      lat, lng = URI.decode(cookies[:location]).split(',')
+      cookies[:address] = params[:address] if params[:address]
+
       # Create a location object for lookups.
-      @location = Business.new(:lat => lat, :lng => lng)
+      lat, lng = URI.decode(cookies[:location]).split(',')
+      address = cookies[:address]
+      @location = Business.new(:lat => lat, :lng => lng, :address => address)
     end
 
     get '/' do

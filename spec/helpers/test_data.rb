@@ -10,7 +10,9 @@ RSpec.shared_context 'test data' do
   let(:morph_api_key) { Digest::MD5.new.hexdigest(rand(Time.now.to_i).to_s) }
 
   # businesses
-  let(:origin) { Business.new(:lat => -33.1234, :lng => 150.5678) }
+  let(:origin) {
+    Business.new(:lat => -33.1234, :lng => 150.5678, :address => '123 Straight St, Burwood')
+  }
   let(:within_25km) {
     lats = (1..16).map {|i| origin.lat + i * 0.01 }
     lngs = (1..16).map {|i| origin.lng + i * 0.01 }
