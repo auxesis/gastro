@@ -10,7 +10,7 @@ describe 'Alerts', :type => :feature do
     within_25km && within_150km
 
     visit "/search?lat=#{origin.lat}&lng=#{origin.lng}&alert=hello"
-    fill_in 'alert[email]', :with => 'hello@example.org'
+    fill_in 'alert[email]', :with => 'subscribed@example.org'
     click_on 'Create alert'
     GotGastro::Workers::EmailWorker.drain
 
@@ -30,13 +30,38 @@ describe 'Alerts', :type => :feature do
     within_25km && within_150km
 
     visit "/search?lat=#{origin.lat}&lng=#{origin.lng}&alert=hello"
-    fill_in 'alert[email]', :with => 'hello@example.org'
+    fill_in 'alert[email]', :with => 'unconfirmed@example.org'
     click_on 'Create alert'
     GotGastro::Workers::EmailWorker.drain
 
     expect(Mail::TestMailer.deliveries.size).to be 1
     Mail::TestMailer.deliveries.pop
   }
+
+  let(:unsubscribed_user) {
+    within_25km && within_150km
+
+    visit "/search?lat=#{origin.lat}&lng=#{origin.lng}&alert=hello"
+    fill_in 'alert[email]', :with => 'unsubscribed@example.org'
+    click_on 'Create alert'
+    GotGastro::Workers::EmailWorker.drain
+
+    expect(Mail::TestMailer.deliveries.size).to be 1
+
+    mail = Mail::TestMailer.deliveries.pop
+    confirmation_link = mail.body.to_s.match(/^(http.*)$/, 1).to_s
+    expect(confirmation_link).to be_url
+    visit(confirmation_link)
+    expect(page.status_code).to be 200
+    expect(page.body).to match(/your alert is now activated/i)
+
+    # unsubscribe
+    unsubscribe_link  = confirmation_link.to_s.gsub(/confirm/, 'unsubscribe')
+    visit(unsubscribe_link)
+    expect(page.status_code).to be 200
+    expect(page.body).to match(/you have unsubscribed from your alert/i)
+  }
+
 
   before(:each) do
     Mail::TestMailer.deliveries.clear
@@ -99,15 +124,7 @@ describe 'Alerts', :type => :feature do
   end
 
   it 'should allow a user to unsubscribe' do
-    # FIXME(auxesis) this is a smell. We should be getting the unsubscribe link
-    # from an alert email.
-    confirmation_link = subscribed_user[:confirmation_link]
-    unsubscribe_link  = confirmation_link.to_s.gsub(/confirm/, 'unsubscribe')
-
-    # unsubscribe
-    visit(unsubscribe_link)
-    expect(page.status_code).to be 200
-    expect(page.body).to match(/you have unsubscribed from your alert/i)
+    unsubscribed_user
   end
 
   it 'should deny unknown unsubscribes' do
@@ -143,7 +160,34 @@ describe 'Alerts', :type => :feature do
     expect(Mail::TestMailer.deliveries.size).to be 1
   end
 
-  it 'should not send notifications if the alert is unsubscribed'
+  it 'should not send notifications if the alert is unsubscribed' do
+    stub_request(:get,
+      %r{https://api\.morph\.io/auxesis/gotgastro_scraper/data\.json\?key=.*&query=select%20\*%20from%20'businesses'}
+      ).to_return(:status => 200, :body => business_json)
+
+    stub_request(:get,
+      %r{https://api\.morph\.io/auxesis/gotgastro_scraper/data\.json\?key.*&query=select%20\*%20from%20'offences'}
+      ).to_return(:status => 200, :body => new_offence_json)
+
+    set_environment_variable('GASTRO_RESET_TOKEN', gastro_reset_token)
+    set_environment_variable('MORPH_API_KEY', morph_api_key)
+
+    unconfirmed_user && subscribed_user && unsubscribed_user
+
+    before = Offence.count
+    visit "/reset?token=#{gastro_reset_token}"
+    GotGastro::Workers::Import.drain
+    after = Offence.count
+    expect(before).to be < after
+
+    expect(GotGastro::Workers::EmailAlerts.jobs.size).to be > 0
+
+    GotGastro::Workers::EmailAlerts.drain
+    GotGastro::Workers::EmailWorker.drain
+
+    expect(Mail::TestMailer.deliveries.size).to be 1
+  end
+
   it 'should not send repeat notifications for the same offence'
 
 end
