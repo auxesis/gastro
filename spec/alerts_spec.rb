@@ -71,7 +71,8 @@ describe 'Alerts', :type => :feature do
     expect(alert_mail.to).to eq([alert.email])
 
     businesses = Business.find_near(alert.location, :within => alert.distance)
-    offences = Offence.join(businesses, :id => :business_id).where{{offences__created_at=>Time.now.beginning_of_day..Time.now.end_of_day}}.all
+    conditions = { Sequel.qualify(:offences, :created_at) => Time.now.beginning_of_day..Time.now.end_of_day }
+    offences = Offence.join(businesses, :id => :business_id).where{conditions}.all
 
     expect(alert_mail.subject).to match(alert.address)
     expect(alert_mail.subject).to match(/^#{offences.size} new food safety warnings/)
