@@ -71,8 +71,7 @@ describe 'Alerts', :type => :feature do
     expect(alert_mail.to).to eq([alert.email])
 
     businesses = Business.find_near(alert.location, :within => alert.distance)
-    conditions = { :created_at => Time.now.beginning_of_day..Time.now.end_of_day }
-    offences = Offence.join(businesses, :id => :business_id).where(conditions).all
+    offences = Offence.join(businesses, :id => :business_id).where{{offences__created_at=>Time.now.beginning_of_day..Time.now.end_of_day}}.all
 
     expect(alert_mail.subject).to match(alert.address)
     expect(alert_mail.subject).to match(/^#{offences.size} new food safety warnings/)
@@ -88,6 +87,7 @@ describe 'Alerts', :type => :feature do
 
   it 'should not send notifications if the alert is not confirmed'
   it 'should not send notifications if the alert is unsubscribed'
+  it 'should not send repeat notifications for the same offence'
 
   it 'should allow a user to unsubscribe' do
     # FIXME(auxesis) this is a smell. We should be getting the unsubscribe link

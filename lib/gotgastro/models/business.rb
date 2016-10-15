@@ -18,6 +18,10 @@ class Business < Sequel::Model
     offences.size
   end
 
+  def last_offence
+    self.offences_dataset.order(:date).last
+  end
+
   def self.find_near(location, opts={})
     within = opts[:within] || 25
     limit  = opts[:limit]  || 50

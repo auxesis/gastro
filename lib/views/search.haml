@@ -46,11 +46,12 @@
             %small
               %span.badge= business.problems
               = business.problems == 1 ? 'problem,' : 'problems,'
-            %small
-              last was
-              - opts = { :highest_measure_only => true, :accumulate_on => :years }
-              = time_ago_in_words(business.offences_dataset.order(:date).last.date, opts)
-              ago
+            - if business.last_offence
+              %small
+                last was
+                - opts = { :highest_measure_only => true, :accumulate_on => :years }
+                = time_ago_in_words(business.last_offence.date, opts)
+                ago
           %p.address.text-muted
             %small= business.address
     - else
