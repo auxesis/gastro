@@ -13,6 +13,7 @@ module GotGastro
     helpers Sinatra::RequireCSSHelper
     helpers Sinatra::MetaTagHelper
     helpers Sinatra::Cookies
+    helpers Sinatra::TimeHelpers
 
     before do
       # Set the location cookie if we've got a new lat/lng param.
@@ -123,7 +124,7 @@ module GotGastro
       if Import.last
         metrics.merge!({
           'last_import_at' => Import.last.created_at,
-          'last_import_at_readable' => Kronic.format(Import.last.created_at),
+          'last_import_at_human' => time_ago_in_words(Import.last.created_at) + ' ago',
           'last_import_duration' => Import.last.duration,
         })
       end
