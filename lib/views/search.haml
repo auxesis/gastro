@@ -48,7 +48,8 @@
               = business.problems == 1 ? 'problem,' : 'problems,'
             - if business.last_offence
               %small
-                last was
+                - if business.problems > 1
+                  last was
                 - opts = { :highest_measure_only => true, :accumulate_on => :years }
                 = time_ago_in_words(business.last_offence.date, opts)
                 ago
