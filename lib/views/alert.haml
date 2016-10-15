@@ -7,7 +7,7 @@
         Now check your email
       %p
         You should shortly receive an email from&nbsp;
-        %code>= @alert.mail.from
+        %code>= @alert.mail.from.first
         \.
       %p
         %strong Click on the link in the email
@@ -15,9 +15,6 @@
         your area.
       %p
         If you don't get an email in the next few minutes, try checking your spam filter.
-
-      %pre
-        = params.inspect
 
   %div.row.nav
     %div.col-md-12
