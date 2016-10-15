@@ -1,4 +1,5 @@
 class Business < Sequel::Model
+  plugin :timestamps
   plugin :mappable
   one_to_many :offences
 

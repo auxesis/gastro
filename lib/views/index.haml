@@ -19,7 +19,33 @@
       %p
         %input#autocomplete.input-lg.form-control{:placeholder => "Search for food safety problems near...", :type => "text", :onFocus => "geolocate()"}/
 
+%div.container.weekly-stats
+  %div.panel.panel-primary
+    %div.panel-heading
+      %h3.panel-title This week
+    %div.panel-body
+      %div.col-md-3.text-center.stat
+        we collected
+        %span.number
+          = Offence.where(:created_at => Date.today.beginning_of_week.to_time..Time.now).count
+        new offences
+      %div.col-md-3.text-center.stat
+        we collected
+        %span.number
+          = Business.where(:created_at => Date.today.beginning_of_week.to_time..Time.now).count
+        new businesses
+      %div.col-md-3.text-center.stat
+        you received
+        %span.number 120
+        email alerts
+      %div.col-md-3.text-center.stat
+        you signed up for
+        %span.number
+          = Alert.where(:created_at => Date.today.beginning_of_week.to_time..Time.now).count
+        new email alerts
+
   = haml :footer
+
 
 -# FIXME(auxesis): refactor this into a variable
 - google_api_key = 'AIzaSyDBvlmNsUERDKkeQWX6OCsfR5VoPaD3nWo'
