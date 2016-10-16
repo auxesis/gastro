@@ -2,6 +2,7 @@ require 'sidekiq'
 require 'redis'
 require 'sidekiq/api'
 require 'mail'
+require 'active_support/core_ext/time'
 
 module GotGastro
   module Workers
