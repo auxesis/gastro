@@ -1,4 +1,5 @@
 require 'dotiw'
+require 'addressable'
 
 module Sinatra
   module TimeHelpers
@@ -169,7 +170,7 @@ module Sinatra
     end
 
     def nav_query(attrs)
-      a = Addressable::URI.new
+      a = ::Addressable::URI.new
       a.query_values = attrs
       a.query
     end
