@@ -26,7 +26,7 @@ module GotGastro
 
       # Create a location object for lookups.
       lat, lng = URI.decode(cookies[:location]).split(',')
-      address = cookies[:address]
+      address = cookies[:address] || ""
       @location = Business.new(:lat => lat, :lng => lng, :address => CGI::unescape(address))
     end
 
