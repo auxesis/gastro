@@ -83,7 +83,7 @@ describe 'Alerts', :type => :feature do
 
     stub_request(:get,
       %r{https://api\.morph\.io/auxesis/gotgastro_scraper/data\.json\?key.*&query=select%20\*%20from%20'offences'}
-      ).to_return(:status => 200, :body => new_offence_json)
+      ).to_return(:status => 200, :body => offence_json)
 
     set_environment_variable('GASTRO_RESET_TOKEN', gastro_reset_token)
     set_environment_variable('MORPH_API_KEY', morph_api_key)
@@ -139,7 +139,7 @@ describe 'Alerts', :type => :feature do
 
     stub_request(:get,
       %r{https://api\.morph\.io/auxesis/gotgastro_scraper/data\.json\?key.*&query=select%20\*%20from%20'offences'}
-      ).to_return(:status => 200, :body => new_offence_json)
+      ).to_return(:status => 200, :body => offence_json)
 
     set_environment_variable('GASTRO_RESET_TOKEN', gastro_reset_token)
     set_environment_variable('MORPH_API_KEY', morph_api_key)
@@ -167,7 +167,7 @@ describe 'Alerts', :type => :feature do
 
     stub_request(:get,
       %r{https://api\.morph\.io/auxesis/gotgastro_scraper/data\.json\?key.*&query=select%20\*%20from%20'offences'}
-      ).to_return(:status => 200, :body => new_offence_json)
+      ).to_return(:status => 200, :body => offence_json)
 
     set_environment_variable('GASTRO_RESET_TOKEN', gastro_reset_token)
     set_environment_variable('MORPH_API_KEY', morph_api_key)
@@ -187,6 +187,44 @@ describe 'Alerts', :type => :feature do
 
     expect(Mail::TestMailer.deliveries.size).to be 1
   end
+
+  it 'should not send notifications if there are no new offences' do
+    stub_request(:get,
+      %r{https://api\.morph\.io/auxesis/gotgastro_scraper/data\.json\?key=.*&query=select%20\*%20from%20'businesses'}
+      ).to_return(:status => 200, :body => business_json)
+
+    stub_request(:get,
+      %r{https://api\.morph\.io/auxesis/gotgastro_scraper/data\.json\?key.*&query=select%20\*%20from%20'offences'}
+      ).to_return(:status => 200, :body => offence_json)
+
+    set_environment_variable('GASTRO_RESET_TOKEN', gastro_reset_token)
+    set_environment_variable('MORPH_API_KEY', morph_api_key)
+
+    subscribed_user
+
+    visit "/reset?token=#{gastro_reset_token}"
+    GotGastro::Workers::Import.drain
+    expect(GotGastro::Workers::EmailAlerts.jobs.size).to be > 0
+
+    GotGastro::Workers::EmailAlerts.drain
+    GotGastro::Workers::EmailWorker.drain
+
+    expect(Mail::TestMailer.deliveries.size).to be 1
+    Mail::TestMailer.deliveries.clear
+
+    time_travel_to('tomorrow')
+
+    # import same data the next day
+    visit "/reset?token=#{gastro_reset_token}"
+    GotGastro::Workers::Import.drain
+    expect(GotGastro::Workers::EmailAlerts.jobs.size).to be > 0
+
+    GotGastro::Workers::EmailAlerts.drain
+    GotGastro::Workers::EmailWorker.drain
+
+    expect(Mail::TestMailer.deliveries.size).to be 0
+  end
+
 
   it 'should not send repeat notifications for the same offence'
 

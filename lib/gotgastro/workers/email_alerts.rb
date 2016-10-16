@@ -16,21 +16,23 @@ module GotGastro
           conditions = { Sequel.qualify(:offences, :created_at) => Time.now.beginning_of_day..Time.now.end_of_day }
           offences = Offence.join(businesses, :id => :business_id).where{conditions}.all
 
-          mail = Mail.new
-          mail.from    = 'alerts@gotgastroagain.com'
-          mail.to      = alert.email
-          mail.subject = "#{offences.count} new food safety warnings near #{alert.address}"
-          mail.body    = <<-BODY.gsub(/^ {12}/, '')
-            The following new food safety warnings have been found within #{alert.distance}km of #{alert.address}.
+          if offences.size > 0
+            mail = Mail.new
+            mail.from    = 'alerts@gotgastroagain.com'
+            mail.to      = alert.email
+            mail.subject = "#{offences.count} new food safety warnings near #{alert.address}"
+            mail.body    = <<-BODY.gsub(/^ {12}/, '')
+              The following new food safety warnings have been found within #{alert.distance}km of #{alert.address}.
 
-            #{format(offences)}
+              #{format(offences)}
 
-            Thanks,
-            Got Gastro
+              Thanks,
+              Got Gastro
 
-            Unsubscribe: #{@host}/alert/#{alert.confirmation_id}/unsubscribe
-          BODY
-          GotGastro::Workers::EmailWorker.perform_async(mail)
+              Unsubscribe: #{@host}/alert/#{alert.confirmation_id}/unsubscribe
+            BODY
+            GotGastro::Workers::EmailWorker.perform_async(mail)
+          end
         end
       end
 
