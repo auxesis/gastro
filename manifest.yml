@@ -10,8 +10,9 @@ applications:
   services:
     - gotgastro.redis
     - gotgastro.production
+    - gotgastro.logs
 - name: blue
-  memory: 100M
+  memory: 150M
   disk: 200M
   instances: 1
   command: bundle exec foreman start web
@@ -20,8 +21,9 @@ applications:
   services:
     - gotgastro.redis
     - gotgastro.production
+    - gotgastro.logs
 - name: green
-  memory: 100M
+  memory: 150M
   disk_quota: 200M
   instances: 1
   command: bundle exec foreman start web
@@ -30,3 +32,4 @@ applications:
   services:
     - gotgastro.redis
     - gotgastro.production
+    - gotgastro.logs
