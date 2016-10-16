@@ -227,5 +227,6 @@ describe 'Alerts', :type => :feature do
 
 
   it 'should not send repeat notifications for the same offence'
+  it 'should allow changing the alert distance'
 
 end
