@@ -21,6 +21,7 @@ gem 'sidekiq'
 gem 'foreman'
 gem 'newrelic_rpm'
 gem 'dotiw'
+gem 'addressable'
 
 group :development do
   gem 'rerun'
