@@ -23,6 +23,14 @@ button.geolocation {
   }
 }
 
+
+@media (min-width: 440px) {
+  h1 small.address {
+    display: block;
+    padding: 5px 0 2px;
+  }
+}
+
 /* search results page */
 div.row.landing p {
   margin-bottom: 15px;
