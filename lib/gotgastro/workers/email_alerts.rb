@@ -17,7 +17,7 @@ module GotGastro
           offences = Offence.join(businesses, :id => :business_id).where{conditions}.all
 
           mail = Mail.new
-          mail.from    = 'alerts-confirm@gotgastroagain.com'
+          mail.from    = 'alerts@gotgastroagain.com'
           mail.to      = alert.email
           mail.subject = "#{offences.count} new food safety warnings near #{alert.address}"
           mail.body    = <<-BODY.gsub(/^ {12}/, '')
