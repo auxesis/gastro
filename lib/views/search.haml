@@ -18,7 +18,7 @@
     %div.col-md-12
       %p.map
         %img{:src => map_url}/
-  - if params[:address]
+  - if @location.address
     %div.row.email-alert
       %div.col-md-12
         %div.well.well-lg
