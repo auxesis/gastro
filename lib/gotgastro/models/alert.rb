@@ -1,5 +1,6 @@
 class Alert < Sequel::Model
   plugin :timestamps
+  many_to_many :offences
 
   def location
     Business.new(:lat => self.lat, :lng => self.lng)
