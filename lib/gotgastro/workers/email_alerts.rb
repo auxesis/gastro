@@ -9,13 +9,21 @@ module GotGastro
     class EmailAlerts
       include Sidekiq::Worker
 
+      def beginning_of_day
+        Time.now.beginning_of_day
+      end
+
+      def end_of_day
+        Time.now.end_of_day
+      end
+
       def perform
         import = ::Import.last
         alerts = Alert.where{confirmed_at !~ nil}.where(:unsubscribed_at => nil)
         alerts.each do |alert|
+          conditions = { Sequel.qualify(:offences, :created_at) => beginning_of_day..end_of_day }
           businesses = Business.find_near(alert.location, :within => alert.distance)
-          conditions = { Sequel.qualify(:offences, :created_at) => Time.now.beginning_of_day..Time.now.end_of_day }
-          offences = Offence.join(businesses, :id => :business_id).where{conditions}.all
+          offences   = Offence.join(businesses, :id => :business_id).where{conditions}.all
 
           if offences.size > 0
             offences.select do |offence|
@@ -27,8 +35,7 @@ module GotGastro
                   :alert_id   => alert.id,
                   :import_id  => import.id
                 }
-                join = AlertsOffences.new(attrs)
-                join.save
+                AlertsOffences.create(attrs)
               end
             end
 
