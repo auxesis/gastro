@@ -11,4 +11,8 @@ class Alert < Sequel::Model
     self.lat = lat
     self.lng = lng
   end
+
+  def alerted?(offence)
+    !!AlertsOffences.where(:offence_id => offence.id, :alert_id => self.id).first
+  end
 end

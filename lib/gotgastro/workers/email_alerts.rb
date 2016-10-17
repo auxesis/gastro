@@ -19,7 +19,7 @@ module GotGastro
 
           if offences.size > 0
             offences.select do |offence|
-              if AlertsOffences.where(:offence_id => offence.id, :alert_id => alert.id).first
+              if alert.alerted?(offence)
                 return false
               else
                 attrs = {
