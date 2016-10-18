@@ -21,9 +21,9 @@ module GotGastro
         import = ::Import.last
         alerts = Alert.where{confirmed_at !~ nil}.where(:unsubscribed_at => nil)
         alerts.each do |alert|
-          conditions = { Sequel.qualify(:offences, :created_at) => beginning_of_day..end_of_day }
+          conditions = ['offences.created_at >= :alert', {:alert => alert.created_at}]
           businesses = Business.find_near(alert.location, :within => alert.distance)
-          offences   = Offence.join(businesses, :id => :business_id).where{conditions}.all
+          offences   = Offence.join(businesses, :id => :business_id).where(*conditions).all
 
           if offences.size > 0
             offences.select do |offence|
