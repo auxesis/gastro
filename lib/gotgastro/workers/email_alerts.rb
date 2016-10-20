@@ -38,7 +38,6 @@ module GotGastro
                 AlertsOffences.create(attrs)
               end
             end
-
             notify(:alert => alert, :offences => offences)
           end
         end
@@ -51,6 +50,7 @@ module GotGastro
         raise ArgumentError unless alert && offences
 
         mail = Mail.new
+        mail.charset = "UTF-8"
         mail.from    = 'alerts@gotgastroagain.com'
         mail.to      = alert.email
         mail.subject = "#{offences.count} new food safety warnings near #{alert.address}"

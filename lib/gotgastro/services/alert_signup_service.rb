@@ -83,6 +83,7 @@ private
 
   def notify!
     @mail = Mail.new
+    @mail.charset = 'UTF-8'
     @mail.from    = 'alerts-confirm@gotgastroagain.com'
     @mail.to      = email
     @mail.subject = 'Please confirm your Got Gastro alert'
