@@ -9,14 +9,6 @@ module GotGastro
     class EmailAlerts
       include Sidekiq::Worker
 
-      def beginning_of_day
-        Time.now.beginning_of_day
-      end
-
-      def end_of_day
-        Time.now.end_of_day
-      end
-
       def perform
         import = ::Import.last
         alerts = Alert.where{confirmed_at !~ nil}.where(:unsubscribed_at => nil)
@@ -26,9 +18,9 @@ module GotGastro
           offences   = Offence.join(businesses, :id => :business_id).where(*conditions).all
 
           if offences.size > 0
-            offences.select do |offence|
+            offences.select! do |offence|
               if alert.alerted?(offence)
-                return false
+                false
               else
                 attrs = {
                   :offence_id => offence.id,
