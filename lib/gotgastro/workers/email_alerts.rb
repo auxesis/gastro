@@ -17,21 +17,20 @@ module GotGastro
           businesses = Business.find_near(alert.location, :within => alert.distance)
           offences   = Offence.join(businesses, :id => :business_id).where(*conditions).all
 
-          if offences.size > 0
-            offences.select! do |offence|
-              if alert.alerted?(offence)
-                false
-              else
-                attrs = {
-                  :offence_id => offence.id,
-                  :alert_id   => alert.id,
-                  :import_id  => import.id
-                }
-                AlertsOffences.create(attrs)
-              end
+          offences.select! do |offence|
+            if alert.alerted?(offence)
+              false
+            else
+              attrs = {
+                :offence_id => offence.id,
+                :alert_id   => alert.id,
+                :import_id  => import.id
+              }
+              AlertsOffences.create(attrs)
             end
-            notify(:alert => alert, :offences => offences)
           end
+
+          notify(:alert => alert, :offences => offences) if offences.size > 0
         end
       end
 
