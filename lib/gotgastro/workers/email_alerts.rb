@@ -48,21 +48,24 @@ module GotGastro
         mail.body    = <<-BODY.gsub(/^ {10}/, '')
           The following new food safety warnings have been found within #{alert.distance}km of #{alert.address}.
 
-          #{format(offences)}
+          #{format(offences, Business.new(:lat => alert.lat, :lng => alert.lng))}
 
           Thanks,
           Got Gastro
 
-          Unsubscribe: #{@host}/alert/#{alert.confirmation_id}/unsubscribe
+          Unsubscribe: #{config['settings']['baseurl']}/alert/#{alert.confirmation_id}/unsubscribe
+          Change: #{config['settings']['baseurl']}/alert/#{alert.confirmation_id}/edit
         BODY
+
         GotGastro::Workers::EmailWorker.perform_async(mail)
       end
 
-      def format(offences)
+      def format(offences, origin)
         template = <<-TEMPLATE.gsub(/^ {10}/, '')
           <% offences.each do |offence| %>
           Business: <%= offence.business.name %>
           Address: <%= offence.business.address %>
+          Distance away: <%= "%.2f" % offence.business.distance_from(origin) %>km
           Date: <%= offence.date %>
           Description: <%= offence.description.strip %>
           <% end %>

@@ -1,0 +1,52 @@
+- page_title 'Change alert for' + @alert.address
+
+%div.container
+  %div.row
+    %div.col-md-12
+      %h1
+        %i.fa.fa-check-circle-o
+        Change my alert
+      - if not flash.empty?
+        - flash.each do |level, message|
+          %div{:class => "alert alert-#{level} alert-dismissable"}
+            %button.close{:type => "button", 'data-dismiss' => 'alert', 'aria-label' => "Close"}
+              %span{'aria-hidden' => true} &times;
+            = message
+      %p
+        What size area near
+        %em= @alert.address
+        would you like to receive alerts for?
+      %form{:action => link_to("/alert/#{@alert.confirmation_id}/edit"), :method => "POST"}
+        %div.form-group
+          %div.radio
+            %label
+              %input{:type => 'radio', :name => 'alert[distance]', :value => '5', :checked => @alert.distance == 5}
+              Within 5km
+          %div.radio
+            %label
+              %input{:type => 'radio', :name => 'alert[distance]', :value => '10', :checked => @alert.distance == 10}
+              Within 10km
+          %div.radio
+            %label
+              %input{:type => 'radio', :name => 'alert[distance]', :value => '15', :checked => @alert.distance == 15}
+              Within 15km
+          %div.form-group
+            %button{:type => 'submit', :class => 'btn btn-success'}
+              Update size
+      %p
+        Don't want to receive this alert any more?
+      %p
+        %a{:href => "/alert/#{@alert.confirmation_id}/unsubscribe"}
+          %button.btn.btn-warning{:type => 'button'}
+            %i.fa.fa-fw.fa-trash
+            Unsubscribe from this alert
+
+  %div.row.nav
+    %div.col-md-12
+      %p
+        %a{:href => "/"}
+          %button.btn.btn-default{:type => 'button'}
+            %i.fa.fa-fw.fa-arrow-circle-o-left
+            Back to search
+
+  = haml :footer
