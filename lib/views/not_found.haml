@@ -1,0 +1,20 @@
+%div.container
+  %div.row
+    %div.col-md-12
+      %h1
+        Sorry!
+        %small
+          We don't quite know what you were looking for.
+      %p
+        Maybe
+        %strong
+          %a{:href => link_to('/')}
+            start a new search?
+      %p
+        Think there should be something here?
+        - issue = { :title => "Couldn't find content at #{request.path}",
+                    :body => "When I went to #{request.path}, I expected to see <SOMETHING>" }
+        - query = nav_query(issue)
+        - bug_url = 'https://github.com/auxesis/gastro/issues/new?' + query
+        %a{:target => '_bug', :href => bug_url}
+          Report a bug.

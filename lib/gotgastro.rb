@@ -20,14 +20,19 @@ module GotGastro
       #
       # This allows us to keep track of location across requests, so we don't
       # have to keep prompting the user for where they are.
-      cookies[:location] ||= "-33.8675,151.207" # set default location to Sydney
+      cookies[:location] ||= '-33.8675,151.207' # set default location to Sydney
       cookies[:location] = "#{params[:lat]},#{params[:lng]}" if params[:lat] && params[:lng]
       cookies[:address] = params[:address] if params[:address]
 
       # Create a location object for lookups.
       lat, lng = URI.decode(cookies[:location]).split(',')
-      address = cookies[:address] || ""
+      address = cookies[:address] || ''
       @location = Business.new(:lat => lat, :lng => lng, :address => CGI::unescape(address))
+    end
+
+    not_found do
+      status 404
+      haml :not_found
     end
 
     get '/' do
@@ -44,8 +49,7 @@ module GotGastro
       if @business
         haml :detail
       else
-        status '404'
-        "not found"
+        halt 404
       end
     end
 
@@ -84,7 +88,7 @@ module GotGastro
           status 500
         end
       else
-        status 404
+        halt 404
       end
     end
 
@@ -95,7 +99,7 @@ module GotGastro
         @alert.save
         haml :alert_unsubscribe
       else
-        status 404
+        halt 404
       end
     end
 
@@ -104,7 +108,7 @@ module GotGastro
       if @alert
         haml :alert_edit
       else
-        status 404
+        halt 404
       end
     end
 
@@ -123,7 +127,7 @@ module GotGastro
         end
         haml :alert_edit
       else
-        status 404
+        halt 404
       end
     end
 
@@ -134,14 +138,14 @@ module GotGastro
 
     get_or_post '/reset' do
       if params[:token] != config['settings']['reset_token']
-        status 404
-        return "ERROR"
+        halt 404
+        return 'ERROR'
       end
 
       GotGastro::Workers::Import.perform_async(params[:token])
 
       status 201
-      "OK"
+      'OK'
     end
 
     get '/metrics' do
@@ -165,8 +169,7 @@ module GotGastro
 
     get '/env' do
       if params[:token] != config['settings']['reset_token']
-        status 404
-        return "ERROR"
+        halt 404
       end
 
       content_type :json
