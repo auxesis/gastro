@@ -99,6 +99,34 @@ module GotGastro
       end
     end
 
+    get '/alert/:confirmation_id/edit' do
+      @alert = Alert.first(:confirmation_id => params[:confirmation_id])
+      if @alert
+        haml :alert_edit
+      else
+        status 404
+      end
+    end
+
+    def flash
+      @flash ||= {}
+    end
+
+    post '/alert/:confirmation_id/edit' do
+      @alert = Alert.first(:confirmation_id => params[:confirmation_id])
+      if @alert
+        @alert.distance = params[:alert][:distance]
+        if @alert.save
+          flash[:success] = 'Alert updated!'
+        else
+          flash[:danger] = 'There was a problem updating your alert :-('
+        end
+        haml :alert_edit
+      else
+        status 404
+      end
+    end
+
     def self.get_or_post(url,&block)
       get(url,&block)
       post(url,&block)

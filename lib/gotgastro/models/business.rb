@@ -10,8 +10,9 @@ class Business < Sequel::Model
     end
   end
 
-  def distance_from(loc)
-    self.class.distance_between(self, loc, :units => :kms)
+  def distance_from(loc, options={})
+    opts = {:units => :kms}.merge(options)
+    self.class.distance_between(self, loc, opts)
   end
 
   def problems

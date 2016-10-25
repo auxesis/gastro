@@ -61,6 +61,7 @@ def config
 
   # FIXME(auxesis): refactor this to recursive openstruct
   settings = {}
+  settings['baseurl'] = environment == 'production' ? 'https://gotgastroagain.com' : 'http://localhost:9292'
   begin
     set_or_error(settings, 'reset_token',   :env => 'GASTRO_RESET_TOKEN')
     set_or_error(settings, 'morph_api_key', :env => 'MORPH_API_KEY')
