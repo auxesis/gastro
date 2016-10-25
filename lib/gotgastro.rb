@@ -30,6 +30,11 @@ module GotGastro
       @location = Business.new(:lat => lat, :lng => lng, :address => CGI::unescape(address))
     end
 
+    not_found do
+      status 404
+      haml :not_found
+    end
+
     get '/' do
       haml :index
     end
@@ -44,8 +49,7 @@ module GotGastro
       if @business
         haml :detail
       else
-        status '404'
-        "not found"
+        halt 404
       end
     end
 
@@ -84,7 +88,7 @@ module GotGastro
           status 500
         end
       else
-        status 404
+        halt 404
       end
     end
 
@@ -95,7 +99,7 @@ module GotGastro
         @alert.save
         haml :alert_unsubscribe
       else
-        status 404
+        halt 404
       end
     end
 
@@ -104,7 +108,7 @@ module GotGastro
       if @alert
         haml :alert_edit
       else
-        status 404
+        halt 404
       end
     end
 
@@ -123,7 +127,7 @@ module GotGastro
         end
         haml :alert_edit
       else
-        status 404
+        halt 404
       end
     end
 
@@ -165,8 +169,7 @@ module GotGastro
 
     get '/env' do
       if params[:token] != config['settings']['reset_token']
-        status 404
-        return "ERROR"
+        halt 404
       end
 
       content_type :json
