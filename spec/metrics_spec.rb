@@ -6,6 +6,48 @@ include GotGastro::Env::Test
 describe 'Got Gastro metrics', :type => :feature do
   include_context 'test data'
 
+  def offence_json_generator(opts={})
+    options = {
+      :count => 10,
+      :within => 15,
+      :origin => origin,
+    }.merge(opts)
+
+    business_ids = Business.find_near(origin, :within => options[:within], :limit => nil).map(:id)
+
+    offences = (0..options[:count]).map { |i|
+      {
+        'business_id' => i >= business_ids.size ? business_ids[0] : business_ids[i],
+        'date' => Faker::Time.backward(14).to_date,
+        'link' => Faker::Internet.url('www2.health.vic.gov.au/public-health/food-safety/convictions-register'),
+        'description' => Faker::ChuckNorris.fact,
+      }
+    }
+
+    offences.to_json
+  end
+
+
+  let(:subscribed_user) {
+    within_25km && within_150km
+
+    visit "/search?lat=#{origin.lat}&lng=#{origin.lng}&address=foobar"
+    fill_in 'alert[email]', :with => 'subscribed@example.org'
+    click_on 'Create alert'
+    GotGastro::Workers::EmailWorker.drain
+
+    expect(Mail::TestMailer.deliveries.size).to be 1
+
+    mail = Mail::TestMailer.deliveries.pop
+    confirmation_link = mail.body.to_s.match(/^(http.*)$/, 1).to_s
+    expect(confirmation_link).to be_url
+    visit(confirmation_link)
+    expect(page.status_code).to be 200
+    expect(page.body).to match(/your alert is now activated/i)
+
+    { :alert => Alert.first, :confirmation_link => confirmation_link }
+  }
+
   it 'should expose counts of core data' do
     visit '/metrics'
 
@@ -59,4 +101,69 @@ describe 'Got Gastro metrics', :type => :feature do
 
     expect(metrics['last_import_duration']).to be -1
   end
+
+  it 'display summary data on the home page' do
+    stub_request(:get,
+      %r{https://api\.morph\.io/auxesis/gotgastro_scraper/data\.json\?key=.*&query=select%20\*%20from%20'businesses'}
+      ).to_return(:status => 200, :body => business_json)
+
+    stub_request(:get,
+      %r{https://api\.morph\.io/auxesis/gotgastro_scraper/data\.json\?key.*&query=select%20\*%20from%20'offences'}
+      ).to_return(:status => 200, :body => offence_json).then.
+        to_return(lambda { |request| {:body => offence_json_generator(:count => 20, :within => 15)} })
+
+    set_environment_variable('GASTRO_RESET_TOKEN', gastro_reset_token)
+    set_environment_variable('MORPH_API_KEY', morph_api_key)
+
+    alert = subscribed_user[:alert]
+
+    # first
+    # trigger import
+    visit "/reset?token=#{gastro_reset_token}"
+    GotGastro::Workers::Import.drain
+    expect(GotGastro::Workers::EmailAlerts.jobs.size).to be > 0
+
+    GotGastro::Workers::EmailAlerts.drain
+    GotGastro::Workers::EmailWorker.drain
+
+    # look at received mail
+    expect(Mail::TestMailer.deliveries.size).to be 1
+    alert_mail = Mail::TestMailer.deliveries.pop
+    expect(alert_mail.to).to eq([alert.email])
+
+    # change the size
+    edit_link = alert_mail.body.to_s.match(/(http.*edit)$/, 1).to_s
+    visit(edit_link)
+    choose('15km')
+    click_on 'Update size'
+
+    6.times do
+      time_travel_to('tomorrow')
+
+      # second
+      # trigger import
+      visit "/reset?token=#{gastro_reset_token}"
+      GotGastro::Workers::Import.drain
+      expect(GotGastro::Workers::EmailAlerts.jobs.size).to be > 0
+
+      GotGastro::Workers::EmailAlerts.drain
+      GotGastro::Workers::EmailWorker.drain
+
+      # look at received mail
+      expect(Mail::TestMailer.deliveries.size).to be 1
+      alert_mail = Mail::TestMailer.deliveries.pop
+
+      expect(alert_mail.to).to eq([alert.email])
+      distances = alert_mail.body.to_s.split("\n").grep(/^Distance away: /).map {|d| d[/ (\d\.\d\d)km$/, 1].to_f}
+      expect(distances.size).to be > 0
+      distances.each do |distance|
+        expect(distance).to be < 15
+      end
+    end
+
+    visit '/'
+    expect(find('div.stat.new-offences span.number').text.to_i).to be > 7
+    expect(find('div.stat.received span.number').text.to_i).to eq(7)
+  end
+
 end
