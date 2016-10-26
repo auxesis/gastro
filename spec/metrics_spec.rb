@@ -59,4 +59,69 @@ describe 'Got Gastro metrics', :type => :feature do
 
     expect(metrics['last_import_duration']).to be -1
   end
+
+  it 'display summary data on the home page' do
+    stub_request(:get,
+      %r{https://api\.morph\.io/auxesis/gotgastro_scraper/data\.json\?key=.*&query=select%20\*%20from%20'businesses'}
+      ).to_return(:status => 200, :body => business_json)
+
+    stub_request(:get,
+      %r{https://api\.morph\.io/auxesis/gotgastro_scraper/data\.json\?key.*&query=select%20\*%20from%20'offences'}
+      ).to_return(:status => 200, :body => offence_json).then.
+        to_return(lambda { |request| {:body => offence_json_generator(:count => 20, :within => 15)} })
+
+    set_environment_variable('GASTRO_RESET_TOKEN', gastro_reset_token)
+    set_environment_variable('MORPH_API_KEY', morph_api_key)
+
+    alert = subscribed_user[:alert]
+
+    # first
+    # trigger import
+    visit "/reset?token=#{gastro_reset_token}"
+    GotGastro::Workers::Import.drain
+    expect(GotGastro::Workers::EmailAlerts.jobs.size).to be > 0
+
+    GotGastro::Workers::EmailAlerts.drain
+    GotGastro::Workers::EmailWorker.drain
+
+    # look at received mail
+    expect(Mail::TestMailer.deliveries.size).to be 1
+    alert_mail = Mail::TestMailer.deliveries.pop
+    expect(alert_mail.to).to eq([alert.email])
+
+    # change the size
+    edit_link = alert_mail.body.to_s.match(/(http.*edit)$/, 1).to_s
+    visit(edit_link)
+    choose('15km')
+    click_on 'Update size'
+
+    6.times do
+      time_travel_to('tomorrow')
+
+      # second
+      # trigger import
+      visit "/reset?token=#{gastro_reset_token}"
+      GotGastro::Workers::Import.drain
+      expect(GotGastro::Workers::EmailAlerts.jobs.size).to be > 0
+
+      GotGastro::Workers::EmailAlerts.drain
+      GotGastro::Workers::EmailWorker.drain
+
+      # look at received mail
+      expect(Mail::TestMailer.deliveries.size).to be 1
+      alert_mail = Mail::TestMailer.deliveries.pop
+
+      expect(alert_mail.to).to eq([alert.email])
+      distances = alert_mail.body.to_s.split("\n").grep(/^Distance away: /).map {|d| d[/ (\d\.\d\d)km$/, 1].to_f}
+      expect(distances.size).to be > 0
+      distances.each do |distance|
+        expect(distance).to be < 15
+      end
+    end
+
+    visit '/'
+    expect(find('div.stat.new-offences span.number').text.to_i).to be > 7
+    expect(find('div.stat.received span.number').text.to_i).to eq(7)
+  end
+
 end

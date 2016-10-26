@@ -26,21 +26,22 @@
     %div.panel-heading
       %h3.panel-title This week
     %div.panel-body
-      %div.col-md-3.text-center.stat
+      %div.col-md-3.text-center.stat.new-offences
         we collected
         %span.number
           = Offence.where(:created_at => Date.today.beginning_of_week.to_time..Time.now).count
         new offences
-      %div.col-md-3.text-center.stat
+      %div.col-md-3.text-center.stat.new-businesses
         we collected
         %span.number
           = Business.where(:created_at => Date.today.beginning_of_week.to_time..Time.now).count
         new businesses
-      %div.col-md-3.text-center.stat
+      %div.col-md-3.text-center.stat.received
         you received
-        %span.number 120
+        %span.number
+          = AlertsOffences.where(:created_at => (Date.today - 7).to_time..Time.now).group_by(:alert_id,:import_id).count
         email alerts
-      %div.col-md-3.text-center.stat
+      %div.col-md-3.text-center.stat.signups
         you signed up for
         %span.number
           = Alert.where(:created_at => Date.today.beginning_of_week.to_time..Time.now).count

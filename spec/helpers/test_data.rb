@@ -45,4 +45,81 @@ RSpec.shared_context 'test data' do
       Business.create(:name => "#{lat},#{lng},#{i}", :lat => lat, :lng => lng)
     end
   }
+  let(:subscribed_user) {
+    within_25km && within_150km
+
+    visit "/search?lat=#{origin.lat}&lng=#{origin.lng}&address=foobar"
+    fill_in 'alert[email]', :with => 'subscribed@example.org'
+    click_on 'Create alert'
+    GotGastro::Workers::EmailWorker.drain
+
+    expect(Mail::TestMailer.deliveries.size).to be 1
+
+    mail = Mail::TestMailer.deliveries.pop
+    confirmation_link = mail.body.to_s.match(/^(http.*)$/, 1).to_s
+    expect(confirmation_link).to be_url
+    visit(confirmation_link)
+    expect(page.status_code).to be 200
+    expect(page.body).to match(/your alert is now activated/i)
+
+    { :alert => Alert.first, :confirmation_link => confirmation_link }
+  }
+
+  let(:unconfirmed_user) {
+    within_25km && within_150km
+
+    visit "/search?lat=#{origin.lat}&lng=#{origin.lng}&address=foobar"
+    fill_in 'alert[email]', :with => 'unconfirmed@example.org'
+    click_on 'Create alert'
+    GotGastro::Workers::EmailWorker.drain
+
+    expect(Mail::TestMailer.deliveries.size).to be 1
+    Mail::TestMailer.deliveries.pop
+  }
+
+  let(:unsubscribed_user) {
+    within_25km && within_150km
+
+    visit "/search?lat=#{origin.lat}&lng=#{origin.lng}&address=foobar"
+    fill_in 'alert[email]', :with => 'unsubscribed@example.org'
+    click_on 'Create alert'
+    GotGastro::Workers::EmailWorker.drain
+
+    expect(Mail::TestMailer.deliveries.size).to be 1
+
+    mail = Mail::TestMailer.deliveries.pop
+    confirmation_link = mail.body.to_s.match(/^(http.*)$/, 1).to_s
+    expect(confirmation_link).to be_url
+    visit(confirmation_link)
+    expect(page.status_code).to be 200
+    expect(page.body).to match(/your alert is now activated/i)
+
+    # unsubscribe
+    unsubscribe_link = confirmation_link.to_s.gsub(/confirm/, 'unsubscribe')
+    visit(unsubscribe_link)
+    expect(page.status_code).to be 200
+    expect(page.body).to match(/you have unsubscribed from your alert/i)
+  }
+
+  def offence_json_generator(opts={})
+    options = {
+      :count => 10,
+      :within => 15,
+      :origin => origin,
+    }.merge(opts)
+
+    business_ids = Business.find_near(origin, :within => options[:within], :limit => nil).map(:id)
+
+    offences = (0..options[:count]).map { |i|
+      {
+        'business_id' => i >= business_ids.size ? business_ids[0] : business_ids[i],
+        'date' => Faker::Time.backward(14).to_date,
+        'link' => Faker::Internet.url('www2.health.vic.gov.au/public-health/food-safety/convictions-register'),
+        'description' => Faker::ChuckNorris.fact,
+      }
+    }
+
+    offences.to_json
+  end
+
 end
