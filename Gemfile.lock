@@ -125,6 +125,7 @@ GEM
     rb-fsevent (0.9.7)
     rb-inotify (0.9.7)
       ffi (>= 0.5.0)
+    redcarpet (3.3.4)
     redis (3.3.1)
     rerun (0.11.0)
       listen (~> 3.0)
@@ -219,6 +220,7 @@ DEPENDENCIES
   rack-google-analytics
   rack-ssl
   rake
+  redcarpet
   rerun
   rest-client
   rspec
@@ -231,7 +233,7 @@ DEPENDENCIES
   webmock
 
 RUBY VERSION
-   ruby 2.3.0p0
+   ruby 2.3.1p112
 
 BUNDLED WITH
-   1.13.2
+   1.13.6

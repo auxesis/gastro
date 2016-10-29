@@ -15,13 +15,21 @@ module GotGastro
         # Create Businesses
         Business.unrestrict_primary_key
         businesses.each do |business|
-          Business.create(business) unless Business[business['id']]
+          if b = Business[business['id']]
+            b.update(business)
+          else
+            Business.create(business)
+          end
         end
 
         # Create Offences
         Offence.unrestrict_primary_key
         offences.each do |offence|
-          Offence.create(offence) unless Offence.first(:link => offence['link'])
+          if o = Offence.first(:link => offence['link'])
+            o.update(offence)
+          else
+            Offence.create(offence)
+          end
         end
 
         import.save
