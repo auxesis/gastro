@@ -22,6 +22,7 @@ gem 'foreman'
 gem 'newrelic_rpm'
 gem 'dotiw'
 gem 'addressable'
+gem 'redcarpet'
 
 group :development do
   gem 'rerun'

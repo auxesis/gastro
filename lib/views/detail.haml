@@ -48,7 +48,8 @@
           Details of offences
       - if @business.offences.map {|o| o.description }.join =~ /\n/
         - @business.offences.each do |offence|
-          %pre= offence.description
+          :markdown
+            #{offence.description}
       - else
         %ul
           - @business.offences.each do |offence|
