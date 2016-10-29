@@ -1,4 +1,8 @@
-- page_title 'Search results'
+- if @location.address.blank?
+  - page_title 'Search results'
+- else
+  - page_title "Search results near: #{@location.address}"
+
 - require_js 'search'
 - zoom = @businesses.size == 0 ? "&zoom=10" : ""
 - img_src = "https://maps.googleapis.com/maps/api/staticmap?scale=2#{zoom}&size=400x200&amp;maptype=roadmap"
