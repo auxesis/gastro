@@ -181,5 +181,16 @@ module GotGastro
         :queues   => Sidekiq::Stats.new
       }.to_json
     end
+
+    get '/alerts' do
+      if params[:token] != config['settings']['reset_token']
+        halt 404
+      end
+
+      content_type :json
+      {
+        :alerts => Alert.all
+      }.to_json
+    end
   end
 end
