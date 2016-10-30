@@ -16,7 +16,7 @@ describe 'Alerts', :type => :feature do
   end
 
   describe 'should validate' do
-    it 'it has an email' do
+    it 'has an email' do
       within_25km && within_150km
 
       # Create it at /search
@@ -24,7 +24,7 @@ describe 'Alerts', :type => :feature do
       click_on 'Create alert'
       expect(page.status_code).to be 400
       expect(page.body).to match(/there was a problem creating your alert/i)
-      expect(page.body).to match(/we need an email address/i)
+      expect(page.body).to match(/we need a valid email address/i)
 
       GotGastro::Workers::EmailWorker.drain
       expect(Mail::TestMailer.deliveries.size).to be 0
