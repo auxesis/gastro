@@ -16,7 +16,6 @@ class AlertSignupService
   attribute :alert, Alert
   attribute :mail, Mail
 
-  validates :email, presence: { :message => 'We need an email address to create an alert for you.' }
   validates :email, email: { message: 'We need a valid email address to create an alert for you.' }
   validates :location, presence: {}
   validates :distance, presence: {}
