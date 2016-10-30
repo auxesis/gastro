@@ -184,6 +184,9 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.1)
+    valid_email (0.0.13)
+      activemodel
+      mail (~> 2.6.1)
     virtus (1.0.5)
       axiom-types (~> 0.1)
       coercible (~> 1.0)
@@ -229,6 +232,7 @@ DEPENDENCIES
   sidekiq
   sinatra
   sinatra-contrib
+  valid_email
   virtus
   webmock
 

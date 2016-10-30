@@ -6,6 +6,7 @@ require 'active_support/core_ext'
 module GotGastro
   class App < Sinatra::Base
     set :root, Pathname.new(__FILE__).parent
+    set :show_exceptions, :after_handler unless development?
 
     helpers Sinatra::LinkToHelper
     helpers Sinatra::PageTitleHelper
@@ -33,6 +34,11 @@ module GotGastro
     not_found do
       status 404
       haml :not_found
+    end
+
+    error 500 do
+      status 500
+      haml :error
     end
 
     get '/' do
@@ -66,7 +72,7 @@ module GotGastro
     end
 
     post '/alert' do
-      attrs = params[:alert].dup.merge({
+      attrs = (params[:alert] || {}).merge({
         :host => "#{request.env['rack.url_scheme']}://#{request.env['HTTP_HOST']}"
       })
       @alert = AlertSignupService.new(attrs)
@@ -74,7 +80,8 @@ module GotGastro
       if @alert.save
         haml :alert
       else
-        status 500
+        status 400
+        haml :new_alert
       end
     end
 
@@ -85,7 +92,7 @@ module GotGastro
           haml :alert_confirmation
         else
           debug("Couldn't confirm this alert: #{@alert.inspect}")
-          status 500
+          halt 500
         end
       else
         halt 404

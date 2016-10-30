@@ -1,3 +1,5 @@
+require 'valid_email'
+
 class AlertSignupService
   include Virtus.model
 
@@ -14,10 +16,13 @@ class AlertSignupService
   attribute :alert, Alert
   attribute :mail, Mail
 
-  validates :email, presence: { :message => 'Bummer! We need an email address to create an alert for you.' }
-  validates :location, presence: {}
-  validates :distance, presence: {}
-  validates :address, presence: { :message => "Sorry! We need an address to create an alert." }
+  validates :email, email: { message: 'We need a valid email address to create an alert for you.' }
+  validates :location, format: {
+    with:    /\d+\.\d+,\d+\.\d+/,
+    message: 'We need a location to create an alert for you.'
+  }
+  validates :distance, presence: { message: 'We need a distance to create an alert for you.' }
+  validates :address, presence:  { message: "We need an address to create an alert for you." }
 
   def initialize(opts)
     @host = opts[:host] || 'https://gotgastroagain.com'
