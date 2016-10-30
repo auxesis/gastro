@@ -50,11 +50,13 @@
             %a{:href => link_to("/business/#{business.id}")}
               = business.name
           - c = case
+          - when business.has_major_offences? ; 'danger'
           - when business.problems <= 2; 'warning'
           - when business.problems > 2; 'danger'
           %p.problem-count{:class => "text-#{c}"}
             %small
               %span.badge= business.problems
+              = business.has_major_offences? ? 'major' : 'minor'
               = business.problems == 1 ? 'problem,' : 'problems,'
             - if business.last_offence
               %small

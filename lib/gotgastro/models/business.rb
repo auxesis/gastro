@@ -23,6 +23,10 @@ class Business < Sequel::Model
     self.offences_dataset.order(:date).last
   end
 
+  def has_major_offences?
+    self.offences_dataset.select(:severity).distinct.all.map(&:severity).include?('major')
+  end
+
   def self.find_near(location, opts={})
     within = opts[:within] || 25
     limit  = opts[:limit]  || 50
