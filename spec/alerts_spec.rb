@@ -15,6 +15,39 @@ describe 'Alerts', :type => :feature do
     subscribed_user
   end
 
+  it 'should validate the alert on create' do
+    within_25km && within_150km
+
+    # Create it at /search
+    visit "/search?lat=#{origin.lat}&lng=#{origin.lng}&address=foobar"
+    click_on 'Create alert'
+    expect(page.status_code).to be 400
+    expect(page.body).to match(/there was a problem creating your alert/i)
+    expect(page.body).to match(/we need an email address/i)
+
+    GotGastro::Workers::EmailWorker.drain
+    expect(Mail::TestMailer.deliveries.size).to be 0
+
+    # Try to create, but with invalid input
+    fill_in 'alert[email]', :with => 'aoesntoasnetaoesntoaesnatoesnaote'
+    click_on 'Create alert'
+    expect(page.status_code).to be 400
+    expect(page.body).to match(/there was a problem creating your alert/i)
+    expect(page.body).to match(/we need a valid email address/i)
+
+    GotGastro::Workers::EmailWorker.drain
+    expect(Mail::TestMailer.deliveries.size).to be 0
+
+    # Create with valid input
+    fill_in 'alert[email]', :with => 'me@example.com'
+    click_on 'Create alert'
+    expect(page.status_code).to be 200
+    expect(page.body).to match(/now check your email/i)
+
+    GotGastro::Workers::EmailWorker.drain
+    expect(Mail::TestMailer.deliveries.size).to be 1
+  end
+
   it 'should deny unknown confirmations' do
     visit '/alert/12345/confirm'
     expect(page.status_code).to be 404
