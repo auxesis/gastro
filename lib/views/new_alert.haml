@@ -10,8 +10,9 @@
       %div.well.well-lg
         %form{:action => link_to('/alert'), :method => 'post'}
           %div.form-group.has-error
-            - @alert.errors[:email].each do |error|
-              %label.control-label= error
+            - @alert.errors.messages.each_pair do |field, errors|
+              - errors.each do |error|
+                %label{:class => "control-label #{field}"}= error
             %input.form-control.input-lg{:name => 'alert[email]', :placeholder => 'me@example.org', :type => 'email', :value => @alert.email}
             %input{:type => 'hidden', :name => 'alert[location]', :value => "#{@location.lat},#{@location.lng}"}
             %input{:type => 'hidden', :name => 'alert[distance]', :value => @alert.distance}
