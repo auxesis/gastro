@@ -13,9 +13,9 @@
             - @alert.errors[:email].each do |error|
               %label.control-label= error
             %input.form-control.input-lg{:name => 'alert[email]', :placeholder => 'me@example.org', :type => 'email', :value => @alert.email}
-            %input{:type => 'hidden', :name => "alert[location]", :value => "#{@location.lat},#{@location.lng}"}
-            %input{:type => 'hidden', :name => "alert[distance]", :value => @alert.distance}
-            %input{:type => 'hidden', :name => "alert[address]", :value => @alert.address}
+            %input{:type => 'hidden', :name => 'alert[location]', :value => "#{@location.lat},#{@location.lng}"}
+            %input{:type => 'hidden', :name => 'alert[distance]', :value => @alert.distance}
+            %input{:type => 'hidden', :name => 'alert[address]', :value => @alert.address}
           %button{:class => 'btn btn-success btn-lg btn-block', :type => 'submit'}
             %i.fa.fa-fw.fa-envelope
             Create alert
