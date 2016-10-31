@@ -152,10 +152,13 @@ describe 'Alerts', :type => :feature do
     expect(alert_mail.body).to match(alert.distance.to_s)
     expect(alert_mail.body).to match('unsubscribe')
 
-    expect(alert_mail.body.to_s.scan(/(?=Business)/).count).to be(offences.size)
-    expect(alert_mail.body.to_s.scan(/(?=Address)/).count).to be(offences.size)
-    expect(alert_mail.body.to_s.scan(/(?=Date)/).count).to be(offences.size)
-    expect(alert_mail.body.to_s.scan(/(?=Description)/).count).to be(offences.size)
+    alert_mail_text = alert_mail.body.parts.find {|part| part.content_type =~ /^text\/plain/}.body.to_s
+    alert_mail_html = Nokogiri::HTML(alert_mail.body.parts.find {|part| part.content_type =~ /^text\/html/}.body.to_s)
+
+    expect(alert_mail_text.scan(/(?=Business)/).count).to be(offences.size)
+    expect(alert_mail_text.scan(/(?=Address)/).count).to be(offences.size)
+    expect(alert_mail_text.scan(/(?=Date)/).count).to be(offences.size)
+    expect(alert_mail_text.scan(/(?=Description)/).count).to be(offences.size)
   end
 
   it 'should allow a user to unsubscribe' do
