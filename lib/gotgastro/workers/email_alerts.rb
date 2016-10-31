@@ -29,7 +29,9 @@ module GotGastro
               }
               AlertsOffences.create(attrs)
             end
-          end if false
+          end
+
+          # FIXME(auxesis): do a group_by business_id on offences so there is only one entry per business
 
           notify(:alert => alert, :offences => offences) if offences.size > 0
         end
