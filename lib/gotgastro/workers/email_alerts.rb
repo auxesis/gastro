@@ -3,6 +3,7 @@ require 'redis'
 require 'sidekiq/api'
 require 'mail'
 require 'active_support/core_ext/time'
+require 'tilt/haml'
 
 module GotGastro
   module Workers
@@ -28,7 +29,7 @@ module GotGastro
               }
               AlertsOffences.create(attrs)
             end
-          end
+          end if false
 
           notify(:alert => alert, :offences => offences) if offences.size > 0
         end
@@ -45,7 +46,11 @@ module GotGastro
         mail.from    = 'alerts@gotgastroagain.com'
         mail.to      = alert.email
         mail.subject = "#{offences.count} new food safety warnings near #{alert.address}"
-        mail.body    = <<-BODY.gsub(/^ {10}/, '')
+
+        # FIXME(auxesis): refactor text_part into separate method, like html_part
+        # FIXME(auxesis): refactor template into ERB
+        text_part = Mail::Part.new
+        text_part.body = <<-BODY.gsub(/^ {10}/, '')
           The following new food safety warnings have been found within #{alert.distance}km of #{alert.address}.
 
           #{format(offences, Business.new(:lat => alert.lat, :lng => alert.lng))}
@@ -56,6 +61,9 @@ module GotGastro
           Unsubscribe: #{config['settings']['baseurl']}/alert/#{alert.confirmation_id}/unsubscribe
           Change: #{config['settings']['baseurl']}/alert/#{alert.confirmation_id}/edit
         BODY
+
+        mail.text_part = text_part
+        mail.html_part = html_part(:alert => alert, :offences => offences)
 
         GotGastro::Workers::EmailWorker.perform_async(mail)
       end
@@ -73,6 +81,23 @@ module GotGastro
 
         erb = ERB.new(template, nil, '-')
         erb.result(binding)
+      end
+
+      def view(filename)
+        Pathname.new(__FILE__).parent.parent.parent.join('views').join(filename).to_s
+      end
+
+      def html_part(opts={})
+        alert    = opts[:alert]
+        offences = opts[:offences]
+
+        part = Mail::Part.new
+        part.content_type 'text/html; charset=UTF-8'
+
+        template = Tilt::HamlTemplate.new(view('alerts/email.haml'))
+        part.body = template.render(self, :alert => alert, :offences => offences)
+
+        return part
       end
     end
   end

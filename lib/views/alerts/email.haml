@@ -1,0 +1,55 @@
+- styles = { :body    => 'font-family: sans-serif;',
+             :heading => 'background-color: #28b62c; color: #eee; padding: 10px;',
+             :intro   => 'background-color: #ccc; color: #333; padding: 10px;',
+             :offence => 'background-color: #eee; color: #111; padding: 10px; margin-bottom: 10px;',
+             :title   => 'text-decoration: none;',
+             :th      => 'text-align: left;',
+             :edit    => 'color: #111; padding: 10px;' }
+%body{:style => styles[:body]}
+  %h1{:style => styles[:heading]}
+    Got Gastro
+  %p{:style => styles[:intro]}
+    The following
+    %strong new food safety warnings
+    have been found within
+    %em= "#{alert.distance}km"
+    of
+    %em= alert.address + '.'
+
+  %div
+    - offences.each do |offence|
+      %div{:style => styles[:offence]}
+        %a{:href => offence.link, :style => styles[:title]}
+          %h3
+            = offence.business.name
+            –
+            = offence.business.address
+        %table
+          %tr
+            %th{:style => styles[:th]}
+              Distance away:
+            %td
+              = "%.2f" % offence.business.distance_from(alert)
+              km
+          %tr
+            %th{:style => styles[:th]}
+              Date:
+            %td
+              = offence.date
+          %tr
+            %th{:style => styles[:th]}
+              Description:
+            %td
+              = offence.description.strip
+
+  %p
+    Thanks,
+    %br/
+    Got Gastro
+
+  %p{:style => styles[:edit]}
+    %a{:href => "#{config['settings']['baseurl']}/alert/#{alert.confirmation_id}/unsubscribe"}
+      Unsubscribe
+    or
+    %a{:href => "#{config['settings']['baseurl']}/alert/#{alert.confirmation_id}/edit"}
+      change
