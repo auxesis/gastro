@@ -1,10 +1,12 @@
-- styles = { :body    => 'font-family: sans-serif;',
-             :heading => 'background-color: #28b62c; color: #eee; padding: 10px;',
-             :intro   => 'background-color: #ccc; color: #333; padding: 10px;',
-             :offence => 'background-color: #eee; color: #111; padding: 10px; margin-bottom: 10px;',
-             :title   => 'text-decoration: none;',
-             :th      => 'text-align: left;',
-             :edit    => 'color: #111; padding: 10px;' }
+- styles = { :body      => 'font-family: sans-serif;',
+             :heading   => 'background-color: #28b62c; color: #eee; padding: 15px 10px; border-color: #24a528; border-bottom-width: 10px;',
+             :intro     => 'color: #333; padding: 10px; font-size: 120%;',
+             :offence   => 'background-color: #fafafa; color: #111; padding: 10px; margin-bottom: 10px;',
+             :title     => 'color: #158cba; text-decoration: none;',
+             :th        => 'text-align: left;',
+             :edit      => 'color: #111; padding: 10px;',
+             :signature => 'padding: 10px;',
+             :link      => 'color: #158cba' }
 %body{:style => styles[:body]}
   %h1{:style => styles[:heading]}
     Got Gastro
@@ -33,23 +35,32 @@
               km
           %tr
             %th{:style => styles[:th]}
-              Date:
+              When:
             %td
               = offence.date
           %tr
             %th{:style => styles[:th]}
               Description:
             %td
-              = offence.description.strip
+              - if offence.description =~ /\n/
+                :markdown
+                  #{offence.description}
+              - else
+                = offence.description.strip
+        %p
+          - link = "#{config['settings']['baseurl']}/business/#{offence.business.id}"
+          %a{:href => link, :style => styles[:link]}
+            See all food safety problems at this address
 
-  %p
+  %p{:style => styles[:signature]}
     Thanks,
     %br/
     Got Gastro
 
   %p{:style => styles[:edit]}
-    %a{:href => "#{config['settings']['baseurl']}/alert/#{alert.confirmation_id}/unsubscribe"}
+    %a{:style => styles[:link], :href => "#{config['settings']['baseurl']}/alert/#{alert.confirmation_id}/unsubscribe"}<
       Unsubscribe
     or
-    %a{:href => "#{config['settings']['baseurl']}/alert/#{alert.confirmation_id}/edit"}
+    %a{:style => styles[:link], :href => "#{config['settings']['baseurl']}/alert/#{alert.confirmation_id}/edit"}<
       change
+    your alert preferences.
