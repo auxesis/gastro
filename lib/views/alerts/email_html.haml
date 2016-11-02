@@ -20,36 +20,38 @@
       %em= alert.address + '.'
 
     %div
-      - offences.each do |offence|
+      - pairs.each do |business, offences|
         %div{:style => styles[:offence]}
-          %a{:href => offence.link, :style => styles[:title]}
-            %h3
-              = offence.business.name
-              –
-              = offence.business.address
+          %h3.business.address{:style => styles[:title]}
+            = business.name
+            –
+            = business.address
           %table
-            %tr
+            %tr.distance
               %th{:style => styles[:th]}
                 Distance away:
               %td
-                = "%.2f" % offence.business.distance_from(alert)
+                = "%.2f" % business.distance_from(alert)
                 km
-            %tr
-              %th{:style => styles[:th]}
-                When:
-              %td
-                = offence.date.strftime("%B %d, %Y")
-            %tr
-              %th{:style => styles[:th]}
-                Description:
-              %td
-                - if offence.description =~ /\n/
-                  :markdown
-                    #{offence.description}
-                - else
-                  = offence.description.strip
+            - offences.each do |offence|
+              %tr.when
+                %th{:style => styles[:th]}
+                  When:
+                %td
+                  %a{:href => offence.link, :style => styles[:title]}
+                    = offence.date.strftime("%B %d, %Y")
+              %tr.description
+                %th{:style => styles[:th]}
+                  Description:
+                %td
+                  - if offence.description =~ /\n/
+                    :markdown
+                      #{offence.description}
+                  - else
+                    = offence.description.strip
+
           %p
-            - link = "#{config['settings']['baseurl']}/business/#{offence.business.id}"
+            - link = "#{config['settings']['baseurl']}/business/#{business.id}"
             %a{:href => link, :style => styles[:link]}
               See all food safety problems at this address
 

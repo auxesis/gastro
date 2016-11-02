@@ -160,6 +160,11 @@ describe 'Alerts', :type => :feature do
     expect(alert_mail_text.scan(/^(?=Address)/).count).to eq(business_count)
     expect(alert_mail_text.scan(/^(?=When)/).count).to eq(offences.size)
     expect(alert_mail_text.scan(/^(?=Description)/).count).to eq(offences.size)
+
+    expect(alert_mail_html.search('.business').size).to eq(business_count)
+    expect(alert_mail_html.search('.address').size).to eq(business_count)
+    expect(alert_mail_html.search('.when').size).to eq(offences.size)
+    expect(alert_mail_html.search('.description').size).to eq(offences.size)
   end
 
   it 'should allow a user to unsubscribe' do

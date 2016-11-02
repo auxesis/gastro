@@ -54,7 +54,7 @@ module GotGastro
         mail.to      = alert.email
         mail.subject = "#{offences.count} new food safety warnings near #{alert.address}"
         mail.text_part = text_part(:alert => alert, :to_alert => pairs)
-        mail.html_part = html_part(:alert => alert, :offences => offences)
+        mail.html_part = html_part(:alert => alert, :to_alert => pairs)
 
         GotGastro::Workers::EmailWorker.perform_async(mail)
       end
@@ -65,13 +65,13 @@ module GotGastro
 
       def html_part(opts={})
         alert    = opts[:alert]
-        offences = opts[:offences]
+        pairs    = opts[:to_alert]
 
         part = Mail::Part.new
         part.content_type 'text/html; charset=UTF-8'
 
-        template = Tilt::HamlTemplate.new(view('alerts/email.haml'))
-        part.body = template.render(self, :alert => alert, :offences => offences)
+        template = Tilt::HamlTemplate.new(view('alerts/email_html.haml'))
+        part.body = template.render(self, :alert => alert, :pairs => pairs)
 
         return part
       end
