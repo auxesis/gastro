@@ -3,7 +3,7 @@
 - else
   - page_title "Search results near: #{@location.address}"
 
-- require_js 'search'
+- require_js 'search.min'
 - zoom = @businesses.size == 0 ? "&zoom=10" : ""
 - img_src = "https://maps.googleapis.com/maps/api/staticmap?scale=2#{zoom}&size=400x200&amp;maptype=roadmap"
 - markers = "size:tiny%7C#{@businesses.map {|p|[p.lat,p.lng].join(',')}.join('%7C')}"
