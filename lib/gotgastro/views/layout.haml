@@ -1,23 +1,23 @@
 !!!
-%html{:lang => "en"}
+%html{:lang => 'en'}
   %head
-    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
-    %meta{:charset => "utf-8"}/
-    %meta{:content => "IE=edge", "http-equiv" => "X-UA-Compatible"}/
-    %meta{:content => "width=device-width, initial-scale=1.0 maximum-scale=1.0, user-scalable=no", :name => "viewport"}/
+    %meta{:content => 'text/html; charset=UTF-8', 'http-equiv' => 'Content-Type'}/
+    %meta{:charset => 'utf-8'}/
+    %meta{:content => 'IE=edge', 'http-equiv' => 'X-UA-Compatible'}/
+    %meta{:content => 'width=device-width, initial-scale=1.0 maximum-scale=1.0, user-scalable=no', :name => 'viewport'}/
     = include_page_title
     // FIXME(auxesis): add helpers to set page description
-    %meta{:content => "Got Gastro helps you find out about potential food safety problems when eating out or buying food."}
+    %meta{:content => 'Got Gastro helps you find out about potential food safety problems when eating out or buying food.'}
     // FIXME(auxesis): add helpers to link css (with absolute url)
-    %link{:href => link_to("/css/vendor/font-awesome.min.css"), :rel => "stylesheet"}/
-    %link{:href => link_to("/css/vendor/bootstrap.min.css"), :rel => "stylesheet"}/
-    %link{:href => link_to("/css/main.min.css"), :rel => "stylesheet"}/
+    %link{:href => link_to('/css/vendor/font-awesome.min.css'), :rel => 'stylesheet'}/
+    %link{:href => link_to('/css/vendor/bootstrap.min.css'), :rel => 'stylesheet'}/
+    %link{:href => link_to('/css/main.min.css'), :rel => 'stylesheet'}/
     // FIXME(auxesis): add helpers to link canonical (with absolute url)
-    %link{:href => link_to("/"), :rel => "canonical"}/
-    %link{:href => link_to("/img/favicon.png?1"), :rel => "icon"}/
-    %link{:href => link_to("/img/apple-touch-icon-precomposed.png?1"), :rel => "apple-touch-icon-precomposed"}/
+    %link{:href => link_to('/'), :rel => 'canonical'}/
+    %link{:href => link_to('/img/favicon.png?1'), :rel => 'icon'}/
+    %link{:href => link_to('/img/apple-touch-icon-precomposed.png?1'), :rel => 'apple-touch-icon-precomposed'}/
     // FIXME(auxesis): add helpers to link javascript (with absolute url)
-    %script{:src => link_to("/js/vendor/jquery.min.js")}
+    %script{:src => link_to('/js/vendor/jquery.min.js')}
     = include_required_js
   %body
     = yield
