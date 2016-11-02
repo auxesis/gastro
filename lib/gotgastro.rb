@@ -81,7 +81,7 @@ module GotGastro
         haml :alert
       else
         status 400
-        haml :new_alert
+        haml :invalid_new_alert
       end
     end
 

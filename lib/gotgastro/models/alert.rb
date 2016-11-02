@@ -1,5 +1,6 @@
 class Alert < Sequel::Model
   plugin :timestamps
+  plugin :mappable
   many_to_many :offences
 
   def location
