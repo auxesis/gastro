@@ -31,8 +31,6 @@ module GotGastro
             end
           end
 
-          # FIXME(auxesis): do a group_by business_id on offences so there is only one entry per business
-
           notify(:alert => alert, :offences => offences) if offences.size > 0
         end
       end
@@ -43,12 +41,19 @@ module GotGastro
 
         raise ArgumentError unless alert && offences
 
+        pairs = {}
+        offences.each do |offence|
+          business = offence.business
+          pairs[business] ||= []
+          pairs[business] << offence
+        end
+
         mail = Mail.new
-        mail.charset = "UTF-8"
+        mail.charset = 'UTF-8'
         mail.from    = 'alerts@gotgastroagain.com'
         mail.to      = alert.email
         mail.subject = "#{offences.count} new food safety warnings near #{alert.address}"
-        mail.text_part = text_part(:alert => alert, :offences => offences)
+        mail.text_part = text_part(:alert => alert, :to_alert => pairs)
         mail.html_part = html_part(:alert => alert, :offences => offences)
 
         GotGastro::Workers::EmailWorker.perform_async(mail)
@@ -73,11 +78,11 @@ module GotGastro
 
       def text_part(opts={})
         alert    = opts[:alert]
-        offences = opts[:offences]
+        pairs    = opts[:to_alert]
 
         part = Mail::Part.new
         template = Tilt::ERBTemplate.new(view('alerts/email_text.erb'))
-        part.body = template.render(self, :alert => alert, :offences => offences)
+        part.body = template.render(self, :alert => alert, :pairs => pairs)
 
         return part
       end

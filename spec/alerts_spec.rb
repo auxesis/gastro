@@ -120,7 +120,7 @@ describe 'Alerts', :type => :feature do
 
     stub_request(:get,
       %r{https://api\.morph\.io/auxesis/gotgastro_scraper/data\.json\?key.*&query=select%20\*%20from%20'offences'}
-      ).to_return(:status => 200, :body => offence_json)
+       ).to_return(lambda { |request| {:body => offence_json_generator(:count => 20, :within => 15)} })
 
     set_environment_variable('GASTRO_RESET_TOKEN', gastro_reset_token)
     set_environment_variable('MORPH_API_KEY', morph_api_key)
@@ -145,6 +145,7 @@ describe 'Alerts', :type => :feature do
     businesses = Business.find_near(alert.location, :within => alert.distance)
     conditions = { Sequel.qualify(:offences, :created_at) => Time.now.beginning_of_day..Time.now.end_of_day }
     offences = Offence.join(businesses, :id => :business_id).where{conditions}.all
+    business_count = offences.map(&:business).uniq.size
 
     expect(alert_mail.subject).to match(alert.address)
     expect(alert_mail.subject).to match(/^#{offences.size} new food safety warnings/)
@@ -155,10 +156,10 @@ describe 'Alerts', :type => :feature do
     alert_mail_text = alert_mail.body.parts.find {|part| part.content_type =~ /^text\/plain/}.body.to_s
     alert_mail_html = Nokogiri::HTML(alert_mail.body.parts.find {|part| part.content_type =~ /^text\/html/}.body.to_s)
 
-    expect(alert_mail_text.scan(/(?=Business)/).count).to be(offences.size)
-    expect(alert_mail_text.scan(/(?=Address)/).count).to be(offences.size)
-    expect(alert_mail_text.scan(/(?=Date)/).count).to be(offences.size)
-    expect(alert_mail_text.scan(/(?=Description)/).count).to be(offences.size)
+    expect(alert_mail_text.scan(/^(?=Business)/).count).to eq(business_count)
+    expect(alert_mail_text.scan(/^(?=Address)/).count).to eq(business_count)
+    expect(alert_mail_text.scan(/^(?=When)/).count).to eq(offences.size)
+    expect(alert_mail_text.scan(/^(?=Description)/).count).to eq(offences.size)
   end
 
   it 'should allow a user to unsubscribe' do
