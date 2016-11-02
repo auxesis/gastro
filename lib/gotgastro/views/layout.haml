@@ -17,7 +17,8 @@
     %link{:href => link_to('/img/favicon.png?1'), :rel => 'icon'}/
     %link{:href => link_to('/img/apple-touch-icon-precomposed.png?1'), :rel => 'apple-touch-icon-precomposed'}/
     // FIXME(auxesis): add helpers to link javascript (with absolute url)
-    %script{:src => link_to('/js/vendor/jquery.min.js')}
-    = include_required_js
   %body
     = yield
+
+    %script{:src => link_to('/js/vendor/jquery.min.js')}
+    = include_required_js
