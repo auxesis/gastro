@@ -26,6 +26,10 @@ def info?
   environment != 'test'
 end
 
+def production?
+  environment == 'production'
+end
+
 def debug(msg)
   puts('[debug] ' + msg) if debug?
 end
