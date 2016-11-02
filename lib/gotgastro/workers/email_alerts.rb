@@ -48,41 +48,10 @@ module GotGastro
         mail.from    = 'alerts@gotgastroagain.com'
         mail.to      = alert.email
         mail.subject = "#{offences.count} new food safety warnings near #{alert.address}"
-
-        # FIXME(auxesis): refactor text_part into separate method, like html_part
-        # FIXME(auxesis): refactor template into ERB
-        text_part = Mail::Part.new
-        text_part.body = <<-BODY.gsub(/^ {10}/, '')
-          The following new food safety warnings have been found within #{alert.distance}km of #{alert.address}.
-
-          #{format(offences, Business.new(:lat => alert.lat, :lng => alert.lng))}
-
-          Thanks,
-          Got Gastro
-
-          Unsubscribe: #{config['settings']['baseurl']}/alert/#{alert.confirmation_id}/unsubscribe
-          Change: #{config['settings']['baseurl']}/alert/#{alert.confirmation_id}/edit
-        BODY
-
-        mail.text_part = text_part
+        mail.text_part = text_part(:alert => alert, :offences => offences)
         mail.html_part = html_part(:alert => alert, :offences => offences)
 
         GotGastro::Workers::EmailWorker.perform_async(mail)
-      end
-
-      def format(offences, origin)
-        template = <<-TEMPLATE.gsub(/^ {10}/, '')
-          <% offences.each do |offence| %>
-          Business: <%= offence.business.name %>
-          Address: <%= offence.business.address %>
-          Distance away: <%= "%.2f" % offence.business.distance_from(origin) %>km
-          Date: <%= offence.date %>
-          Description: <%= offence.description.strip %>
-          <% end %>
-        TEMPLATE
-
-        erb = ERB.new(template, nil, '-')
-        erb.result(binding)
       end
 
       def view(filename)
@@ -97,6 +66,17 @@ module GotGastro
         part.content_type 'text/html; charset=UTF-8'
 
         template = Tilt::HamlTemplate.new(view('alerts/email.haml'))
+        part.body = template.render(self, :alert => alert, :offences => offences)
+
+        return part
+      end
+
+      def text_part(opts={})
+        alert    = opts[:alert]
+        offences = opts[:offences]
+
+        part = Mail::Part.new
+        template = Tilt::ERBTemplate.new(view('alerts/email_text.erb'))
         part.body = template.render(self, :alert => alert, :offences => offences)
 
         return part

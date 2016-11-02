@@ -1,0 +1,16 @@
+Hey there,
+The following new food safety warnings have been found within <%= alert.distance %>km of <%= alert.address %>.
+
+<% offences.each do |offence| %>
+Business: <%= offence.business.name %>
+Address: <%= offence.business.address %>
+Distance away: <%= "%.2f" % offence.business.distance_from(alert) %>km
+Date: <%= offence.date %>
+Description: <%= offence.description.strip %>
+
+<% end %>
+Thanks,
+Got Gastro
+
+Unsubscribe: <%= config['settings']['baseurl'] %>/alert/<%= alert.confirmation_id %>/unsubscribe
+Change: <%= config['settings']['baseurl'] %>/alert/<%= alert.confirmation_id %>/edit
