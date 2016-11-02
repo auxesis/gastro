@@ -81,6 +81,7 @@ module GotGastro
         pairs    = opts[:to_alert]
 
         part = Mail::Part.new
+        part.content_type 'text/plain; charset=UTF-8'
         template = Tilt::ERBTemplate.new(view('alerts/email_text.erb'))
         part.body = template.render(self, :alert => alert, :pairs => pairs)
 
