@@ -41,6 +41,7 @@ module GotGastro
 
         raise ArgumentError unless alert && offences
 
+        # business => [ offence ] mapping, roll up many offences into one business.
         pairs = {}
         offences.each do |offence|
           business = offence.business
