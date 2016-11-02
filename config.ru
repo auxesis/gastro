@@ -18,7 +18,7 @@ def root
 end
 
 def public_folder
-  @public ||= root + 'public'
+  @public ||= root.join('gotgastro').join('public')
 end
 
 # Serve static assets before everything else

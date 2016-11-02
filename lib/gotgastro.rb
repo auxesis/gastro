@@ -5,7 +5,7 @@ require 'active_support/core_ext'
 
 module GotGastro
   class App < Sinatra::Base
-    set :root, Pathname.new(__FILE__).parent
+    set :root, Pathname.new(__FILE__).parent.join('gotgastro')
     set :show_exceptions, :after_handler unless development?
 
     helpers Sinatra::LinkToHelper
@@ -78,10 +78,10 @@ module GotGastro
       @alert = AlertSignupService.new(attrs)
 
       if @alert.save
-        haml :alert
+        haml :'alerts/new'
       else
         status 400
-        haml :invalid_new_alert
+        haml :'alerts/invalid_new'
       end
     end
 
@@ -89,7 +89,7 @@ module GotGastro
       @alert = AlertSignupService.find(params[:confirmation_id])
       if @alert
         if @alert.confirm!
-          haml :alert_confirmation
+          haml :'alerts/confirmation'
         else
           debug("Couldn't confirm this alert: #{@alert.inspect}")
           halt 500
@@ -104,7 +104,7 @@ module GotGastro
       if @alert
         @alert.unsubscribed_at = Time.now
         @alert.save
-        haml :alert_unsubscribe
+        haml :'alerts/unsubscribe'
       else
         halt 404
       end
@@ -113,7 +113,7 @@ module GotGastro
     get '/alert/:confirmation_id/edit' do
       @alert = Alert.first(:confirmation_id => params[:confirmation_id])
       if @alert
-        haml :alert_edit
+        haml :'alerts/edit'
       else
         halt 404
       end
@@ -132,7 +132,7 @@ module GotGastro
         else
           flash[:danger] = 'There was a problem updating your alert :-('
         end
-        haml :alert_edit
+        haml :'alerts/edit'
       else
         halt 404
       end

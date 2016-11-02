@@ -61,7 +61,7 @@ module GotGastro
       end
 
       def view(filename)
-        Pathname.new(__FILE__).parent.parent.parent.join('views').join(filename).to_s
+        Pathname.new(__FILE__).parent.parent.join('views').join(filename).to_s
       end
 
       def html_part(opts={})
