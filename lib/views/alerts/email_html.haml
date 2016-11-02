@@ -2,7 +2,9 @@
              :heading   => 'background-color: #28b62c; color: #eee; padding: 15px 10px; border-color: #24a528; border-bottom-width: 10px;',
              :intro     => 'color: #333; padding: 10px; font-size: 120%;',
              :offence   => 'background-color: #fafafa; color: #111; padding: 10px; margin-bottom: 10px;',
-             :title     => 'color: #158cba; text-decoration: none;',
+             :title     => 'color: #158cba;',
+             :when      => 'padding-top: 15px;',
+             :when_th   => 'padding-top: 15px; text-align: left;',
              :th        => 'text-align: left;',
              :edit      => 'color: #111; padding: 10px;',
              :signature => 'padding: 10px;',
@@ -26,6 +28,13 @@
             = business.name
             –
             = business.address
+
+          %p
+            - img_src = "https://maps.googleapis.com/maps/api/staticmap?scale=2&zoom=15&size=200x100&amp;maptype=roadmap"
+            - markers = "size:mid%7C#{business.lat},#{business.lng}"
+            - gmaps_api_key = "AIzaSyBxaCRguM2pvw9HOLybx5ZP6Cuo94KnJwg"
+            - map_url = "#{img_src}&markers=#{markers}&key=#{gmaps_api_key}"
+            %img{:src => map_url}/
           %table
             %tr.distance
               %th{:style => styles[:th]}
@@ -35,14 +44,14 @@
                 km
             - offences.each do |offence|
               %tr.when
-                %th{:style => styles[:th]}
+                %th{:style => styles[:when_th]}
                   When:
-                %td
+                %td{:style => styles[:when]}
                   %a{:href => offence.link, :style => styles[:title]}
                     = offence.date.strftime("%B %d, %Y")
               %tr.description
                 %th{:style => styles[:th]}
-                  Description:
+                  What:
                 %td
                   - if offence.description =~ /\n/
                     :markdown
