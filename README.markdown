@@ -72,13 +72,14 @@ Got Gastro runs on [Pivotal Web Services](https://run.pivotal.io/).
 
 ### Setup
 
-Ensure you have Git, Ruby, MySQL, and Redis:
+Ensure you have Git, Ruby, Node, MySQL, and Redis:
 
 ``` bash
 git clone git@github.com:auxesis/gastro.git
 cd gastro
 bundle
 rake db:setup
+npm install
 ```
 
 #### MySQL

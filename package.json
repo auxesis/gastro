@@ -1,0 +1,15 @@
+{
+  "name": "gotgastro",
+  "version": "0.0.1",
+  "author": "Lindsay Holmwood",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/auxesis/gastro.git"
+  },
+  "dependencies": {
+    "uglify-js": "latest",
+    "clean-css": "latest"
+  },
+  "devDependencies": {}
+}

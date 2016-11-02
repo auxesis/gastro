@@ -21,6 +21,8 @@ def public_folder
   @public ||= root.join('gotgastro').join('public')
 end
 
+# gzip compress everything
+use Rack::Deflater
 # Serve static assets before everything else
 use Rack::Static, :urls => %w(/css /img /fonts /js), :root => public_folder
 # Google Analytics

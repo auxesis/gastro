@@ -2,3 +2,4 @@ web: pkill -f rackup ; bundle exec rerun --pattern='**/*.{rb,ru}' --ignore='spec
 mail: mailcatcher -f
 redis: redis-server
 sidekiq: bundle exec rerun --pattern=lib/gotgastro/workers* -- sidekiq -c 10 -v -r ./lib/gotgastro/workers.rb
+assets: bundle exec rerun --exit --pattern=lib/gotgastro/public/* --ignore=*.min.* -- rake assets

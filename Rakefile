@@ -36,3 +36,12 @@ namespace :db do
     system(%(mysql -u root -e "DROP USER 'gotgastro_test'@'localhost';"))
   end
 end
+
+task :assets do
+  node_path = 'node_modules/.bin'
+  css_path  = 'lib/gotgastro/public/css'
+  js_path   = 'lib/gotgastro/public/js'
+  system("#{node_path}/cleancss --debug -o #{css_path}/main.min.css #{css_path}/main.css")
+  system("#{node_path}/uglifyjs --verbose -o #{js_path}/index.min.js #{js_path}/index.js")
+  system("#{node_path}/uglifyjs --verbose -o #{js_path}/search.min.js #{js_path}/search.js")
+end
