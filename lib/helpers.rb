@@ -148,7 +148,7 @@ module Sinatra
     def include_required_css
       if @css_filenames
         @css_filenames.map { |filename|
-          %(<link href="#{link_to("/css/#{filename}.css")}" rel="stylesheet" type="text/css">)
+          %(<link href="#{link_to("/css/#{filename}.css", :asset => true)}" rel="stylesheet" type="text/css">)
         }.join("\n")
       else
         ""
