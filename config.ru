@@ -27,6 +27,7 @@ use Rack::Deflater
 use Rack::Static, :urls => %w(/css /img /fonts /js),
   :root => public_folder,
   :header_rules => [
+    [:all, {'Cache-Control' => 'public, max-age=31536000'}],
     [:fonts, {'Access-Control-Allow-Origin' => '*'}]
   ]
 # Google Analytics

@@ -42,6 +42,7 @@ module GotGastro
     end
 
     get '/' do
+      cache_control :public, :max_age => 86400
       haml :index
     end
 
@@ -60,14 +61,17 @@ module GotGastro
     end
 
     get '/about' do
+      cache_control :public, :max_age => 86400
       haml :about
     end
 
     get '/report' do
+      cache_control :public, :max_age => 86400
       haml :report
     end
 
     get '/privacy' do
+      cache_control :public, :max_age => 86400
       haml :privacy
     end
 
