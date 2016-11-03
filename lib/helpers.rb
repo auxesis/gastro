@@ -158,11 +158,15 @@ module Sinatra
 
   module LinkToHelper
     # from http://gist.github.com/98310
-    def link_to(url_fragment, mode=:path_only)
-      case mode
-      when :path_only
+    def link_to(url_fragment, opts={})
+      options = { :mode => :path_only }.merge(opts)
+      case
+      # if thing being linked to is an asset, and CDN is configured, link to CDN
+      when opts[:asset] && cdn?
+        base = config['cdn_base']
+      when options[:mode] == :path_only
         base = request.script_name
-      when :full_url
+      when options[:mode] == :full_url
         if (request.scheme == 'http' && request.port == 80 ||
             request.scheme == 'https' && [80, 443].include?(request.port))
           port = ""
