@@ -56,7 +56,22 @@ describe 'CDN', :type => :feature do
       end
     end
 
-    it 'should serve images from a CDN'
+    it 'should serve images from a CDN' do
+      set_environment_variable('CDN_BASE', cdn_base)
+
+      visit '/'
+
+      doc = Nokogiri::HTML(page.body)
+      icons = doc.search('//link').select { |l|
+        l.attributes['rel'].value =~ /icon/
+      }.map {|l|
+        l.attributes['href'].value
+      }
+
+      icons.each do |value|
+        expect(value).to match(/^#{cdn_base}/)
+      end
+    end
   end
 
   describe 'disabled' do
@@ -87,6 +102,21 @@ describe 'CDN', :type => :feature do
       end
     end
 
-    it 'should not serve images from a CDN'
+    it 'should not serve images from a CDN' do
+      delete_environment_variable('CDN_BASE')
+
+      visit '/'
+
+      doc = Nokogiri::HTML(page.body)
+      icons = doc.search('//link').select { |l|
+        l.attributes['rel'].value =~ /icon/
+      }.map {|l|
+        l.attributes['href'].value
+      }
+
+      icons.each do |value|
+        expect(value).to_not match(/^#{cdn_base}/)
+      end
+    end
   end
 end

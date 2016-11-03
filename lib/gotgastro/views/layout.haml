@@ -14,8 +14,8 @@
     = include_required_css
     // FIXME(auxesis): add helpers to link canonical (with absolute url)
     %link{:href => link_to('/'), :rel => 'canonical'}/
-    %link{:href => link_to('/img/favicon.png?1'), :rel => 'icon'}/
-    %link{:href => link_to('/img/apple-touch-icon-precomposed.png?1'), :rel => 'apple-touch-icon-precomposed'}/
+    %link{:href => link_to('/img/favicon.png?1', :asset => true), :rel => 'icon'}/
+    %link{:href => link_to('/img/apple-touch-icon-precomposed.png?1', :asset => true), :rel => 'apple-touch-icon-precomposed'}/
     - require_js('vendor/jquery.min')
   %body
     = yield
