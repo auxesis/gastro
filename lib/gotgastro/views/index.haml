@@ -48,6 +48,6 @@
   = haml :footer
 
 
--# FIXME(auxesis): refactor this into a variable
+-# FIXME(auxesis): refactor api key into a variable
 - google_api_key = 'AIzaSyDBvlmNsUERDKkeQWX6OCsfR5VoPaD3nWo'
-%script{:src => "https://maps.googleapis.com/maps/api/js?key=#{google_api_key}&libraries=places&callback=initAutocomplete",:async => :async, :defer => :defer}
+- require_js("https://maps.googleapis.com/maps/api/js?key=#{google_api_key}&libraries=places&callback=initAutocomplete",:async => :async, :defer => :defer)

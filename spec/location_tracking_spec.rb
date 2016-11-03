@@ -3,6 +3,13 @@ require 'spec_helper'
 include Rack::Test::Methods
 
 describe 'Location tracking', :type => :feature do
+  include_context 'test data'
+
+  before(:each) do
+    set_environment_variable('GASTRO_RESET_TOKEN', gastro_reset_token)
+    set_environment_variable('MORPH_API_KEY', morph_api_key)
+  end
+
   it 'should default to Sydney' do
     visit '/search'
     expect(find('img')['src'].include?('-33.8675,151.207')).to be true

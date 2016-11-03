@@ -122,14 +122,21 @@ module Sinatra
 
     def include_required_js
       if @js_filenames
-        @js_filenames.map { |filename, opts|
+        @js_filenames.sort_by {|f,o| f =~ /^vendor/ ? 0 : 1 }.map { |filename, opts|
           type = opts[:type] ? opts[:type] : 'text/javascript'
-          %(<script src="#{link_to("/js/#{filename}.js")}" type="#{type}"></script>)
+          # if the path is absolute, insert in directly
+          if filename =~ /^http/
+            attrs = opts.map{|k,v| %(#{k}="#{v}")}.join(' ')
+            %(<script src="#{filename}" type="#{type}" #{attrs}></script>)
+          else
+            %(<script src="#{link_to("/js/#{filename}.js", :asset => true)}" type="#{type}"></script>)
+          end
         }.join("\n")
       else
         ""
       end
     end
+
   end
 
   module RequireCSSHelper
@@ -141,7 +148,7 @@ module Sinatra
     def include_required_css
       if @css_filenames
         @css_filenames.map { |filename|
-          %(<link href="#{link_to("/css/#{filename}.css")}" rel="stylesheet" type="text/css">)
+          %(<link href="#{link_to("/css/#{filename}.css", :asset => true)}" rel="stylesheet" type="text/css">)
         }.join("\n")
       else
         ""
@@ -151,11 +158,15 @@ module Sinatra
 
   module LinkToHelper
     # from http://gist.github.com/98310
-    def link_to(url_fragment, mode=:path_only)
-      case mode
-      when :path_only
+    def link_to(url_fragment, opts={})
+      options = { :mode => :path_only }.merge(opts)
+      case
+      # if thing being linked to is an asset, and CDN is configured, link to CDN
+      when opts[:asset] && cdn?
+        base = config['settings']['cdn_base']
+      when options[:mode] == :path_only
         base = request.script_name
-      when :full_url
+      when options[:mode] == :full_url
         if (request.scheme == 'http' && request.port == 80 ||
             request.scheme == 'https' && [80, 443].include?(request.port))
           port = ""

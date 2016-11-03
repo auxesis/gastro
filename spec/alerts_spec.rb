@@ -9,6 +9,8 @@ describe 'Alerts', :type => :feature do
 
   before(:each) do
     Mail::TestMailer.deliveries.clear
+    set_environment_variable('GASTRO_RESET_TOKEN', gastro_reset_token)
+    set_environment_variable('MORPH_API_KEY', morph_api_key)
   end
 
   it 'should allow a user to subscribe' do
