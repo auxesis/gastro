@@ -46,6 +46,16 @@ describe 'CDN', :type => :feature do
       end
     end
 
+    it 'should set up headers for CORS' do
+      filenames = Pathname.glob(root + 'lib' + 'gotgastro' + 'public' + 'css' + 'vendor' + 'fonts' + '*')
+      fonts = filenames.map {|font| '/css/vendor/fonts/' + font.basename.to_s }
+
+      fonts.each do |url|
+        visit(url)
+        expect(page.response_headers).to include('Access-Control-Allow-Origin')
+      end
+    end
+
     it 'should serve images from a CDN'
   end
 

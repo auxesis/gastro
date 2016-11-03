@@ -24,7 +24,11 @@ end
 # gzip compress everything
 use Rack::Deflater
 # Serve static assets before everything else
-use Rack::Static, :urls => %w(/css /img /fonts /js), :root => public_folder
+use Rack::Static, :urls => %w(/css /img /fonts /js),
+  :root => public_folder,
+  :header_rules => [
+    [:fonts, {'Access-Control-Allow-Origin' => '*'}]
+  ]
 # Google Analytics
 use Rack::GoogleAnalytics, :tracker => 'UA-85193424-1' if environment == 'production'
 
