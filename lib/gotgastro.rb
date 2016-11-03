@@ -52,6 +52,7 @@ module GotGastro
     end
 
     get '/business/:id' do
+      cache_control :private, :max_age => 86400
       @business = Business[params[:id]]
       if @business
         haml :detail

@@ -6,6 +6,7 @@ $LOAD_PATH << lib
 spec = Pathname.new(__FILE__).parent.to_s
 $LOAD_PATH << spec
 require 'capybara/rspec'
+require 'capybara/poltergeist'
 require 'rack/test'
 require 'pry'
 require 'webmock/rspec'
@@ -14,8 +15,12 @@ require 'sidekiq/testing'
 require 'delorean'
 require 'helpers/test_data'
 require 'helpers/env_test'
+require 'database_cleaner'
 
 include GotGastro::Env::Test
+
+# Specs flagged with `js: true` will use Capybara's JS driver.
+Capybara.javascript_driver = :poltergeist
 
 # Drop this into /spec/support/matchers
 # Usage: result.should be_url
@@ -40,8 +45,15 @@ RSpec.configure do |config|
   end
 
   # Roll back changes to database after each test
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
   config.around(:each) do |example|
-    DB.transaction(:rollback=>:always, :auto_savepoint=>true){example.run}
+    DatabaseCleaner.cleaning do
+      example.run
+    end
   end
 
   # Clear queues

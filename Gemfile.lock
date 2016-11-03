@@ -37,6 +37,7 @@ GEM
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
     chronic (0.10.2)
+    cliver (0.3.2)
     coderay (1.1.0)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
@@ -45,6 +46,7 @@ GEM
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     daemons (1.2.4)
+    database_cleaner (1.5.3)
     delorean (2.1.0)
       chronic
     descendants_tracker (0.0.4)
@@ -100,6 +102,10 @@ GEM
     newrelic_rpm (3.16.3.323)
     nokogiri (1.6.7.1)
       mini_portile2 (~> 2.0.0.rc2)
+    poltergeist (1.11.0)
+      capybara (~> 2.1)
+      cliver (~> 0.3.1)
+      websocket-driver (>= 0.2.0)
     pry (0.10.3)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -198,6 +204,9 @@ GEM
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff
+    websocket-driver (0.6.4)
+      websocket-extensions (>= 0.1.0)
+    websocket-extensions (0.1.2)
     xpath (2.0.0)
       nokogiri (~> 1.3)
 
@@ -210,6 +219,7 @@ DEPENDENCIES
   addressable
   bundler
   capybara
+  database_cleaner
   delorean
   dotiw
   faker
@@ -221,6 +231,7 @@ DEPENDENCIES
   mailcatcher
   mysql2
   newrelic_rpm
+  poltergeist
   pry
   puma
   rack-google-analytics

@@ -26,6 +26,34 @@ describe 'CDN', :type => :feature do
     end
   end
 
+  def params(attrs)
+    q = Addressable::URI.new.query_values = attrs
+    q.to_query
+  end
+
+  it 'should privately cache correctly', js: true do
+    WebMock.disable_net_connect!(allow_localhost: true)
+    within_25km && within_150km
+
+    # first search
+    visit "/search?lat=#{origin.lat}&lng=#{origin.lng}"
+    detail_link = all('div.result a').map {|a| a['href']}.first
+    expect(detail_link).to_not be nil
+    visit(detail_link)
+    first_distance_away = first('div.alert.alert-info').text
+
+    # second search
+    query = params({
+      :lat => origin.lat - 0.01,
+      :lng => origin.lng - 0.01
+    })
+    visit "/search?#{query}"
+    visit(detail_link)
+    second_distance_away = first('div.alert.alert-info').text
+
+    expect(first_distance_away).to_not eq(second_distance_away)
+  end
+
   describe 'enabled' do
     it 'should serve JavaScript from a CDN' do
       set_environment_variable('CDN_BASE', cdn_base)

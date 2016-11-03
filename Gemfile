@@ -39,4 +39,6 @@ group :test do
   gem 'webmock'
   gem 'delorean'
   gem 'faker'
+  gem 'poltergeist'
+  gem 'database_cleaner'
 end
