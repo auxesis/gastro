@@ -163,7 +163,7 @@ module Sinatra
       case
       # if thing being linked to is an asset, and CDN is configured, link to CDN
       when opts[:asset] && cdn?
-        base = config['cdn_base']
+        base = config['settings']['cdn_base']
       when options[:mode] == :path_only
         base = request.script_name
       when options[:mode] == :full_url

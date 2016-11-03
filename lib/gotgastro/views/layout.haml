@@ -8,10 +8,10 @@
     = include_page_title
     // FIXME(auxesis): add helpers to set page description
     %meta{:content => 'Got Gastro helps you find out about potential food safety problems when eating out or buying food.'}
-    // FIXME(auxesis): add helpers to link css (with absolute url)
-    %link{:href => link_to('/css/vendor/font-awesome.min.css'), :rel => 'stylesheet'}/
-    %link{:href => link_to('/css/vendor/bootstrap.min.css'), :rel => 'stylesheet'}/
-    %link{:href => link_to('/css/main.min.css'), :rel => 'stylesheet'}/
+    - require_css('vendor/font-awesome.min')
+    - require_css('vendor/bootstrap.min')
+    - require_css('vendor/main.min')
+    = include_required_css
     // FIXME(auxesis): add helpers to link canonical (with absolute url)
     %link{:href => link_to('/'), :rel => 'canonical'}/
     %link{:href => link_to('/img/favicon.png?1'), :rel => 'icon'}/

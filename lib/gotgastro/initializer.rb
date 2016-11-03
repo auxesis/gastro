@@ -31,7 +31,7 @@ def production?
 end
 
 def cdn?
-  !!config['cdn_base']
+  !!config['settings']['cdn_base']
 end
 
 def debug(msg)
