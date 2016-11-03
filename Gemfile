@@ -29,6 +29,7 @@ group :development do
   gem 'rerun'
   gem 'pry'
   gem 'mailcatcher'
+  gem 'launchy'
 end
 
 group :test do

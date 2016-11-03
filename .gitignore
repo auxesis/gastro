@@ -9,3 +9,4 @@ _site/
 dump.rdb
 log
 node_modules/
+capybara-*.html
