@@ -45,6 +45,8 @@ describe 'CDN', :type => :feature do
         expect(value).to match(/^#{cdn_base}/)
       end
     end
+
+    it 'should serve images from a CDN'
   end
 
   describe 'disabled' do
@@ -74,5 +76,7 @@ describe 'CDN', :type => :feature do
         expect(value).to_not match(/^#{cdn_base}/)
       end
     end
+
+    it 'should not serve images from a CDN'
   end
 end
