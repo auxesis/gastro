@@ -136,6 +136,41 @@ Then, to trigger a data import:
 curl http://localhost:9292/reset?token=wheresthepizza
 ```
 
+### CDN
+
+Setting the `CDN_BASE` environment variable will cause assets to be linked to a CDN:
+
+```
+export CDN_BASE=https://de2d8d398fngi.cloudfront.net
+```
+
+This significantly speeds up serving of JS, CSS, images, and fonts considerably.
+
+### Mail
+
+Mail in development is handled by [MailCatcher](https://mailcatcher.me/).
+
+MailCatcher is automatically started when you run the app in development (through `Procfile.development`), and is accessible at [http://localhost:1080](http://localhost:1080).
+
+Mail in production is handled by [SendGrid](https://sendgrid.com/).
+
+To configure mail in production, sign up for a SendGrid account, then set the `SENDGRID_USERNAME` and `SENDGRID_PASSWORD` environment variables.
+
+```
+export SENDGRID_USERNAME=hello
+export SENDGRID_PASSWORD=world
+```
+
+### APM
+
+Application performance management is handled by New Relic.
+
+To set a license key, set the `NEWRELIC_LICENSE_KEY` environment variable:
+
+```
+export NEWRELIC_LICENSE_KEY=b1946ac92492d2347c6235b4d2611184
+```
+
 ### Testing
 
 Run the tests with:
