@@ -12,7 +12,7 @@ Got Gastro is made up of several components that work together to scrape, geocod
 
 Let's work across the architecture diagram left-to-right.
 
-### We scrape data from sources
+### Data is scraped from sources
 
 Sources are data that is published by government authorities about food safety problems in a certain jurisdiction. Data can be published in a variety of formats.
 
