@@ -77,13 +77,6 @@ Plug that data into the `gotgastro_scraper`, and you're good to go.
  - geocode the data
  - gotgastro_scraper: just pull data in
 
-# What the Got Gastro architecture looks like
-
- - Nested scrapers (scrape, geocoding)
- - gotgastro_scraper
- - The /reset function
- - How it interplays with email alerts
-
 # The PR process
 
  - Write your scraper
@@ -91,11 +84,6 @@ Plug that data into the `gotgastro_scraper`, and you're good to go.
  - Fork `gotgastro_scraper`
  - Add a new data source
  - Submit a PR
-
-# To geocode, or to not geocode
-
- - Geocode in the scraper
- - No geocoding happens in `gotgastro_scraper`
 
 # When to normalise the data
 
