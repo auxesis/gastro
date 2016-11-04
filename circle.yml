@@ -4,6 +4,8 @@ dependencies:
 machine:
   environment:
     DATABASE_URL: mysql2://ubuntu@localhost/circle_test
+  pre:
+    - sudo curl --output /usr/local/bin/phantomjs https://s3.amazonaws.com/circle-downloads/phantomjs-2.1.1
 test:
   override:
     - bin/cibuild.sh
