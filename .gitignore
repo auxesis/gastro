@@ -10,3 +10,4 @@ dump.rdb
 log
 node_modules/
 capybara-*.html
+capybara-*.png
