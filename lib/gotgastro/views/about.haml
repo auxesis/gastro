@@ -9,27 +9,38 @@
       %p
         It combines data from various state sources and makes it easily searchable.
       %p
-        Got Gastro provides data for these states:
+        Got Gastro provides data for these jurisdictions:
       %ul
         %li
-          %strong> New South Wales
-          , from the NSW Food Authority's
-          %a{:href => "http://foodauthority.nsw.gov.au/offences/prosecutions/"} prosecution
-          and
-          %a{:href => "http://foodauthority.nsw.gov.au/penalty-notices/default.aspx?template=results"} penalty
-          notices.
+          %strong Australia
+        %ul
+          %li
+            %strong> New South Wales
+            , from the NSW Food Authority's
+            %a{:href => "http://foodauthority.nsw.gov.au/offences/prosecutions/"} prosecution
+            and
+            %a{:href => "http://foodauthority.nsw.gov.au/penalty-notices/default.aspx?template=results"} penalty
+            notices.
+          %li
+            %strong> Victoria
+            , from vic.health's
+            %a{:href => "https://www2.health.vic.gov.au/public-health/food-safety/convictions-register"} convictions register.
+          %li
+            %strong> Western Australia
+            , from the Government of Western Australia's Department of Health's
+            %a{:href => "http://ww2.health.wa.gov.au/Articles/F_I/Food-offenders/Publication-of-names-of-offenders-list"} names of offenders list.
+          %li
+            %strong> South Australia
+            , from SA Health's
+            %a{:href => "http://www.sahealth.sa.gov.au/wps/wcm/connect/public+content/sa+health+internet/about+us/legislation/food+legislation/food+prosecution+register"} food prosecution register.
         %li
-          %strong> Victoria
-          , from vic.health's
-          %a{:href => "https://www2.health.vic.gov.au/public-health/food-safety/convictions-register"} convictions register.
-        %li
-          %strong> Western Australia
-          , from the Government of Western Australia's Department of Health's
-          %a{:href => "http://ww2.health.wa.gov.au/Articles/F_I/Food-offenders/Publication-of-names-of-offenders-list"} names of offenders list.
-        %li
-          %strong> South Australia
-          , from SA Health's
-          %a{:href => "http://www.sahealth.sa.gov.au/wps/wcm/connect/public+content/sa+health+internet/about+us/legislation/food+legislation/food+prosecution+register"} food prosecution register.
+          %strong UK
+        %ul
+          %li
+            %strong> England, Wales and Northern Ireland
+            , from the Food Standard Agency's
+            %a{:href => "https://www.food.gov.uk/enforcement/prosecutions"}
+              food law prosecution outcomes database.
       %p
         Learn how to
         %a{:href => 'https://github.com/auxesis/gastro/blob/master/docs/contributing-datasets.markdown'}
