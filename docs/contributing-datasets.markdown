@@ -76,6 +76,19 @@ Sometimes when geocoding addresses, the API returns the wrong location. Consider
 
 If it doesn't, consider appending more specific information to the address, like postcode, town, state, or country.
 
+If you're writing scrapers in Ruby, [Geokit](https://github.com/geokit/geokit) makes it very easy to do geocoding.
+
+Beware of trigger Google Maps API rate limits when running your Scraper on Morph. Because there are lots of other scrapers running on Morph, and some of them do geocoding, your scraper can very quickly hit request limits.
+
+Geokit allows you to specify an API key to use for Google Maps. Morph allows you to specify private data as an environment variable, prefixed with `MORPH_`.
+
+Get an [API key](https://developers.google.com/maps/documentation/javascript/get-api-key#get-an-api-key) from Google, and add this to the beginning of your scraper to optionally use a Google Maps API key if present:
+
+``` ruby
+# Set an API key if provided
+Geokit::Geocoders::GoogleGeocoder.api_key = ENV['MORPH_GOOGLE_API_KEY'] if ENV['MORPH_GOOGLE_API_KEY']
+```
+
 ## Try to normalise the data in your scraper
 
 Because data comes from humans, it is weird, inconsistent, and beautiful. There's something fun about writing scrapers that bring order to the chaos of data published by government.
