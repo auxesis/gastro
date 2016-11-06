@@ -190,13 +190,14 @@ module Sinatra
   module MetaTagHelper
     def meta_tag(attrs={})
       @meta ||= []
-      @meta << attrs if attrs[:name] && attrs[:content]
+      @meta << attrs if (attrs[:name] || attrs[:property]) && attrs[:content]
     end
 
     def include_meta
       if @meta
         @meta.map { |attrs|
-          %(<meta name="#{attrs[:name]}" content="#{attrs[:content]}">)
+          field = attrs.keys.include?(:name) ? :name : :property
+          %(<meta #{field}="#{attrs[field]}" content="#{attrs[:content]}">)
         }.join("\n")
       else
         ""
