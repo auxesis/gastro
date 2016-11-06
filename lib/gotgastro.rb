@@ -47,7 +47,8 @@ module GotGastro
     end
 
     get '/search' do
-      @businesses = Business.find_near(@location,:within => 25).all
+      @businesses_dataset = Business.find_near(@location,:within => 25)
+      @businesses = @businesses_dataset.all
       haml :search
     end
 
