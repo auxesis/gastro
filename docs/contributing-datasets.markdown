@@ -126,36 +126,43 @@ Check out [`scraper.rb`](https://github.com/auxesis/gotgastro_scraper/blob/maste
 A scraper needs to expose `fetch`, `businesses`, and `offences` methods. The scraper will call these methods when doing a run
 
 ``` ruby
-class Jurisdiction
-  def fetch
-    # Fetch data from a scraper on Morph via Morph's API.
-    # Build a list of @records that can be used by `businesses` and `offences`
-  end
+# sources/<country>_<jurisdiction>_<type>.rb (for example sources/au_nsw_prosecutions.rb)
+module Country # The country you are fetching data from (for example, Australia, USA, etc)
+  class Jurisdiction # The specific jurisdiction the data is from (for example, NSW)
+    include Source # Register the data source to pull data from with gotgastro_scraper
 
-  def businesses
-    # `businesses` returns an Array of Hashes, in the following format:
-    [
-      {
-        'id'      => ..., # primary key, String, must be unique
-        'name'    => ..., # String, the trading name of the business
-        'address' => ..., # String, the displayable address of the business
-        'lat'     => ..., # Float, the latitude of the address
-        'lng'     => ..., # Float, the longitude of the address
-      }
-    ]
-  end
+    description 'A human readable description to be printed when the scraper runs'
 
-  def offences
-    # `offences` returns an Array of Hashes, in the following format:
-    [
-      {
-        'link'        => ..., # primary key, String, URL to the offence, must be unique
-        'business_id' => ..., # foreign key, String, must match to a business.id
-        'date'        => ..., # Date, date of the offence
-        'description' => ..., # String, description of the offence
-        'severity'    => 'major', # String, must be one of `major` or `minor`
-      }
-    ]
+    def fetch
+      # Fetch data from a scraper on Morph via Morph's API.
+      # Build a list of @records that can be used by `businesses` and `offences`
+    end
+
+    def businesses
+      # `businesses` returns an Array of Hashes, in the following format:
+      [
+        {
+          'id'      => ..., # primary key, String, must be unique
+          'name'    => ..., # String, the trading name of the business
+          'address' => ..., # String, the displayable address of the business
+          'lat'     => ..., # Float, the latitude of the address
+          'lng'     => ..., # Float, the longitude of the address
+        }
+      ]
+    end
+
+    def offences
+      # `offences` returns an Array of Hashes, in the following format:
+      [
+        {
+          'link'        => ..., # primary key, String, URL to the offence, must be unique
+          'business_id' => ..., # foreign key, String, must match to a business.id
+          'date'        => ..., # Date, date of the offence
+          'description' => ..., # String, description of the offence
+          'severity'    => 'major', # String, must be one of `major` or `minor`
+        }
+      ]
+    end
   end
 end
 ```
