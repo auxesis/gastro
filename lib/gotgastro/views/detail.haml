@@ -1,4 +1,11 @@
 - page_title @business.name
+- meta_tag :name => 'twitter:card', :content => 'summary_large_image'
+- meta_tag :name => 'twitter:site', :content => '@gotgastro'
+- severity = @business.has_major_offences? ? 'major' : 'minor'
+- problem = @business.problems == 1 ? 'problem' : 'problems'
+- meta_tag :name => 'twitter:title', :content => "#{@business.name}: #{@business.problems} #{severity} food safety #{problem}"
+- opts = { :highest_measure_only => true, :accumulate_on => :years }
+- meta_tag :name => 'twitter:description', :content => "Located at #{@business.address}. Last problem was #{time_ago_in_words(@business.last_offence.date, opts)} ago."
 
 - # FIXME(auxesis): refactor map generation into a helper
 - img_src = "https://maps.googleapis.com/maps/api/staticmap?scale=2&zoom=16&size=400x200&amp;maptype=roadmap"
@@ -6,6 +13,8 @@
 - # FIXME(auxesis): refactor api key into a variable
 - gmaps_api_key = "AIzaSyBxaCRguM2pvw9HOLybx5ZP6Cuo94KnJwg"
 - map_url = "#{img_src}&markers=#{markers}&key=#{gmaps_api_key}"
+- meta_tag :name => 'twitter:image', :content => map_url
+- meta_tag :name => 'twitter:image:alt', :content => "Map showing location of the business, at #{@business.address}"
 
 %div.container
   %h1= @business.name
