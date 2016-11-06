@@ -1,3 +1,5 @@
+require 'faker'
+
 RSpec.shared_context 'test data' do
   # morph data
   let(:mocks) { Pathname.new(__FILE__).parent.parent.join('mocks') }
@@ -18,7 +20,8 @@ RSpec.shared_context 'test data' do
     lngs = (1..16).map {|i| origin.lng + i * 0.01 }
 
     lats.zip(lngs).each_with_index do |(lat, lng), i|
-      Business.create(:name => "#{lat},#{lng},#{i}", :lat => lat, :lng => lng)
+      business = Business.create(:name => "#{lat},#{lng},#{i}", :lat => lat, :lng => lng)
+      make_offences(:for => business, :count => 1)
     end
   }
   let(:within_150km) {
@@ -26,7 +29,8 @@ RSpec.shared_context 'test data' do
     lngs = (1..16).map {|i| origin.lng + i * 0.1 }
 
     lats.zip(lngs).each do |lat, lng|
-      Business.create(:name => "#{lat},#{lng}", :lat => lat, :lng => lng)
+      business = Business.create(:name => "#{lat},#{lng}", :lat => lat, :lng => lng)
+      make_offences(:for => business, :count => 3)
     end
   }
   let(:between_25km_and_150km) {
@@ -34,7 +38,8 @@ RSpec.shared_context 'test data' do
     lngs = (3..16).map {|i| origin.lng + i * 0.1 }
 
     lats.zip(lngs).each_with_index do |(lat, lng), i|
-      Business.create(:name => "#{lat},#{lng},#{i}", :lat => lat, :lng => lng)
+      business = Business.create(:name => "#{lat},#{lng},#{i}", :lat => lat, :lng => lng)
+      make_offences(:for => business, :count => 1)
     end
   }
   let(:thousands_of_results) {
@@ -42,7 +47,8 @@ RSpec.shared_context 'test data' do
     lngs = (1..1000).map {|i| origin.lng + i * 0.0001 }
 
     lats.zip(lngs).each_with_index do |(lat, lng), i|
-      Business.create(:name => "#{lat},#{lng},#{i}", :lat => lat, :lng => lng)
+      business = Business.create(:name => "#{lat},#{lng},#{i}", :lat => lat, :lng => lng)
+      make_offences(:for => business, :count => 1)
     end
   }
   let(:subscribed_user) {
@@ -100,6 +106,22 @@ RSpec.shared_context 'test data' do
     expect(page.status_code).to be 200
     expect(page.body).to match(/you have unsubscribed from your alert/i)
   }
+
+  def make_offences(opts={})
+    options = { :count => 1 }.merge(opts)
+    raise ArgumentError unless options[:for]
+    business = options[:for]
+
+    options[:count].times do |i|
+      attrs = {
+        'business_id' => business.id,
+        'date' => Faker::Time.backward(14).to_date,
+        'link' => Faker::Internet.url('www2.health.vic.gov.au/public-health/food-safety/convictions-register'),
+        'description' => Faker::ChuckNorris.fact,
+      }
+      Offence.create(attrs)
+    end
+  end
 
   def offence_json_generator(opts={})
     options = {
