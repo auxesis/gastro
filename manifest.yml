@@ -5,6 +5,7 @@ applications:
   disk_quota: 200M
   instances: 1
   no-route: true
+  buildpack: ruby_buildpack
   command: bundle exec foreman start worker
   health-check-type: none
   services:
@@ -15,6 +16,7 @@ applications:
   memory: 150M
   disk: 200M
   instances: 1
+  buildpack: ruby_buildpack
   command: bundle exec foreman start web
   no-route: true
   no-hostname: true
@@ -26,6 +28,7 @@ applications:
   memory: 150M
   disk_quota: 200M
   instances: 1
+  buildpack: ruby_buildpack
   command: bundle exec foreman start web
   no-route: true
   no-hostname: true
