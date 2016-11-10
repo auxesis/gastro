@@ -1,12 +1,30 @@
 - require_js 'index.min'
 
+- title = 'Got Gastro'
+- description = 'Got Gastro helps you find potential food safety problems when eating out or buying food.'
+
+- # Facebook Open Graph
+- meta_tag :property => 'og:type',        :content => 'website'
+- meta_tag :property => 'og:url',         :content => config['settings']['baseurl']
+- meta_tag :property => 'og:title',       :content => title
+- meta_tag :property => 'og:description', :content => description
+
+- # Twitter Cards
+- meta_tag :name => 'twitter:card', :content => 'summary_large_image'
+- meta_tag :name => 'twitter:site', :content => '@gotgastro'
+- meta_tag :name => 'twitter:title', :content => title
+- meta_tag :name => 'twitter:description', :content => description
+- meta_tag :name => 'twitter:image', :content => link_to('/img/apple-touch-icon-precomposed.png?1', :asset => true)
+- meta_tag :name => 'twitter:image:alt', :content => "Got Gastro logo."
+
 %div.container
   %div.page-header
-    %h1 Got Gastro
+    %h1
+      = title
   %div.row.landing
     %div.col-md-12
       %p
-        Got Gastro helps you find out about potential food safety problems when eating out or buying food.
+        = description
     %div.col-md-12.locate
       %p
         %button.btn.btn-success.geolocation{:type => "submit"}
