@@ -122,6 +122,11 @@ div.row.nav button {
   font-size: 90%;
 }
 
+div.fb-like {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
 div.weekly-stats {
   margin-top: 15px;
 }

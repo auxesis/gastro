@@ -1,3 +1,5 @@
+- require_js 'search.min'
+
 - if @location.address.blank?
   - page_title 'Search results'
 - else
@@ -47,8 +49,7 @@
 - meta_tag :name => 'twitter:image', :content => map_url
 - meta_tag :name => 'twitter:image:alt', :content => "Map showing location of food safety problems near #{@location.address}"
 
-- require_js 'search.min'
-
+= haml :facebook_sdk
 
 %div.container
   %h1
@@ -106,6 +107,7 @@
                 ago
           %p.address.text-muted
             %small= business.address
+      %div.col-md-12.fb-like{'data-href' => 'https://developers.facebook.com/docs/plugins/', 'data-layout' => 'standard', 'data-action' => 'like', 'data-size' => 'large', 'data-show-faces' => 'false', 'data-share' => 'true'}
     - else
       %div.col-md-12.result.text-center.empty
         %i.fa.fa-thumbs-o-up.fa-fw.fa-lg
