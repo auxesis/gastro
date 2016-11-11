@@ -1,4 +1,26 @@
-- page_title "Privacy policy"
+- title = 'Privacy policy'
+- description = 'Information about how Got Gastro stores personal data you submit.'
+- image_url = link_to('/img/apple-touch-icon-precomposed.png?1', :asset => true)
+
+- page_title(title)
+
+- # Facebook Open Graph
+- meta_tag :property => 'fb:app_id',      :content => config['settings']['fb_app_id'] if fb_app_id?
+- meta_tag :property => 'og:type',        :content => 'website'
+- meta_tag :property => 'og:url',         :content => request.url
+- meta_tag :property => 'og:title',       :content => title
+- meta_tag :property => 'og:description', :content => description
+- meta_tag :property => 'og:image',       :content => image_url
+- meta_tag :property => 'og:image:width', :content => '196'
+- meta_tag :property => 'og:image:height', :content => '196'
+
+- # Twitter Cards
+- meta_tag :name => 'twitter:card', :content => 'summary'
+- meta_tag :name => 'twitter:site', :content => '@gotgastro'
+- meta_tag :name => 'twitter:title', :content => title
+- meta_tag :name => 'twitter:description', :content => description
+- meta_tag :name => 'twitter:image', :content => image_url
+- meta_tag :name => 'twitter:image:alt', :content => "Got Gastro logo."
 
 %div.container
   %h1 Privacy policy

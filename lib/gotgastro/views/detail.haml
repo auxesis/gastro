@@ -16,8 +16,9 @@
 - description = "Located at #{@business.address}. Last problem was #{time_ago_in_words(@business.last_offence.date, opts)} ago."
 
 - # Facebook Open Graph
+- meta_tag :property => 'fb:app_id',      :content => config['settings']['fb_app_id'] if fb_app_id?
 - meta_tag :property => 'og:type',        :content => 'website'
-- meta_tag :property => 'og:url',         :content => config['settings']['baseurl']
+- meta_tag :property => 'og:url',         :content => request.url
 - meta_tag :property => 'og:title',       :content => title
 - meta_tag :property => 'og:description', :content => description
 - meta_tag :property => 'og:image',       :content => map_url
@@ -31,6 +32,8 @@
 - meta_tag :name => 'twitter:description', :content => description
 - meta_tag :name => 'twitter:image', :content => map_url
 - meta_tag :name => 'twitter:image:alt', :content => "Map showing location of the business, at #{@business.address}"
+
+= haml :facebook_sdk
 
 %div.container
   %h1= @business.name
@@ -84,6 +87,7 @@
         %ul
           - @business.offences.each do |offence|
             %li= offence.description
+    %div.col-md-12.fb-like{'data-href' => 'https://developers.facebook.com/docs/plugins/', 'data-layout' => 'standard', 'data-action' => 'like', 'data-size' => 'large', 'data-show-faces' => 'false', 'data-share' => 'true'}
 
   %div.row.nav
     %div.col-md-12

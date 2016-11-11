@@ -146,6 +146,16 @@ export CDN_BASE=https://de2d8d398fngi.cloudfront.net
 
 This significantly speeds up serving of JS, CSS, images, and fonts considerably.
 
+### Facebook
+
+Setting the `FB_APP_ID` environment variable allows for better Facebook Open Graph integration:
+
+```
+export FB_APP_ID=17246080911111112
+```
+
+You can create a new Facebook app to get an app id.
+
 ### Mail
 
 Mail in development is handled by [MailCatcher](https://mailcatcher.me/).

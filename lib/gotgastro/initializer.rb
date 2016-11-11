@@ -34,6 +34,10 @@ def cdn?
   !!config['settings']['cdn_base']
 end
 
+def fb_app_id?
+  !!config['settings']['fb_app_id']
+end
+
 def debug(msg)
   puts('[debug] ' + msg) if debug?
 end
@@ -70,7 +74,8 @@ def config
   # FIXME(auxesis): refactor this to recursive openstruct
   settings = {}
   settings['baseurl'] = production? ? 'https://gotgastroagain.com' : 'http://localhost:9292'
-  settings['cdn_base'] = ENV['CDN_BASE']
+  settings['cdn_base']  = ENV['CDN_BASE']
+  settings['fb_app_id'] = ENV['FB_APP_ID']
   begin
     set_or_error(settings, 'reset_token',   :env => 'GASTRO_RESET_TOKEN')
     set_or_error(settings, 'morph_api_key', :env => 'MORPH_API_KEY')
