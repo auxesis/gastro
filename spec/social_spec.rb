@@ -8,6 +8,7 @@ describe 'Social', :type => :feature do
   before(:each) do
     set_environment_variable('GASTRO_RESET_TOKEN', gastro_reset_token)
     set_environment_variable('MORPH_API_KEY', morph_api_key)
+    set_environment_variable('FB_APP_ID', fb_app_id)
   end
 
   describe 'Facebook Open Graph' do
@@ -83,6 +84,25 @@ describe 'Social', :type => :feature do
         og_image = first(:xpath, "//meta[@property='og:image']", :visible => false)
         expect(og_image).to_not eq(nil), "missing og:image at #{url}"
         expect(og_image['content']).to match('https://maps.googleapis.com/maps/api/staticmap')
+      end
+    end
+
+    it 'should have a Facebook App ID' do
+      within_25km && within_150km
+
+      urls = [
+        '/',
+        "/search?lat=#{origin.lat}&lng=#{origin.lng}",
+        "/business/#{Business.first.id}",
+        '/about',
+        '/privacy',
+        '/report',
+      ]
+
+      urls.each do |url|
+        visit(url)
+        fb_app_id = first(:xpath, "//meta[@property='fb:app_id']", :visible => false)
+        expect(fb_app_id).to_not eq(nil), "missing fb:app_id at #{url}"
       end
     end
   end

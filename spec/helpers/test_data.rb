@@ -10,6 +10,7 @@ RSpec.shared_context 'test data' do
   # tokens
   let(:gastro_reset_token) { Digest::MD5.new.hexdigest(rand(Time.now.to_i).to_s) }
   let(:morph_api_key) { Digest::MD5.new.hexdigest(rand(Time.now.to_i).to_s) }
+  let(:fb_app_id) { Digest::MD5.new.hexdigest(rand(Time.now.to_i).to_s) }
 
   # businesses
   let(:origin) {
