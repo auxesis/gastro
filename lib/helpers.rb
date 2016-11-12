@@ -21,7 +21,6 @@ module Sinatra
 
     def distance_of_time(seconds, options = {})
       options[:include_seconds] ||= true
-      binding.pry
       display_time_in_words(DOTIW::TimeHash.new(seconds, nil, nil, options).to_hash, options)
     end
 
