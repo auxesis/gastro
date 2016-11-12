@@ -2,6 +2,54 @@ require 'dotiw'
 require 'addressable'
 
 module Sinatra
+  module GoogleMapsHelpers
+    def google_map(opts={})
+      options = {
+        'width'  => 400,
+        'height' => 200
+      }.merge(opts)
+      center     = opts[:center]
+      businesses = opts[:businesses]
+      zoom       = businesses.size == 0 ? 10 : nil
+
+      query_params = {
+        'scale'   => 2,
+        'maptype' => 'roadmap',
+        'size'    => [ options['width'], options['height'] ].join('x'),
+        'key'     => options[:api_key],
+        'markers' => [],
+      }
+      query_params['zoom'] = zoom if zoom
+
+      if center
+        marker = [
+          'icon:http://i.stack.imgur.com/orZ4x.png',
+          "#{center.lat},#{center.lng}"
+        ].join('|')
+        query_params['markers'] << marker
+      end
+
+      if businesses
+        marker = [
+          'size:tiny',
+          businesses.map { |b| "#{b.lat},#{b.lng}" }.join('|')
+        ].join('|')
+        query_params['markers'] << marker
+      end
+
+      a = ::Addressable::URI.new(
+        :scheme => 'https',
+        :host => 'maps.googleapis.com',
+        :path => '/maps/api/staticmap',
+      )
+      a.query_values = query_params
+
+      return a.to_s
+    end
+  end
+end
+
+module Sinatra
   module TimeHelpers
     def distance_of_time_in_words(from_time, to_time = 0, include_seconds_or_options = {}, options = {})
       if include_seconds_or_options.is_a?(Hash)
