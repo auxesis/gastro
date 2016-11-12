@@ -12,13 +12,17 @@ describe 'Location tracking', :type => :feature do
 
   it 'should default to Sydney' do
     visit '/search'
-    expect(find('img')['src'].include?('-33.8675,151.207')).to be true
+    map_url = URI.decode(find('img')['src'])
+    expect(map_url).to match('-33.8675,151.207')
   end
 
   it 'should persist across requests' do
-    visit '/search?lat=-33.1234&lng=150.5678'
+    params = {:path => '/search', :query_values => {:lat => 33.1234, :lng => 150.5678}}
+    url = Addressable::URI.new(params).to_s
+    visit(url)
     visit '/search'
-    expect(find('img')['src'].include?('-33.1234,150.5678')).to be true
+    map_url = URI.decode(find('img')['src'])
+    expect(map_url).to match("#{params[:query_values][:lat]},#{params[:query_values][:lng]}")
   end
 
   it 'should remember addresses' do
