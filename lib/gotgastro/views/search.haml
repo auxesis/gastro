@@ -6,8 +6,9 @@
   - page_title "Search results near: #{@location.address}"
 
 - # Images
+- # FIXME(auxesis): refactor api key into a variable
 - gmaps_api_key = 'AIzaSyBxaCRguM2pvw9HOLybx5ZP6Cuo94KnJwg'
-- map_url = google_map(:api_key => gmaps_api_key, :businesses => @businesses, :center => @location)
+- map_url = google_map(:api_key => gmaps_api_key, :businesses => @businesses, :location => @location)
 
 - # Variables
 - problem = @businesses.size == 1 ? 'problem' : 'problems'

@@ -1,27 +1,29 @@
 require 'dotiw'
 require 'addressable'
+require 'active_support/hash_with_indifferent_access'
 
 module Sinatra
   module GoogleMapsHelpers
     def google_map(opts={})
-      options = {
-        'width'  => 400,
-        'height' => 200
-      }.merge(opts)
-      center     = opts[:center]
+      options = ActiveSupport::HashWithIndifferentAccess.new({
+        'width'       => 400,
+        'height'      => 200,
+        'marker_size' => 'tiny'
+      }).merge(opts)
+      location   = opts[:location]
       businesses = opts[:businesses]
-      zoom       = businesses.size == 0 ? 10 : nil
+      zoom       = options[:zoom] || (businesses.size == 0 ? 10 : nil)
 
       query_params = {
-        'scale'   => 2,
-        'maptype' => 'roadmap',
-        'size'    => [ options['width'], options['height'] ].join('x'),
-        'key'     => options[:api_key],
-        'markers' => [],
+        'scale'       => 2,
+        'maptype'     => 'roadmap',
+        'size'        => [ options[:width], options[:height] ].join('x'),
+        'key'         => options[:api_key],
+        'markers'     => [],
       }
       query_params['zoom'] = zoom if zoom
 
-      if center
+      if location
         marker = [
           'icon:http://i.stack.imgur.com/orZ4x.png',
           "#{center.lat},#{center.lng}"
@@ -31,7 +33,7 @@ module Sinatra
 
       if businesses
         marker = [
-          'size:tiny',
+          'size:' + options[:marker_size],
           businesses.map { |b| "#{b.lat},#{b.lng}" }.join('|')
         ].join('|')
         query_params['markers'] << marker
