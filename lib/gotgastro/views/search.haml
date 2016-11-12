@@ -6,14 +6,8 @@
   - page_title "Search results near: #{@location.address}"
 
 - # Images
-- # FIXME(auxesis): refactor map generation into a helper
-- zoom = @businesses.size == 0 ? "&zoom=10" : ""
-- img_src = "https://maps.googleapis.com/maps/api/staticmap?scale=2#{zoom}&size=400x200&amp;maptype=roadmap"
-- markers = "size:tiny%7C#{@businesses.map {|p|[p.lat,p.lng].join(',')}.join('%7C')}"
-- markers += "&markers=icon:http://i.stack.imgur.com/orZ4x.png%7C#{@location.lat},#{@location.lng}"
-- # FIXME(auxesis): refactor api key into a variable
-- gmaps_api_key = "AIzaSyBxaCRguM2pvw9HOLybx5ZP6Cuo94KnJwg"
-- map_url = "#{img_src}&markers=#{markers}&key=#{gmaps_api_key}"
+- gmaps_api_key = 'AIzaSyBxaCRguM2pvw9HOLybx5ZP6Cuo94KnJwg'
+- map_url = google_map(:api_key => gmaps_api_key, :businesses => @businesses, :center => @location)
 
 - # Variables
 - problem = @businesses.size == 1 ? 'problem' : 'problems'
