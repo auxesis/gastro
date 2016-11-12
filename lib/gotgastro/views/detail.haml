@@ -1,8 +1,7 @@
 - page_title @business.name
 
 - # Images
-- # FIXME(auxesis): refactor api key into a variable
-- gmaps_api_key = 'AIzaSyBxaCRguM2pvw9HOLybx5ZP6Cuo94KnJwg'
+- gmaps_api_key = config['settings']['gmaps_api_key']
 - map_url = google_map(:api_key => gmaps_api_key, :businesses => [ @business ], :zoom => 16, :marker_size => 'mid')
 
 - # Variables

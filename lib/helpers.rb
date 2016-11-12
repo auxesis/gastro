@@ -26,7 +26,7 @@ module Sinatra
       if location
         marker = [
           'icon:http://i.stack.imgur.com/orZ4x.png',
-          "#{center.lat},#{center.lng}"
+          "#{location.lat},#{location.lng}"
         ].join('|')
         query_params['markers'] << marker
       end

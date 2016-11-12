@@ -76,6 +76,7 @@ def config
   settings['baseurl'] = production? ? 'https://gotgastroagain.com' : 'http://localhost:9292'
   settings['cdn_base']  = ENV['CDN_BASE']
   settings['fb_app_id'] = ENV['FB_APP_ID']
+  settings['gmaps_api_key'] = ENV['GMAPS_API_KEY'] || 'AIzaSyBxaCRguM2pvw9HOLybx5ZP6Cuo94KnJwg'
   begin
     set_or_error(settings, 'reset_token',   :env => 'GASTRO_RESET_TOKEN')
     set_or_error(settings, 'morph_api_key', :env => 'MORPH_API_KEY')
