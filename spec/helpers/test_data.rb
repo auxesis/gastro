@@ -40,7 +40,7 @@ RSpec.shared_context 'test data' do
     lats = (3..16).map {|i| origin.lat + i * 0.1 }
     lngs = (3..16).map {|i| origin.lng + i * 0.1 }
 
-    lats.zip(lngs).each_with_index do |(lat, lng), i|
+    lats.zip(lngs).each do |lat, lng|
       name = Faker::Name.name_with_middle
       business = Business.create(:name => name, :lat => lat, :lng => lng)
       make_offences(:for => business, :count => 1)
@@ -50,8 +50,8 @@ RSpec.shared_context 'test data' do
     lats = (1..1000).map {|i| origin.lat + i * 0.0001 }
     lngs = (1..1000).map {|i| origin.lng + i * 0.0001 }
 
-    lats.zip(lngs).each_with_index do |(lat, lng), i|
-      name = Faker::Name.name_with_middle
+    lats.zip(lngs).each do |lat, lng|
+      name     = Faker::Name.name_with_middle
       business = Business.create(:name => name, :lat => lat, :lng => lng)
       make_offences(:for => business, :count => 1)
     end
