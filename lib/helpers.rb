@@ -53,7 +53,7 @@ module Sinatra
       query_params['zoom'] = zoom if zoom
 
       if location
-        style = 'icon:http://i.stack.imgur.com/orZ4x.png',
+        style = 'icon:http://i.stack.imgur.com/orZ4x.png'
         query_params['markers'] << markers(style, [location])
       end
 
