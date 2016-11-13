@@ -4,6 +4,35 @@ require 'active_support/hash_with_indifferent_access'
 
 module Sinatra
   module GoogleMapsHelpers
+    class BinarySearch
+      include Sinatra::GoogleMapsHelpers
+
+      attr_reader :style, :list
+
+      def initialize(style, list)
+        @style = style
+        @list  = list
+      end
+
+      def middle
+        @list.length / 2
+      end
+
+      def search
+        m = markers(style, list)
+
+        if m.size > 1_600
+          sub = list[0..middle]
+          return sub if sub == list
+          return BinarySearch.new(style, sub).search
+        else
+          sub = list[middle..-1]
+          return sub if sub == list
+          return BinarySearch.new(style, sub).search
+        end
+      end
+    end
+
     def google_map(opts={})
       options = ActiveSupport::HashWithIndifferentAccess.new({
         'width'       => 400,
@@ -24,29 +53,35 @@ module Sinatra
       query_params['zoom'] = zoom if zoom
 
       if location
-        marker = [
-          'icon:http://i.stack.imgur.com/orZ4x.png',
-          "#{location.lat},#{location.lng}"
-        ].join('|')
-        query_params['markers'] << marker
+        style = 'icon:http://i.stack.imgur.com/orZ4x.png',
+        query_params['markers'] << markers(style, [location])
       end
 
       if businesses
-        marker = [
-          'size:' + options[:marker_size],
-          businesses.map { |b| "#{b.lat},#{b.lng}" }.join('|')
-        ].join('|')
-        query_params['markers'] << marker
+        style = 'size:' + options[:marker_size]
+        max = businesses.index(BinarySearch.new(style, businesses).search.first)
+        query_params['markers'] << markers(style, businesses[0..max])
       end
 
       a = ::Addressable::URI.new(
         :scheme => 'https',
-        :host => 'maps.googleapis.com',
-        :path => '/maps/api/staticmap',
+        :host   => 'maps.googleapis.com',
+        :path   => '/maps/api/staticmap',
       )
+
       a.query_values = query_params
 
       return a.to_s
+    end
+
+    def markers(style, collection)
+      m = []
+      m << style
+      collection.each do |item|
+        m << [ item.lat, item.lng ].join(',')
+      end
+
+      m.join('|')
     end
   end
 end
