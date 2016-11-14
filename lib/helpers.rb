@@ -58,9 +58,19 @@ module Sinatra
       end
 
       if businesses
-        style = 'size:' + options[:marker_size]
-        max = businesses.index(BinarySearch.new(style, businesses).search.first)
-        query_params['markers'] << markers(style, businesses[0..max])
+        warnings = businesses.select {|b| !b.has_major_offences? }
+        if warnings.size > 0
+          style = "size:#{options[:marker_size]}|color:orange"
+          max = warnings.index(BinarySearch.new(style, warnings).search.first)
+          query_params['markers'] << markers(style, warnings[0..max])
+        end
+
+        criticals = businesses.select {|b| b.has_major_offences? }
+        if criticals.size > 0
+          style = "size:#{options[:marker_size]}|color:red"
+          max = criticals.index(BinarySearch.new(style, criticals).search.first)
+          query_params['markers'] << markers(style, criticals[0..max])
+        end
       end
 
       a = ::Addressable::URI.new(
