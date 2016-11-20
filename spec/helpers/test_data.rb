@@ -125,10 +125,10 @@ RSpec.shared_context 'test data' do
     options[:count].times do |i|
       attrs = {
         'business_id' => business.id,
-        'date' => Faker::Time.backward(14).to_date,
-        'link' => Faker::Internet.url('www2.health.vic.gov.au/public-health/food-safety/convictions-register'),
+        'date'        => Faker::Time.backward(14).to_date,
+        'link'        => Faker::Internet.url('www2.health.vic.gov.au/public-health/food-safety/convictions-register'),
         'description' => Faker::ChuckNorris.fact,
-        'severity' => options[:severity],
+        'severity'    => options[:severity],
       }
       Offence.create(attrs)
     end
