@@ -58,14 +58,14 @@ module Sinatra
       end
 
       if businesses
-        warnings = businesses.select {|b| !b.has_major_offences? }
+        warnings = businesses.select {|b| !b.has_major_offences? || !b.has_many_problems? }
         if warnings.size > 0
           style = 'scale:2|icon:http://i.imgur.com/zTluVCr.png'
           max = warnings.index(BinarySearch.new(style, warnings).search.first)
           query_params['markers'] << markers(style, warnings[0..max])
         end
 
-        criticals = businesses.select {|b| b.has_major_offences? }
+        criticals = businesses.select {|b| b.has_major_offences? || b.has_many_problems? }
         if criticals.size > 0
           style = 'scale:2|icon:http://i.imgur.com/mc6SH33.png'
           max = criticals.index(BinarySearch.new(style, criticals).search.first)
