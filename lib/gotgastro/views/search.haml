@@ -84,8 +84,8 @@
               = business.name
           - c = case
           - when business.has_major_offences? ; 'danger'
-          - when business.problems <= 2; 'warning'
-          - when business.problems > 2; 'danger'
+          - when business.has_many_problems?  ; 'danger'
+          - when !business.has_many_problems? ; 'warning'
           %p.problem-count{:class => "text-#{c}"}
             %small
               %span.badge= business.problems

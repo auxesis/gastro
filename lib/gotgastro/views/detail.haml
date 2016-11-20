@@ -41,9 +41,9 @@
     %div.col-md-12
       %p.text-muted= @business.address
       - c = case
-      - when @business.has_major_offences?; 'danger'
-      - when @business.problems <= 2; 'warning'
-      - when @business.problems > 2; 'danger'
+      - when @business.has_major_offences? ; 'danger'
+      - when @business.has_many_problems?  ; 'danger'
+      - when !@business.has_many_problems? ; 'warning'
     %div.col-md-6
       %div.alert{:class => "alert-#{c}"}
         %i.fa.fa-fw.fa-lg.fa-exclamation-circle
