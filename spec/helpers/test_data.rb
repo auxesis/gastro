@@ -56,6 +56,11 @@ RSpec.shared_context 'test data' do
       make_offences(:for => business, :count => 1)
     end
   }
+  let(:some_prosecutions) {
+    Business.limit(Business.count / 4).each do |business|
+      make_offences(:for => business, :count => 1, :severity => 'major')
+    end
+  }
   let(:subscribed_user) {
     within_25km && within_150km
 
@@ -113,7 +118,7 @@ RSpec.shared_context 'test data' do
   }
 
   def make_offences(opts={})
-    options = { :count => 1 }.merge(opts)
+    options = { :count => 1, :severity => 'minor' }.merge(opts)
     raise ArgumentError unless options[:for]
     business = options[:for]
 
@@ -123,6 +128,7 @@ RSpec.shared_context 'test data' do
         'date' => Faker::Time.backward(14).to_date,
         'link' => Faker::Internet.url('www2.health.vic.gov.au/public-health/food-safety/convictions-register'),
         'description' => Faker::ChuckNorris.fact,
+        'severity' => options[:severity],
       }
       Offence.create(attrs)
     end
