@@ -53,21 +53,21 @@ module Sinatra
       query_params['zoom'] = zoom if zoom
 
       if location
-        style = 'icon:http://i.stack.imgur.com/orZ4x.png'
+        style = 'scale:2|icon:http://i.stack.imgur.com/orZ4x.png'
         query_params['markers'] << markers(style, [location])
       end
 
       if businesses
         warnings = businesses.select {|b| !b.has_major_offences? }
         if warnings.size > 0
-          style = "size:#{options[:marker_size]}|color:orange"
+          style = 'scale:2|icon:http://i.imgur.com/zTluVCr.png'
           max = warnings.index(BinarySearch.new(style, warnings).search.first)
           query_params['markers'] << markers(style, warnings[0..max])
         end
 
         criticals = businesses.select {|b| b.has_major_offences? }
         if criticals.size > 0
-          style = "size:#{options[:marker_size]}|color:red"
+          style = 'scale:2|icon:http://i.imgur.com/mc6SH33.png'
           max = criticals.index(BinarySearch.new(style, criticals).search.first)
           query_params['markers'] << markers(style, criticals[0..max])
         end
