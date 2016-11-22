@@ -2,7 +2,7 @@
 
 - # Images
 - gmaps_api_key = config['settings']['gmaps_api_key']
-- map_url = google_map(:api_key => gmaps_api_key, :businesses => [ @business ], :zoom => 16, :marker_size => 'mid')
+- map_url = google_map(:api_key => gmaps_api_key, :business => @business, :zoom => 16)
 
 - # Variables
 - severity = @business.has_major_offences? ? 'major' : 'minor'

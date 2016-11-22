@@ -40,6 +40,7 @@ module Sinatra
         'marker_size' => 'tiny'
       }).merge(opts)
       location   = opts[:location]
+      business   = opts[:business]
       businesses = opts[:businesses]
       zoom       = options[:zoom] || (businesses.size == 0 ? 10 : nil)
 
@@ -55,6 +56,19 @@ module Sinatra
       if location
         style = 'scale:2|icon:http://i.stack.imgur.com/orZ4x.png'
         query_params['markers'] << markers(style, [location])
+      end
+
+      if business
+        if business.has_major_offences? || business.has_many_problems?
+          # critical
+          url = 'http://i.imgur.com/tbhV59M.png'
+        else
+          # warning
+          url = 'http://i.imgur.com/fFCz9w7.png'
+        end
+        style = 'scale:2|icon:' + url
+
+        query_params['markers'] << markers(style, [business])
       end
 
       if businesses
