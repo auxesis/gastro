@@ -28,6 +28,7 @@ describe 'GoogleMapsHelpers' do
     businesses = Business.all
     gmaps_api_key = config['settings']['gmaps_api_key']
     map_url = google_map(:api_key => gmaps_api_key, :businesses => businesses, :location => origin)
+    expect(map_url.size).to be <= 2000
 
     # Parse the url into an array of markers
     url = Addressable::URI.parse(map_url)

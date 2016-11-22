@@ -18,10 +18,10 @@ module Sinatra
         @list.length / 2
       end
 
-      def search
+      def search(max=800)
         m = markers(style, list)
 
-        if m.size > 1_600
+        if m.size > max
           sub = list[0..middle]
           return sub if sub == list
           return BinarySearch.new(style, sub).search
@@ -58,15 +58,23 @@ module Sinatra
       end
 
       if businesses
-        warnings = businesses.select {|b| !b.has_major_offences? || !b.has_many_problems? }
-        if warnings.size > 0
+        warnings = businesses.select {|b| !b.has_many_problems? && !b.has_major_offences? }
+        criticals = businesses.select {|b| b.has_major_offences? || b.has_many_problems? }
+
+        case
+        when warnings.size > 0 && criticals.size > 0
+          style = 'scale:2|icon:http://i.imgur.com/zTluVCr.png'
+          max = warnings.index(BinarySearch.new(style, warnings).search(max=900).first)
+          query_params['markers'] << markers(style, warnings[0..max])
+
+          style = 'scale:2|icon:http://i.imgur.com/mc6SH33.png'
+          max = criticals.index(BinarySearch.new(style, criticals).search(max=900).first)
+          query_params['markers'] << markers(style, criticals[0..max])
+        when warnings.size > 0
           style = 'scale:2|icon:http://i.imgur.com/zTluVCr.png'
           max = warnings.index(BinarySearch.new(style, warnings).search.first)
           query_params['markers'] << markers(style, warnings[0..max])
-        end
-
-        criticals = businesses.select {|b| b.has_major_offences? || b.has_many_problems? }
-        if criticals.size > 0
+        when criticals.size > 0
           style = 'scale:2|icon:http://i.imgur.com/mc6SH33.png'
           max = criticals.index(BinarySearch.new(style, criticals).search.first)
           query_params['markers'] << markers(style, criticals[0..max])
