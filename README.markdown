@@ -86,9 +86,9 @@ npm install
 
 #### MySQL
 
-MySQL is required due to OGC spatial analysis functions. In theory it should work with Postgres too, but is untested.
+MySQL is required due to OGC spatial analysis functions. In theory it should work with Postgres too, but it is untested.
 
-The Rake tasks assume your MySQL root user with no password set.
+The `db:create` and `db:destroy` Rake tasks assume your MySQL root user with no password set.
 
 #### Redis
 
