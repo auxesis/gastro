@@ -95,7 +95,7 @@ describe 'Alerts', :type => :feature do
       # Create it at /search
       # Muck with the hidden fields
       visit "/search?lat=&lng=&address="
-      find(:xpath, "//input[@name='alert[distance]']").set ''
+      find(:xpath, "//input[@name='alert[distance]']", visible: false).set ''
       click_on 'Create alert'
       expect(page.status_code).to be 400
       expect(page.body).to match(/there was a problem creating your alert/i)
