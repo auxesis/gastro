@@ -1,5 +1,5 @@
 web: pkill -f rackup ; bundle exec rerun --pattern='**/*.{rb,ru}' --ignore='spec/*' -- rackup -o 0.0.0.0
-mail: pkill -f mailcatcher ; bundle exec mailcatcher --smtp-port 1025 --http-port 1080
+mail: pkill -9 -f mailcatcher ; bundle exec mailcatcher --smtp-port 1025 --http-port 1080
 redis: redis-server
 sidekiq: bundle exec rerun --pattern=lib/gotgastro/workers* -- sidekiq -c 10 -v -r ./lib/gotgastro/workers.rb
 assets: bundle exec rerun --exit --pattern=lib/gotgastro/public/* --ignore=*.min.* -- rake assets
