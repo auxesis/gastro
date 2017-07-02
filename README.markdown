@@ -80,7 +80,7 @@ Ensure you have Git, Ruby, Node, MySQL, and Redis:
 git clone git@github.com:auxesis/gastro.git
 cd gastro
 bundle
-rake db:setup
+rake db:create
 npm install
 ```
 
