@@ -138,6 +138,16 @@ Then, to trigger a data import:
 curl http://localhost:9292/reset?token=wheresthepizza
 ```
 
+### Assets
+
+We minify CSS and JavaScript so they load faster for users:
+
+```
+rake assets
+```
+
+This is automatically run in development under Foreman.
+
 ### CDN
 
 Setting the `CDN_BASE` environment variable will cause assets to be linked to a CDN:
@@ -146,7 +156,7 @@ Setting the `CDN_BASE` environment variable will cause assets to be linked to a 
 export CDN_BASE=https://de2d8d398fngi.cloudfront.net
 ```
 
-This significantly speeds up serving of JS, CSS, images, and fonts considerably.
+This significantly speeds up serving of JS, CSS, images, and fonts.
 
 ### Facebook
 
