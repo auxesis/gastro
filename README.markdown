@@ -1,10 +1,8 @@
 # Got Gastro
 
-Got Gastro helps inform people about food safety problems when eating out or buying food.
+[Got Gastro](https://gotgastroagain.com) helps inform people about food safety problems when eating out or buying food.
 
 ## Using
-
-Visit [gotgastroagain.com](https://gotgastroagain.com/).
 
 ![Visit gotgastroagain.com](https://c2.staticflickr.com/6/5150/30073568806_be226da539_z.jpg)
 
@@ -22,7 +20,7 @@ Tap an entry to see details of the food safety problem:
 
 ### Data sources
 
-Each state and territory publishes their data sets differently: from nothing, to HTML, to artisinally hand crafted PDFs for each breach.
+Each state and territory publishes their data sets differently: from nothing, to HTML, to artisanally hand crafted PDFs for each breach.
 
 NT, Tasmania, and Queensland don't publish their data.
 
