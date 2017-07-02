@@ -1,5 +1,4 @@
-class Import < Sequel::Model
-  set_dataset :resets
+class Import < Sequel::Model(:resets)
   one_to_many :alerts_offences
 
   plugin :timestamps
