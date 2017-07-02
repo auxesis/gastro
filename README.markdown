@@ -45,16 +45,18 @@ Calls to `/metrics` will return information about how Got Gastro is currently ru
 {
   "businesses": 1349,
   "offences": 2366,
-  "last_reset_at": "2016-10-04T12:01:26.000+00:00",
-  "last_reset_duration": 84
+  "last_import_at": "2016-10-04T12:01:26.000+00:00",
+  "last_import_duration": 84
 }
 ```
 
 `businesses` and `offences` show counts of each of those data types.
 
-`last_reset_at` is the last time a data reset was performed via API.
+`last_import_at` is the last time a data reset was performed via API.
 
-`last_reset_duration` is the time it took for the last data reset to complete.
+`last_import_at_human` is the last time a data reset was performed via API, in a human readable format.
+
+`last_import_duration` is the time it took for the last data reset to complete.
 
 If `last_reset_duration` is `-1`, this means a reset started, and has not finished. This can indicate that a reset is currently running, or it has failed.
 
