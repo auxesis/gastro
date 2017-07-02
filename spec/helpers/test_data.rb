@@ -21,7 +21,8 @@ RSpec.shared_context 'test data' do
     lngs = (1..16).map {|i| origin.lng + i * 0.01 }
 
     lats.zip(lngs).each_with_index do |(lat, lng), i|
-      business = Business.create(:name => "#{lat},#{lng},#{i}", :lat => lat, :lng => lng)
+      name = Faker::Name.name_with_middle
+      business = Business.create(:name => name, :lat => lat, :lng => lng)
       make_offences(:for => business, :count => 1)
     end
   }
@@ -30,7 +31,8 @@ RSpec.shared_context 'test data' do
     lngs = (1..16).map {|i| origin.lng + i * 0.1 }
 
     lats.zip(lngs).each do |lat, lng|
-      business = Business.create(:name => "#{lat},#{lng}", :lat => lat, :lng => lng)
+      name = Faker::Name.name_with_middle
+      business = Business.create(:name => name, :lat => lat, :lng => lng)
       make_offences(:for => business, :count => 3)
     end
   }
@@ -38,8 +40,9 @@ RSpec.shared_context 'test data' do
     lats = (3..16).map {|i| origin.lat + i * 0.1 }
     lngs = (3..16).map {|i| origin.lng + i * 0.1 }
 
-    lats.zip(lngs).each_with_index do |(lat, lng), i|
-      business = Business.create(:name => "#{lat},#{lng},#{i}", :lat => lat, :lng => lng)
+    lats.zip(lngs).each do |lat, lng|
+      name = Faker::Name.name_with_middle
+      business = Business.create(:name => name, :lat => lat, :lng => lng)
       make_offences(:for => business, :count => 1)
     end
   }
@@ -47,9 +50,15 @@ RSpec.shared_context 'test data' do
     lats = (1..1000).map {|i| origin.lat + i * 0.0001 }
     lngs = (1..1000).map {|i| origin.lng + i * 0.0001 }
 
-    lats.zip(lngs).each_with_index do |(lat, lng), i|
-      business = Business.create(:name => "#{lat},#{lng},#{i}", :lat => lat, :lng => lng)
+    lats.zip(lngs).each do |lat, lng|
+      name     = Faker::Name.name_with_middle
+      business = Business.create(:name => name, :lat => lat, :lng => lng)
       make_offences(:for => business, :count => 1)
+    end
+  }
+  let(:some_prosecutions) {
+    Business.limit(Business.count / 4).each do |business|
+      make_offences(:for => business, :count => 1, :severity => 'major')
     end
   }
   let(:subscribed_user) {
@@ -109,16 +118,17 @@ RSpec.shared_context 'test data' do
   }
 
   def make_offences(opts={})
-    options = { :count => 1 }.merge(opts)
+    options = { :count => 1, :severity => 'minor' }.merge(opts)
     raise ArgumentError unless options[:for]
     business = options[:for]
 
     options[:count].times do |i|
       attrs = {
         'business_id' => business.id,
-        'date' => Faker::Time.backward(14).to_date,
-        'link' => Faker::Internet.url('www2.health.vic.gov.au/public-health/food-safety/convictions-register'),
+        'date'        => Faker::Time.backward(14).to_date,
+        'link'        => Faker::Internet.url('www2.health.vic.gov.au/public-health/food-safety/convictions-register'),
         'description' => Faker::ChuckNorris.fact,
+        'severity'    => options[:severity],
       }
       Offence.create(attrs)
     end

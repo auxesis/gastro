@@ -15,6 +15,7 @@ module GotGastro
     helpers Sinatra::MetaTagHelper
     helpers Sinatra::Cookies
     helpers Sinatra::TimeHelpers
+    helpers Sinatra::GoogleMapsHelpers
 
     before do
       # Set the location cookie if we've got a new lat/lng param.
