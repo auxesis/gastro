@@ -145,8 +145,8 @@ describe 'Alerts', :type => :feature do
     expect(alert_mail.to).to eq([alert.email])
 
     businesses = Business.find_near(alert.location, :within => alert.distance)
-    conditions = ['offences.created_at >= :alert', {:alert => alert.created_at}]
-    offences   = Offence.join(businesses, :id => :business_id).where(*conditions).all
+    conditions = Sequel[:offences][:created_at] >= alert.created_at
+    offences   = Offence.join(businesses, :id => :business_id).where(conditions).all
     business_count = offences.map(&:business).uniq.size
 
     expect(alert_mail.subject).to match(alert.address)
