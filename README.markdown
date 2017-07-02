@@ -84,6 +84,18 @@ rake db:create
 npm install
 ```
 
+Then add a `.env` file so the app can talk to Morph:
+
+```
+# Used to trigger an import by hitting /reset?token=where_is_the_pizza
+GASTRO_RESET_TOKEN=where_is_the_pizza
+
+# Used to fetch a dataset from Morph. Get your Morph API key from https://morph.io/settings
+MORPH_API_KEY=covfefe
+```
+
+You can find an example configuration at `.env.example`.
+
 #### MySQL
 
 MySQL is required due to OGC spatial analysis functions. In theory it should work with Postgres too, but it is untested.
