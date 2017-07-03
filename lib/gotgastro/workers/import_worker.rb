@@ -10,7 +10,7 @@ module GotGastro
 
       def perform(token)
         import = ::Import.create(:token => token)
-        info("Data import started at #{import.created_at}")
+        info("Data import id #{import.id} started at #{import.created_at}")
 
         # Create Businesses
         Business.unrestrict_primary_key
@@ -34,7 +34,7 @@ module GotGastro
 
         import.save
         EmailAlerts.perform_async
-        info("Data import completed at #{import.updated_at}")
+        info("Data import id #{import.id} completed at #{import.updated_at}")
       end
 
       def url
