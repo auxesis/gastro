@@ -205,5 +205,17 @@ module GotGastro
         :alerts => Alert.all
       }.to_json
     end
+
+    get '/offences' do
+      if params[:token] != config['settings']['reset_token']
+        halt 404
+      end
+      limit = params[:limit] || 10
+
+      content_type :json
+      {
+        :offences => Offence.order(:date).reverse.limit(limit).all
+      }.to_json
+    end
   end
 end
