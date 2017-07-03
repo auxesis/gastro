@@ -11,6 +11,23 @@ describe 'Social', :type => :feature do
     set_environment_variable('FB_APP_ID', fb_app_id)
   end
 
+  describe 'detail page' do
+    it 'should have a Facebook like button', :aggregate_failures do
+      within_25km && within_150km
+
+      urls = Business.limit(10).map(:id).map {|id| '/business/' + id}
+
+      urls.each do |url|
+        visit(url)
+        fb_like = first(:css, 'div.fb-like')
+        expect(fb_like).to_not be nil
+        expect(fb_like['data-href']).to eq(current_url)
+        expect(fb_like['data-action']).to eq('like')
+        expect(fb_like['data-share']).to eq('true')
+      end
+    end
+  end
+
   describe 'Facebook Open Graph' do
     it 'should have a title and description' do
       within_25km && within_150km

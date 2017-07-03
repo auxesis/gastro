@@ -83,7 +83,7 @@
         %ul
           - @business.offences.each do |offence|
             %li= offence.description
-    %div.col-md-12.fb-like{'data-href' => 'https://developers.facebook.com/docs/plugins/', 'data-layout' => 'standard', 'data-action' => 'like', 'data-size' => 'large', 'data-show-faces' => 'false', 'data-share' => 'true'}
+    %div.col-md-12.fb-like{'data-href' => request.url, 'data-layout' => 'standard', 'data-action' => 'like', 'data-size' => 'large', 'data-show-faces' => 'false', 'data-share' => 'true'}
 
   %div.row.nav
     %div.col-md-12
