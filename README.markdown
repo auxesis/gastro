@@ -44,6 +44,7 @@ Calls to `/metrics` will return information about how Got Gastro is currently ru
   "businesses": 1349,
   "offences": 2366,
   "last_import_at": "2016-10-04T12:01:26.000+00:00",
+  "last_import_at_human": "3 hours ago",
   "last_import_duration": 84
 }
 ```
