@@ -24,6 +24,7 @@ gem 'dotiw'
 gem 'addressable'
 gem 'redcarpet'
 gem 'valid_email'
+gem 'rufus-scheduler'
 
 group :development do
   gem 'rerun'

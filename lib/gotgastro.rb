@@ -2,11 +2,13 @@ require 'helpers'
 require 'sinatra/cookies'
 require 'active_support'
 require 'active_support/core_ext'
+require 'rufus-scheduler'
 
 module GotGastro
   class App < Sinatra::Base
     set :root, Pathname.new(__FILE__).parent.join('gotgastro')
     set :show_exceptions, :after_handler unless development?
+    set :scheduler, Rufus::Scheduler.new
 
     helpers Sinatra::LinkToHelper
     helpers Sinatra::PageTitleHelper
@@ -30,6 +32,13 @@ module GotGastro
       lat, lng = URI.decode(cookies[:location]).split(',')
       address = cookies[:address] || ''
       @location = Business.new(:lat => lat, :lng => lng, :address => CGI::unescape(address))
+    end
+
+    configure do
+      # Check on imports at 10:00 every Saturday
+      scheduler.cron('0 10 * * 6') do
+        GotGastro::Workers::MonitorImports.perform_async
+      end
     end
 
     not_found do
@@ -159,6 +168,16 @@ module GotGastro
 
       status 201
       'OK'
+    end
+
+    get '/health_checks' do
+      content_type :json
+
+      checks = [
+        GotGastro::Monitors::CheckImports
+      ].each(&:run)
+
+      checks.to_json
     end
 
     get '/metrics' do

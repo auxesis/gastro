@@ -18,16 +18,12 @@ def environment
   ENV['RACK_ENV'] || 'development'
 end
 
-def debug?
-  environment != 'test'
-end
-
-def info?
-  environment != 'test'
-end
-
 def production?
   environment == 'production'
+end
+
+def test?
+  environment == 'test'
 end
 
 def cdn?
@@ -38,12 +34,23 @@ def fb_app_id?
   !!config['settings']['fb_app_id']
 end
 
+# FIXME(auxesis) how about we don't roll our own logging implementation?
+LOG = []
+
 def debug(msg)
-  puts('[debug] ' + msg) if debug?
+  if test?
+    LOG << msg
+  else
+    puts('[DEBUG] ' + msg)
+  end
 end
 
 def info(msg)
-  puts('[info] ' + msg) if info?
+  if test?
+    LOG << msg
+  else
+    puts('[INFO] ' + msg)
+  end
 end
 
 def set_or_error(config, key, value)
@@ -124,9 +131,9 @@ migrations_path = root + 'db' + 'migrations'
 begin
   Sequel::Migrator.run(DB, migrations_path)
 rescue Sequel::DatabaseConnectionError => e
-  puts "Couldn't establish connection to database!"
-  puts e.message
-  puts "Exiting."
+  info("Couldn't establish connection to database!")
+  info(e.message)
+  info("Exiting.")
   exit(1)
 end
 
