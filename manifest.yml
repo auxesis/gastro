@@ -1,7 +1,7 @@
 ---
 applications:
 - name: workers
-  memory: 150M
+  memory: 250M
   disk_quota: 200M
   instances: 1
   no-route: true
@@ -13,7 +13,7 @@ applications:
     - gotgastro.production
     - gotgastro.logs
 - name: blue
-  memory: 150M
+  memory: 200M
   disk: 200M
   instances: 1
   buildpack: ruby_buildpack
@@ -25,7 +25,7 @@ applications:
     - gotgastro.production
     - gotgastro.logs
 - name: green
-  memory: 150M
+  memory: 200M
   disk_quota: 200M
   instances: 1
   buildpack: ruby_buildpack
