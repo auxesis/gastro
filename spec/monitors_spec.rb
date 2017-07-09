@@ -5,7 +5,13 @@ include Rack::Test::Methods
 
 describe 'Monitor' do
   describe 'imports' do
-    before(:each) { LOG.clear }
+    include_context 'test data'
+
+    before(:each) {
+      set_environment_variable('GASTRO_RESET_TOKEN', gastro_reset_token)
+      set_environment_variable('MORPH_API_KEY', morph_api_key)
+      LOG.clear
+    }
 
     it 'should warn if there were no imports in the last 7 days' do
       GotGastro::Workers::MonitorImports.perform_async
@@ -23,21 +29,40 @@ describe 'Monitor' do
     end
 
     describe 'health check' do
-      it 'should expose an ok status', :type => :feature do
+      it 'should expose an ok status for import count', :type => :feature do
         count = 3
         count.times { Import.create }
 
         visit '/health_checks'
         health_checks = JSON.parse(page.body)
-        check_imports = health_checks.find {|check| check['type'] == 'CheckImports'}
+        check_imports = health_checks.find {|check| check['type'] == 'CheckImportsCountInLastWeek'}
         expect(check_imports).to_not be nil
         expect(check_imports['status']).to eq('ok')
       end
 
-      it 'should expose a critical status', :type => :feature do
+      it 'should expose a critical status for import count', :type => :feature do
         visit '/health_checks'
         health_checks = JSON.parse(page.body)
-        check_imports = health_checks.find {|check| check['type'] == 'CheckImports'}
+        check_imports = health_checks.find {|check| check['type'] == 'CheckImportsCountInLastWeek'}
+        expect(check_imports).to_not be nil
+        expect(check_imports['status']).to eq('critical')
+      end
+
+      it 'should expose an ok status for import status', :type => :feature do
+        count = 3
+        count.times { Import.create(:updated_at => (Time.now + 10)) }
+
+        visit '/health_checks'
+        health_checks = JSON.parse(page.body)
+        check_imports = health_checks.find {|check| check['type'] == 'CheckLastImportStatus'}
+        expect(check_imports).to_not be nil
+        expect(check_imports['status']).to eq('ok')
+      end
+
+      it 'should expose a critical status for import status', :type => :feature do
+        visit '/health_checks'
+        health_checks = JSON.parse(page.body)
+        check_imports = health_checks.find {|check| check['type'] == 'CheckLastImportStatus'}
         expect(check_imports).to_not be nil
         expect(check_imports['status']).to eq('critical')
       end

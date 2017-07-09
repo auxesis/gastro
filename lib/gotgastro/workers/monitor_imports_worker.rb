@@ -9,7 +9,7 @@ module GotGastro
       include Sidekiq::Worker
 
       def perform
-        check = GotGastro::Monitors::CheckImports
+        check = GotGastro::Monitors::CheckImportsCountInLastWeek
         check.run
         info("#{check.type}: #{check.status}: #{check.message}")
       end
@@ -17,7 +17,7 @@ module GotGastro
   end
 
   module Monitors
-    class CheckImports
+    class CheckImportsCountInLastWeek
       class << self
         attr_reader :status, :message, :type
 
@@ -32,6 +32,31 @@ module GotGastro
           else
             @status  = :ok
             @message = "There were #{imports.size} imports in the last week: #{imports.map(&:id).join(', ')}"
+          end
+        end
+      end
+    end
+
+    class CheckLastImportStatus
+      class << self
+        attr_reader :status, :message, :type
+
+        def run
+          @type = self.to_s.split('::').last
+
+          import = ::Import.last
+
+          if import
+            if import.duration > 0
+              @status  = :ok
+              @message = "Last import (##{import.id}) ran for #{import.duration} seconds"
+            else
+              @status  = :critical
+              @message = "Last import (##{import.id}) failed with status #{import.duration}"
+            end
+          else
+            @status  = :critical
+            @message = 'No import has been run yet'
           end
         end
       end

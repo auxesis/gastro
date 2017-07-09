@@ -174,7 +174,8 @@ module GotGastro
       content_type :json
 
       checks = [
-        GotGastro::Monitors::CheckImports
+        GotGastro::Monitors::CheckImportsCountInLastWeek,
+        GotGastro::Monitors::CheckLastImportStatus
       ].each(&:run)
 
       checks.to_json
