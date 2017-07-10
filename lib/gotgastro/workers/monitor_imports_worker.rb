@@ -49,10 +49,10 @@ module GotGastro
           if import
             if import.duration > 0
               @status  = :ok
-              @message = "Last import (##{import.id}) ran for #{import.duration} seconds"
+              @message = "Last import (##{import.id}, starting at #{import.created_at}) ran for #{import.duration} seconds"
             else
               @status  = :critical
-              @message = "Last import (##{import.id}) failed with status #{import.duration}"
+              @message = "Last import (##{import.id}, starting at #{import.created_at}) failed with status #{import.duration}"
             end
           else
             @status  = :critical
