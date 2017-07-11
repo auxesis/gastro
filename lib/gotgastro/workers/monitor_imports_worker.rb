@@ -16,6 +16,7 @@ module GotGastro
     end
   end
 
+  # FIXME(auxesis): refactor into separate file
   module Monitors
     class CheckImportsCountInLastWeek
       class << self
