@@ -57,7 +57,7 @@ describe 'Got Gastro metrics', :type => :feature do
 
     metrics = JSON.parse(body)
 
-    expect(metrics['last_import_duration']).to be -1
+    expect(metrics['imports']['last_import']['duration']).to be -1
   end
 
   it 'display summary data on the home page' do

@@ -185,15 +185,26 @@ module GotGastro
       content_type :json
 
       metrics = {
-        'businesses' => Business.count,
-        'offences' => Offence.count,
+        businesses: Business.count,
+        offences:   Offence.count,
+        imports:    {
+          count:             Import.count,
+          last_7_days_count: Import.where(:created_at => 1.week.ago..Time.now).count
+        }
       }
 
       if Import.last
-        metrics.merge!({
-          'last_import_at' => Import.last.created_at,
-          'last_import_at_human' => time_ago_in_words(Import.last.created_at) + ' ago',
-          'last_import_duration' => Import.last.duration,
+        metrics[:imports].merge!({
+          last_import: {
+            started_at:  Import.last.created_at,
+            finished_at: Import.last.updated_at,
+            duration:    Import.last.duration,
+          },
+          last_import_human: {
+            started_at:  time_ago_in_words(Import.last.created_at) + ' ago',
+            finished_at: time_ago_in_words(Import.last.updated_at) + ' ago',
+            duration:    distance_of_time(Import.last.duration),
+          }
         })
       end
 
