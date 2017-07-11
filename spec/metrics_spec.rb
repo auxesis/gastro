@@ -15,7 +15,7 @@ describe 'Got Gastro metrics', :type => :feature do
     expect(metrics['offences']).to_not be nil
   end
 
-  it 'should expose metrics from last reset' do
+  it 'should expose metrics from last reset', :aggregate_failures do
     stub_request(:get,
       %r{https://api\.morph\.io/auxesis/gotgastro_scraper/data\.json\?key.*&query=select%20\*%20from%20'businesses'}
       ).to_return(:status => 200, :body => business_json)
@@ -27,15 +27,20 @@ describe 'Got Gastro metrics', :type => :feature do
     set_environment_variable('GASTRO_RESET_TOKEN', gastro_reset_token)
     set_environment_variable('MORPH_API_KEY', morph_api_key)
 
-    visit "/reset?token=#{gastro_reset_token}"
-    GotGastro::Workers::Import.drain
+    time_travel_to(2.minutes.ago) {
+      visit "/reset?token=#{gastro_reset_token}"
+      GotGastro::Workers::Import.drain
+    }
     visit '/metrics'
 
     metrics = JSON.parse(body)
 
-    expect(metrics['last_import_at']).to_not be nil
-    expect(metrics['last_import_duration']).to_not be nil
-    expect(metrics['last_import_at_human']).to_not be nil
+    expect(metrics['imports']['last_import']['started_at']).to_not be nil
+    expect(metrics['imports']['last_import']['finished_at']).to_not be nil
+    expect(metrics['imports']['last_import']['duration'].class).to be(Float)
+    expect(metrics['imports']['last_import_human']['started_at']).to eq('2 minutes ago')
+    expect(metrics['imports']['last_import_human']['finished_at']).to eq('2 minutes ago')
+    expect(metrics['imports']['last_import_human']['duration']).to match(/^(less than )*1 second$/)
   end
 
   it 'should indicate if the current reset is still running' do
