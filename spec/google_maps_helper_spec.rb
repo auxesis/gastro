@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-include Rack::Test::Methods
-include Sinatra::GoogleMapsHelpers
+describe GotGastro::Helpers::GoogleMapsHelpers do
 
-describe 'GoogleMapsHelpers' do
+  include GotGastro::Helpers::GoogleMapsHelpers
+
   include_context 'test data'
 
   before(:each) do

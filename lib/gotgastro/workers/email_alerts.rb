@@ -4,13 +4,13 @@ require 'sidekiq/api'
 require 'mail'
 require 'active_support/core_ext/time'
 require 'tilt/haml'
-require 'helpers'
+require 'gotgastro/helpers'
 
 module GotGastro
   module Workers
     class EmailAlerts
       include Sidekiq::Worker
-      include Sinatra::GoogleMapsHelpers
+      include GotGastro::Helpers::GoogleMapsHelpers
 
       def perform
         import = ::Import.last

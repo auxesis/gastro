@@ -1,4 +1,4 @@
-require 'helpers'
+require 'gotgastro/helpers'
 require 'sinatra/cookies'
 require 'active_support'
 require 'active_support/core_ext'
@@ -10,14 +10,14 @@ module GotGastro
     set :show_exceptions, :after_handler unless development?
     set :scheduler, Rufus::Scheduler.new
 
-    helpers Sinatra::LinkToHelper
-    helpers Sinatra::PageTitleHelper
-    helpers Sinatra::RequireJSHelper
-    helpers Sinatra::RequireCSSHelper
-    helpers Sinatra::MetaTagHelper
+    helpers GotGastro::Helpers::LinkToHelpers
+    helpers GotGastro::Helpers::PageTitleHelpers
+    helpers GotGastro::Helpers::JavaScriptHelpers
+    helpers GotGastro::Helpers::CSSHelpers
+    helpers GotGastro::Helpers::MetaTagHelpers
+    helpers GotGastro::Helpers::TimeHelpers
+    helpers GotGastro::Helpers::GoogleMapsHelpers
     helpers Sinatra::Cookies
-    helpers Sinatra::TimeHelpers
-    helpers Sinatra::GoogleMapsHelpers
 
     before do
       # Set the location cookie if we've got a new lat/lng param.
