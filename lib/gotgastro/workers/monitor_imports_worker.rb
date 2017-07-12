@@ -1,7 +1,7 @@
 require 'sidekiq'
 require 'redis'
 require 'sidekiq/api'
-require 'rest-client'
+require 'gotgastro/monitors'
 
 module GotGastro
   module Workers
@@ -13,54 +13,6 @@ module GotGastro
         check.run
         info("#{check.type}: #{check.status}: #{check.message}")
       end
-    end
-  end
-
-  # FIXME(auxesis): refactor into separate file
-  module Monitors
-    class CheckImportsCountInLastWeek
-      class << self
-        attr_reader :status, :message, :type
-
-        def run
-          @type = self.to_s.split('::').last
-
-          imports = ::Import.where(:created_at => 1.week.ago..Time.now).all
-
-          if imports.empty?
-            @status  = :critical
-            @message = 'No imports created in the last week'
-          else
-            @status  = :ok
-            @message = "There were #{imports.size} imports in the last week: #{imports.map(&:id).join(', ')}"
-          end
-        end
-      end
-    end
-
-    class CheckLastImportStatus
-      class << self
-        attr_reader :status, :message, :type
-
-        def run
-          @type = self.to_s.split('::').last
-
-          import = ::Import.last
-
-          if import
-            if import.duration > 0
-              @status  = :ok
-              @message = "Last import (##{import.id}, starting at #{import.created_at}) ran for #{import.duration} seconds"
-            else
-              @status  = :critical
-              @message = "Last import (##{import.id}, starting at #{import.created_at}) failed with status #{import.duration}"
-            end
-          else
-            @status  = :critical
-            @message = 'No import has been run yet'
-          end
-        end
-      end
-    end
-  end
-end
+    end # MonitorImports
+  end # Workers
+end # GotGastro
