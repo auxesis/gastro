@@ -1,10 +1,5 @@
 - require_js 'search.min'
 
-- if @location.address.blank?
-  - page_title 'Search results'
-- else
-  - page_title "Search results near: #{@location.address}"
-
 - # Images
 - gmaps_api_key = config['settings']['gmaps_api_key']
 - map_url = google_map(:api_key => gmaps_api_key, :businesses => @businesses, :location => @location)
@@ -21,6 +16,8 @@
   - description = "Nearest #{nearest}km away. Furthest #{furthest}km away. Latest problem was #{time_ago_in_words(latest.date, opts)} ago."
 - else
   - description = "No businesses found in search"
+
+- page_title(title)
 
 - # Facebook Open Graph
 - meta_tag :property => 'fb:app_id',      :content => config['settings']['fb_app_id'] if fb_app_id?
