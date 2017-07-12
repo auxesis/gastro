@@ -29,9 +29,7 @@
 - meta_tag :property => 'og:image:width', :content => '400'
 - meta_tag :property => 'og:image:height', :content => '200'
 
-
 - # Twitter Cards
-- # FIXME(auxesis): refactor all this data generation into separate methods
 - meta_tag :name => 'twitter:card', :content => 'summary_large_image'
 - meta_tag :name => 'twitter:site', :content => '@gotgastro'
 - meta_tag :name => 'twitter:title', :content => title
@@ -39,6 +37,7 @@
 - meta_tag :name => 'twitter:image', :content => map_url
 - meta_tag :name => 'twitter:image:alt', :content => "Map showing location of food safety problems near #{@location.address}"
 
+- # For the Facebook sharing widget at the bottom of the page
 = haml :facebook_sdk
 
 %div.container
