@@ -67,6 +67,28 @@ Calls to `/metrics` will return information about how Got Gastro is currently ru
 
 If `imports.last_import.duration` is `-1`, this means a reset started and has not finished. This can indicate that a reset is currently running, or it has failed.
 
+### Health checks
+
+Calls to `/health_checks` will return information about Got Gastro's performance:
+
+``` json
+[
+  {
+    "type": "CheckImportsCountInLastWeek",
+    "status": "ok",
+    "message": "There were 5 imports in the last week: 2652, 2662, 2672, 2682, 2692"
+  },
+  {
+    "type": "CheckLastImportStatus",
+    "status": "ok",
+    "message": "Last import (#2692, starting at 2017-07-11 10:54:32 +0000) ran for 30.0 seconds"
+  }
+]
+```
+
+- `CheckImportsCountInLastWeek` errors if there have been 0 imports in the last 7 days.
+- `CheckLastImportStatus` errors if the last import failed.
+
 ## Developing
 
 ![CircleCI build status](https://circleci.com/gh/auxesis/gastro.png?circle-token=27a395741dc9cb515e2c74222f015b2ffc6c8e2f)
