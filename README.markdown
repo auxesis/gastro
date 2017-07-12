@@ -41,23 +41,31 @@ Calls to `/metrics` will return information about how Got Gastro is currently ru
 
 ``` json
 {
-  "businesses": 1349,
-  "offences": 2366,
-  "last_import_at": "2016-10-04T12:01:26.000+00:00",
-  "last_import_at_human": "3 hours ago",
-  "last_import_duration": 84
-}
+  "businesses": 2117,
+  "offences": 4104,
+  "imports": {
+    "count": 270,
+    "last_7_days_count": 5,
+    "last_import": {
+      "started_at": "2017-07-11T10:54:32.000+00:00",
+      "finished_at": "2017-07-11T10:55:02.000+00:00",
+      "duration": 30
+    },
+    "last_import_human": {
+      "started_at": "15 hours and 51 minutes ago",
+      "finished_at": "15 hours and 51 minutes ago",
+      "duration": "30 seconds"
+    }
+  }
+}}
 ```
 
-`businesses` and `offences` show counts of each of those data types.
+- `businesses`, `offences`, and `imports.count` show counts of each of those data types.
+- `imports.last_7_days_count` is the number of times imports have been done in the last 7 days.
+- `imports.last_import.*` contains raw timestamps and numerical duration of the last import.
+- `imports.last_import_human.*` contains human readable timestamps and the numerical duration of the last import.
 
-`last_import_at` is the last time a data reset was performed via API.
-
-`last_import_at_human` is the last time a data reset was performed via API, in a human readable format.
-
-`last_import_duration` is the time it took for the last data reset to complete.
-
-If `last_reset_duration` is `-1`, this means a reset started, and has not finished. This can indicate that a reset is currently running, or it has failed.
+If `imports.last_import.duration` is `-1`, this means a reset started and has not finished. This can indicate that a reset is currently running, or it has failed.
 
 ## Developing
 
