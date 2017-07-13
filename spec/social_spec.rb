@@ -29,7 +29,7 @@ describe 'Social', :type => :feature do
   end
 
   describe 'Facebook Open Graph' do
-    it 'should have a title and description' do
+    it 'should have a title and description', :aggregate_failures do
       within_25km && within_150km
 
       urls = [
@@ -50,7 +50,7 @@ describe 'Social', :type => :feature do
       end
     end
 
-    it 'should link to the canonical URL' do
+    it 'should link to the canonical URL', :aggregate_failures do
       within_25km && within_150km
 
       urls = [
@@ -70,7 +70,7 @@ describe 'Social', :type => :feature do
       end
     end
 
-    it 'should have an image' do
+    it 'should have an image', :aggregate_failures do
       within_25km && within_150km
 
       urls = [
@@ -88,7 +88,7 @@ describe 'Social', :type => :feature do
       end
     end
 
-    it 'should have a map image if search or business result' do
+    it 'should have a map image if search or business result', :aggregate_failures do
       within_25km && within_150km
 
       urls = [
@@ -104,7 +104,7 @@ describe 'Social', :type => :feature do
       end
     end
 
-    it 'should have a Facebook App ID' do
+    it 'should have a Facebook App ID', :aggregate_failures do
       within_25km && within_150km
 
       urls = [
@@ -125,7 +125,7 @@ describe 'Social', :type => :feature do
   end
 
   describe 'Twitter' do
-    it 'should have a title, description, and site' do
+    it 'should have a title, description, and site', :aggregate_failures do
       within_25km && within_150km
 
       urls = [
@@ -148,7 +148,7 @@ describe 'Social', :type => :feature do
       end
     end
 
-    it 'should have an image' do
+    it 'should have an image', :aggregate_failures do
       within_25km && within_150km
 
       urls = [
@@ -171,7 +171,7 @@ describe 'Social', :type => :feature do
       end
     end
 
-    it 'should have a map image if search or business result' do
+    it 'should have a map image if search or business result', :aggregate_failures do
       within_25km && within_150km
 
       urls = [
