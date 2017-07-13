@@ -1,21 +1,20 @@
 - require_js 'search.min'
 
 - # Images
-- gmaps_api_key = config.gmaps_api_key
-- map_url = google_map(:api_key => gmaps_api_key, :businesses => @businesses, :location => @location)
+- map_url = google_map(:api_key => config.gmaps_api_key, :businesses => @businesses, :location => @location)
 
 - # Variables
 - problem = @businesses.size == 1 ? 'problem' : 'problems'
 - title = "#{@businesses.size} food safety #{problem}"
 - title += " near #{@location.address}" unless @location.address.blank?
 - if @businesses.size > 0
-  - nearest  = "%.1f" % @businesses.first.distance_from(@location)
-  - furthest = "%.1f" % @businesses.last.distance_from(@location)
+  - nearest  = '%.1f' % @businesses.first.distance_from(@location)
+  - furthest = '%.1f' % @businesses.last.distance_from(@location)
   - latest   = @businesses_dataset.unordered.offences.order(:date).last
-  - opts = { :highest_measure_only => true, :accumulate_on => :years }
+  - opts = { highest_measure_only: true, accumulate_on: :years }
   - description = "Nearest #{nearest}km away. Furthest #{furthest}km away. Latest problem was #{time_ago_in_words(latest.date, opts)} ago."
 - else
-  - description = "No businesses found in search"
+  - description = 'No businesses found in search'
 
 - page_title(title)
 
@@ -50,22 +49,22 @@
   %div.row
     %div.col-md-12
       %p.map
-        %img{:src => map_url}/
+        %img{src: map_url}/
   - if @location.address
     %div.row.email-alert
       %div.col-md-12
         %div.well.well-lg
-          %form{:action => link_to('/alert'), :method => 'post'}
+          %form{action: link_to('/alert'), method: 'post'}
             %div.form-group
               %p
                 Get alerts for new food problems near here straight in your email. It's free!
             %div.form-group
               %p
-                %input.form-control.input-lg{:name => 'alert[email]', :placeholder => 'me@example.org', :type => 'email'}
-                %input{:type => 'hidden', :name => 'alert[location]', :value => "#{@location.lat},#{@location.lng}"}
-                %input{:type => 'hidden', :name => 'alert[distance]', :value => '5'}
-                %input{:type => 'hidden', :name => 'alert[address]',  :value => @location.address}
-            %button{:class => 'btn btn-success btn-lg btn-block', :type => 'submit'}
+                %input.form-control.input-lg{name: 'alert[email]', placeholder: 'me@example.org', type: 'email'}
+                %input{type: 'hidden', name: 'alert[location]', value: "#{@location.lat},#{@location.lng}"}
+                %input{type: 'hidden', name: 'alert[distance]', value: '5'}
+                %input{type: 'hidden', name: 'alert[address]',  value: @location.address}
+            %button{class: 'btn btn-success btn-lg btn-block', type: 'submit'}
               %i.fa.fa-fw.fa-envelope
               Create alert
 
@@ -74,15 +73,15 @@
       - @businesses.each do |business|
         %div.col-md-12.result
           %div.pull-right.distance
-            = "%.1f" % business.distance_from(@location) + "km away"
+            = '%.1f' % business.distance_from(@location) + 'km away'
           %h4.business-name
-            %a{:href => link_to("/business/#{business.id}")}
+            %a{href: link_to("/business/#{business.id}")}
               = business.name
           - c = case
           - when business.has_major_offences? ; 'danger'
           - when business.has_many_problems?  ; 'danger'
           - when !business.has_many_problems? ; 'warning'
-          %p.problem-count{:class => "text-#{c}"}
+          %p.problem-count{class: "text-#{c}"}
             %small
               %span.badge= business.problems
               = business.has_major_offences? ? 'major' : 'minor'
@@ -91,12 +90,12 @@
               %small
                 - if business.problems > 1
                   last was
-                - opts = { :highest_measure_only => true, :accumulate_on => :years }
+                - opts = { highest_measure_only: true, accumulate_on: :years }
                 = time_ago_in_words(business.last_offence.date, opts)
                 ago
           %p.address.text-muted
             %small= business.address
-      %div.col-md-12.fb-like{'data-href' => 'https://developers.facebook.com/docs/plugins/', 'data-layout' => 'standard', 'data-action' => 'like', 'data-size' => 'large', 'data-show-faces' => 'false', 'data-share' => 'true'}
+      %div.col-md-12.fb-like{'data-href': 'https://developers.facebook.com/docs/plugins/', 'data-layout': 'standard', 'data-action': 'like', 'data-size': 'large', 'data-show-faces': 'false', 'data-share': 'true'}
     - else
       %div.col-md-12.result.text-center.empty
         %i.fa.fa-thumbs-o-up.fa-fw.fa-lg
@@ -105,8 +104,8 @@
   %div.row.nav.report
     %div.col-md-12
       %p
-        %a{:href => "/"}
-          %button.btn.btn-default{:type => "button"}
+        %a{href: '/'}
+          %button.btn.btn-default{type: 'button'}
             %i.fa.fa-fw.fa-arrow-circle-o-left
             Back to search
 

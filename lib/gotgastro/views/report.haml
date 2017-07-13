@@ -1,6 +1,6 @@
 - title = 'Report a food safety problem'
 - description = 'Links to places you can report food safety problems in your area.'
-- image_url = link_to('/img/apple-touch-icon-precomposed.png?1', :asset => true)
+- image_url = link_to('/img/apple-touch-icon-precomposed.png?1', asset: true)
 
 - page_title(title)
 
@@ -20,57 +20,57 @@
 - meta_tag :name => 'twitter:title', :content => title
 - meta_tag :name => 'twitter:description', :content => description
 - meta_tag :name => 'twitter:image', :content => image_url
-- meta_tag :name => 'twitter:image:alt', :content => "Got Gastro logo."
+- meta_tag :name => 'twitter:image:alt', :content => 'Got Gastro logo.'
 
 %div.container
   %h1 Report a food safety problem
   %div.row
     %div.col-md-12
       %h3
-        %a{:href => "http://www.health.act.gov.au/public-information/public-health/public-health-complaints", :target => "_blank"}
+        %a{href: 'http://www.health.act.gov.au/public-information/public-health/public-health-complaints', target: '_blank'}
           %i.fa.fa-fw.fa-link
           Australian Capital Territory
     %div.col-md-12
       %h3
-        %a{:href => "http://foodauthority.nsw.gov.au/gp/complaints-about-food", :target => "_blank"}
+        %a{href: 'http://foodauthority.nsw.gov.au/gp/complaints-about-food', target: '_blank'}
           %i.fa.fa-fw.fa-link
           New South Wales
     %div.col-md-12
       %h3
-        %a{:href => "http://www.health.nt.gov.au/Environmental_Health/Food_Safety/Food_Safety_Hotline/index.aspx", :target => "_blank"}
+        %a{href: 'http://www.health.nt.gov.au/Environmental_Health/Food_Safety/Food_Safety_Hotline/index.aspx', target: '_blank'}
           %i.fa.fa-fw.fa-link
           Northern Territory
     %div.col-md-12
       %h3
-        %a{:href => "https://www.qld.gov.au/health/staying-healthy/environmental/food/report-food-safety-issue/index.html", :target => "_blank"}
+        %a{href: 'https://www.qld.gov.au/health/staying-healthy/environmental/food/report-food-safety-issue/index.html', target: '_blank'}
           %i.fa.fa-fw.fa-link
           Queensland
     %div.col-md-12
       %h3
-        %a{:href => "http://www.sahealth.sa.gov.au/wps/wcm/connect/public+content/sa+health+internet/health+topics/health+conditions+prevention+and+treatment/food+safety/complaints+about+food", :target => "_blank"}
+        %a{href: 'http://www.sahealth.sa.gov.au/wps/wcm/connect/public+content/sa+health+internet/health+topics/health+conditions+prevention+and+treatment/food+safety/complaints+about+food', target: '_blank'}
           %i.fa.fa-fw.fa-link
           South Australia
     %div.col-md-12
       %h3
-        %a{:href => "http://www.dhhs.tas.gov.au/publichealth/food_safety/information_for_consumers", :target => "_blank"}
+        %a{href: 'http://www.dhhs.tas.gov.au/publichealth/food_safety/information_for_consumers', target: '_blank'}
           %i.fa.fa-fw.fa-link
           Tasmania
     %div.col-md-12
       %h3
-        %a{:href => "http://healthywa.wa.gov.au/Articles/N_R/Reporting-food-safety-offences", :target => "_blank"}
+        %a{href: 'http://healthywa.wa.gov.au/Articles/N_R/Reporting-food-safety-offences', target: '_blank'}
           %i.fa.fa-fw.fa-link
           Western Australia
     %div.col-md-12
       %h3
-        %a{:href => "https://www2.health.vic.gov.au/public-health/food-safety/food-safety-information-for-consumers/complaints", :target => "_blank"}
+        %a{href: 'https://www2.health.vic.gov.au/public-health/food-safety/food-safety-information-for-consumers/complaints', target: '_blank'}
           %i.fa.fa-fw.fa-link
           Victoria
 
   %div.row.nav
     %div.col-md-12
       %p
-        %a{:href => "/"}
-          %button.btn.btn-default.btn-lg{:type => "button"}
+        %a{href: '/'}
+          %button.btn.btn-default.btn-lg{type: 'button'}
             %i.fa.fa-fw.fa-arrow-circle-o-left
             Back
 

@@ -1,20 +1,22 @@
-- # FIXME(auxesis) refactor to :ruby filter
-- styles = { :body      => 'font-family: sans-serif; padding: 10px;',
-             :heading   => 'background-color: #28b62c; color: #eee; padding: 15px 10px; border-color: #24a528; border-bottom-width: 10px;',
-             :intro     => 'color: #333; padding: 10px; font-size: 120%;',
-             :offence   => 'background-color: #fafafa; color: #111; padding: 10px; margin-bottom: 10px;',
-             :title     => 'color: #158cba;',
-             :when      => 'padding-top: 15px;',
-             :when_th   => 'padding-top: 15px; text-align: left;',
-             :th        => 'text-align: left;',
-             :edit      => 'color: #111; padding: 10px;',
-             :signature => 'padding: 10px;',
-             :link      => 'color: #158cba' }
+:ruby
+  styles = {
+    body:      'font-family: sans-serif; padding: 10px;',
+    heading:   'background-color: #28b62c; color: #eee; padding: 15px 10px; border-color: #24a528; border-bottom-width: 10px;',
+    intro:     'color: #333; padding: 10px; font-size: 120%;',
+    offence:   'background-color: #fafafa; color: #111; padding: 10px; margin-bottom: 10px;',
+    title:     'color: #158cba;',
+    when:      'padding-top: 15px;',
+    when_th:   'padding-top: 15px; text-align: left;',
+    th:        'text-align: left;',
+    edit:      'color: #111; padding: 10px;',
+    signature: 'padding: 10px;',
+    link:      'color: #158cba'
+  }
 %html
-  %body{:style => styles[:body]}
-    %h1{:style => styles[:heading]}
+  %body{style: styles[:body]}
+    %h1{style: styles[:heading]}
       Got Gastro
-    %p{:style => styles[:intro]}
+    %p{style: styles[:intro]}
       The following
       %strong new food safety warnings
       have been found within
@@ -24,32 +26,31 @@
 
     %div
       - pairs.each do |business, offences|
-        %div{:style => styles[:offence]}
-          %h3.business.address{:style => styles[:title]}
+        %div{style: styles[:offence]}
+          %h3.business.address{style: styles[:title]}
             = business.name
             –
             = business.address
 
           %p
-            - gmaps_api_key = config.gmaps_api_key
-            - map_url = google_map(:api_key => gmaps_api_key, :businesses => [ business ], :zoom => 15, :marker_size => 'mid', :width => 200, :height => 100)
-            %img{:src => map_url}/
+            - map_url = google_map(api_key: config.gmaps_api_key, businesses: [ business ], zoom: 15, marker_size: 'mid', width: 200, height: 100)
+            %img{src: map_url}/
           %table
             %tr.distance
-              %th{:style => styles[:th]}
+              %th{style: styles[:th]}
                 Distance away:
               %td
-                = "%.2f" % business.distance_from(alert)
+                = '%.2f' % business.distance_from(alert)
                 km
             - offences.each do |offence|
               %tr.when
-                %th{:style => styles[:when_th]}
+                %th{style: styles[:when_th]}
                   When:
-                %td{:style => styles[:when]}
-                  %a{:href => offence.link, :style => styles[:title]}
-                    = offence.date.strftime("%B %d, %Y")
+                %td{style: styles[:when]}
+                  %a{href: offence.link, style: styles[:title]}
+                    = offence.date.strftime('%B %d, %Y')
               %tr.description
-                %th{:style => styles[:th]}
+                %th{style: styles[:th]}
                   What:
                 %td
                   - if offence.description =~ /\n/
@@ -60,18 +61,18 @@
 
           %p
             - link = "#{config.baseurl}/business/#{business.id}"
-            %a{:href => link, :style => styles[:link]}
+            %a{href: link, style: styles[:link]}
               See all food safety problems at this address
 
-    %p{:style => styles[:signature]}
+    %p{style: styles[:signature]}
       Thanks,
       %br/
       Got Gastro
 
-    %p{:style => styles[:edit]}
-      %a{:style => styles[:link], :href => "#{config.baseurl}/alert/#{alert.confirmation_id}/unsubscribe"}<
+    %p{style: styles[:edit]}
+      %a{style: styles[:link], href: "#{config.baseurl}/alert/#{alert.confirmation_id}/unsubscribe"}<
         Unsubscribe
       or
-      %a{:style => styles[:link], :href => "#{config.baseurl}/alert/#{alert.confirmation_id}/edit"}<
+      %a{style: styles[:link], href: "#{config.baseurl}/alert/#{alert.confirmation_id}/edit"}<
         change
       your alert preferences.

@@ -1,15 +1,13 @@
 - page_title @business.name
 
 - # Images
-- gmaps_api_key = config.gmaps_api_key
-- # FIXME(auxesis): upgrade symbol syntax
-- map_url = google_map(:api_key => gmaps_api_key, :business => @business, :zoom => 16)
+- map_url = google_map(api_key: config.gmaps_api_key, business: @business, zoom: 16)
 
 - # Variables
 - severity = @business.has_major_offences? ? 'major' : 'minor'
 - problem = @business.problems == 1 ? 'problem' : 'problems'
 - title = "#{@business.name}: #{@business.problems} #{severity} food safety #{problem}"
-- opts = { :highest_measure_only => true, :accumulate_on => :years }
+- opts = { highest_measure_only: true, accumulate_on: :years }
 - description = "Located at #{@business.address}. Last problem was #{time_ago_in_words(@business.last_offence.date, opts)} ago."
 
 - # Facebook Open Graph
@@ -37,7 +35,7 @@
   %div.row
     %div.col-md-12
       %p.map
-        %img{:src => map_url}/
+        %img{src: map_url}/
   %div.row.detail
     %div.col-md-12
       %p.text-muted= @business.address
@@ -46,7 +44,7 @@
       - when @business.has_many_problems?  ; 'danger'
       - when !@business.has_many_problems? ; 'warning'
     %div.col-md-6
-      %div.alert{:class => "alert-#{c}"}
+      %div.alert{class: "alert-#{c}"}
         %i.fa.fa-fw.fa-lg.fa-exclamation-circle
         = @business.problems
         = @business.has_major_offences? ? 'major' : 'minor'
@@ -54,7 +52,7 @@
     %div.col-md-6
       %div.alert.alert-info
         %i.fa.fa-fw.fa-lg.fa-location-arrow
-        = "%.1f" % @business.distance_from(@location) + "km away"
+        = '%.1f' % @business.distance_from(@location) + 'km away'
 
   %div.row.detail
     %div.col-md-12
@@ -84,13 +82,13 @@
         %ul
           - @business.offences.each do |offence|
             %li= offence.description
-    %div.col-md-12.fb-like{'data-href' => request.url, 'data-layout' => 'standard', 'data-action' => 'like', 'data-size' => 'large', 'data-show-faces' => 'false', 'data-share' => 'true'}
+    %div.col-md-12.fb-like{'data-href': request.url, 'data-layout': 'standard', 'data-action': 'like', 'data-size': 'large', 'data-show-faces': 'false', 'data-share': 'true'}
 
   %div.row.nav
     %div.col-md-12
       %p
-        %a{:href => "/search?#{nav_query(@location)}"}
-          %button.btn.btn-default.btn-lg{:type => "button"}
+        %a{href: "/search?#{nav_query(@location)}"}
+          %button.btn.btn-default.btn-lg{type: 'button'}
             %i.fa.fa-fw.fa-arrow-circle-o-left
             Back to search results
 
