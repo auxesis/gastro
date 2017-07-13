@@ -159,7 +159,7 @@ module GotGastro
     end
 
     get_or_post '/reset' do
-      if params[:token] != config['settings']['reset_token']
+      if params[:token] != config.reset_token
         halt 404
         return 'ERROR'
       end
@@ -212,14 +212,13 @@ module GotGastro
     end
 
     get '/env' do
-      if params[:token] != config['settings']['reset_token']
+      if params[:token] != config.reset_token
         halt 404
       end
 
       content_type :json
       {
         :config   => config,
-        :database => database_config,
         :env      => Hash[ENV.sort],
         :mail     => Mail.delivery_method.settings,
         :queues   => Sidekiq::Stats.new
@@ -227,7 +226,7 @@ module GotGastro
     end
 
     get '/alerts' do
-      if params[:token] != config['settings']['reset_token']
+      if params[:token] != config.reset_token
         halt 404
       end
 
@@ -238,7 +237,7 @@ module GotGastro
     end
 
     get '/offences' do
-      if params[:token] != config['settings']['reset_token']
+      if params[:token] != config.reset_token
         halt 404
       end
       limit = params[:limit] || 10

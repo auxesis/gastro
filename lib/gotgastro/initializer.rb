@@ -5,6 +5,7 @@ require 'erb'
 require 'json'
 require 'mail'
 require 'newrelic_rpm'
+require 'configatron'
 
 def root
   @root ||= Pathname.new(__FILE__).parent.parent.parent
@@ -27,11 +28,11 @@ def test?
 end
 
 def cdn?
-  !!config['settings']['cdn_base']
+  !!config.cdn_base
 end
 
 def fb_app_id?
-  !!config['settings']['fb_app_id']
+  !!config.fb_app_id
 end
 
 # FIXME(auxesis) how about we don't roll our own logging implementation?
@@ -53,64 +54,49 @@ def info(msg)
   end
 end
 
-def set_or_error(config, key, value)
-  case
-  when value.nil? || value.blank?
-    raise ArgumentError, "Value for '#{key}' was not specified"
-  when value.respond_to?(:[]) && value[:env]
-    v = value[:env]
-    if ENV[v]
-      config[key] = ENV[v]
-    else
-      raise ArgumentError, "'#{v}' envvar (value for '#{key}') was not specified"
-    end
+def config_or_error(key, env:)
+  if env
+    configatron[key] = ENV[env]
   else
-    config[key] = value
+    raise ArgumentError, "Value for key '#{key}' was not specified."
   end
-end
-
-def config
-  return @vcap if @vcap
-
-  @vcap = {}
-  debug("VCAP_APPLICATION: #{ENV['VCAP_APPLICATION'].inspect}")
-  debug("VCAP_SERVICES: #{ENV['VCAP_SERVICES'].inspect}")
-  @vcap.merge!('vcap_application' => JSON.parse(ENV['VCAP_APPLICATION'])) if ENV['VCAP_APPLICATION']
-  @vcap.merge!('vcap_services' => JSON.parse(ENV['VCAP_SERVICES'])) if ENV['VCAP_SERVICES']
-
-  # FIXME(auxesis): refactor this to recursive openstruct
-  settings = {}
-  settings['baseurl'] = production? ? 'https://gotgastroagain.com' : 'http://localhost:9292'
-  settings['cdn_base']  = ENV['CDN_BASE']
-  settings['fb_app_id'] = ENV['FB_APP_ID']
-  settings['gmaps_api_key'] = ENV['GMAPS_API_KEY'] || 'AIzaSyBxaCRguM2pvw9HOLybx5ZP6Cuo94KnJwg'
-  begin
-    set_or_error(settings, 'reset_token',   :env => 'GASTRO_RESET_TOKEN')
-    set_or_error(settings, 'morph_api_key', :env => 'MORPH_API_KEY')
-    set_or_error(settings, 'newrelic_license_key', :env => 'NEWRELIC_LICENSE_KEY') if production?
-  rescue ArgumentError => e
-    @vcap = nil
-    raise e
-  end
-  debug("settings: #{settings.inspect}")
-  @vcap.merge!('settings' => settings)
 end
 
 def database_config
-  if not @database_config
-    config_file = root + 'config' + 'database.yml'
-    template = ERB.new(config_file.read, nil, '%')
-    @database_config = YAML.load(template.result(binding))[environment]
-  end
+  config_file = root + 'config' + 'database.yml'
+  template = ERB.new(config_file.read, nil, '%')
+  YAML.load(template.result(binding))[environment]
+end
+
+def config
+  return configatron if configatron.locked?
+
+  configatron.vcap_applications = JSON.parse(ENV['VCAP_APPLICATION']) if ENV['VCAP_APPLICATION']
+  configatron.vcap_services     = JSON.parse(ENV['VCAP_SERVICES'])    if ENV['VCAP_SERVICES']
+
+  configatron.baseurl       = production? ? 'https://gotgastroagain.com' : 'http://localhost:9292'
+  configatron.cdn_base      = ENV['CDN_BASE']
+  configatron.fb_app_id     = ENV['FB_APP_ID']
+  configatron.gmaps_api_key = ENV['GMAPS_API_KEY'] || 'AIzaSyBxaCRguM2pvw9HOLybx5ZP6Cuo94KnJwg'
+
+  config_or_error(:reset_token,          env: 'GASTRO_RESET_TOKEN')
+  config_or_error(:morph_api_key,        env: 'MORPH_API_KEY')
+  config_or_error(:newrelic_license_key, env: 'NEWRELIC_LICENSE_KEY') if production?
 
   case
-  when @database_config['database_uri']
-    @database_config['database_uri']
-  when @database_config
-    @database_config
+  when database_config['database_uri']
+    configatron.database = database_config['database_uri']
+  when database_config
+    configatron.database = database_config
   else
-    raise "No database config present"
+    raise 'No database config present'
   end
+
+  configatron.lock!
+
+  debug("config: #{configatron.to_hash}")
+
+  configatron
 end
 
 # Silence deprecation warnings
@@ -122,8 +108,8 @@ require 'sequel'
 # Setup New Relic instrumentation for Sequel
 Sequel.extension :newrelic_instrumentation
 Sequel.extension :core_extensions
-debug("database_config: #{database_config.inspect}")
-DB = ::Sequel.connect(database_config)
+debug("config.database: #{config.database}")
+DB = ::Sequel.connect(config.database)
 
 # Run the migrations in all environments. YOLO.
 Sequel.extension :migration

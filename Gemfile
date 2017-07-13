@@ -26,6 +26,7 @@ gem 'redcarpet'
 gem 'valid_email'
 gem 'rufus-scheduler'
 gem 'actionview', '= 5.0.4'
+gem 'configatron'
 
 group :development do
   gem 'rerun'

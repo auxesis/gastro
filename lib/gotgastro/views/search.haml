@@ -1,7 +1,7 @@
 - require_js 'search.min'
 
 - # Images
-- gmaps_api_key = config['settings']['gmaps_api_key']
+- gmaps_api_key = config.gmaps_api_key
 - map_url = google_map(:api_key => gmaps_api_key, :businesses => @businesses, :location => @location)
 
 - # Variables
@@ -20,7 +20,7 @@
 - page_title(title)
 
 - # Facebook Open Graph
-- meta_tag :property => 'fb:app_id',      :content => config['settings']['fb_app_id'] if fb_app_id?
+- meta_tag :property => 'fb:app_id',      :content => config.fb_app_id if fb_app_id?
 - meta_tag :property => 'og:type',        :content => 'website'
 - meta_tag :property => 'og:url',         :content => request.url
 - meta_tag :property => 'og:title',       :content => title

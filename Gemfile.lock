@@ -41,6 +41,7 @@ GEM
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
     concurrent-ruby (1.0.5)
+    configatron (4.5.1)
     connection_pool (2.2.1)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
@@ -221,6 +222,7 @@ DEPENDENCIES
   addressable
   bundler
   capybara
+  configatron
   delorean
   dotiw
   faker

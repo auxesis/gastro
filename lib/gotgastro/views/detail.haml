@@ -1,7 +1,8 @@
 - page_title @business.name
 
 - # Images
-- gmaps_api_key = config['settings']['gmaps_api_key']
+- gmaps_api_key = config.gmaps_api_key
+- # FIXME(auxesis): upgrade symbol syntax
 - map_url = google_map(:api_key => gmaps_api_key, :business => @business, :zoom => 16)
 
 - # Variables
@@ -12,7 +13,7 @@
 - description = "Located at #{@business.address}. Last problem was #{time_ago_in_words(@business.last_offence.date, opts)} ago."
 
 - # Facebook Open Graph
-- meta_tag :property => 'fb:app_id',      :content => config['settings']['fb_app_id'] if fb_app_id?
+- meta_tag :property => 'fb:app_id',      :content => config.fb_app_id if fb_app_id?
 - meta_tag :property => 'og:type',        :content => 'website'
 - meta_tag :property => 'og:url',         :content => request.url
 - meta_tag :property => 'og:title',       :content => title
