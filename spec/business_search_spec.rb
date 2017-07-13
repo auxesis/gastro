@@ -42,7 +42,7 @@ describe 'Business', :type => :feature do
   end
 
   describe 'show' do
-    it 'should show detail on individual busineses' do
+    it 'should show detail on individual businesses' do
       within_25km && within_150km
 
       visit "/search?lat=#{origin.lat}&lng=#{origin.lng}&address=#{origin.address}"

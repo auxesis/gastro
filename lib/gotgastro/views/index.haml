@@ -2,7 +2,7 @@
 
 - title = 'Got Gastro'
 - description = 'Got Gastro helps you find potential food safety problems when eating out or buying food.'
-- image_url = link_to('/img/apple-touch-icon-precomposed.png?1', :asset => true)
+- image_url = link_to('/img/apple-touch-icon-precomposed.png?1', asset: true)
 
 - # Facebook Open Graph
 - meta_tag :property => 'fb:app_id',      :content => config['settings']['fb_app_id'] if fb_app_id?
@@ -20,7 +20,7 @@
 - meta_tag :name => 'twitter:title', :content => title
 - meta_tag :name => 'twitter:description', :content => description
 - meta_tag :name => 'twitter:image', :content => image_url
-- meta_tag :name => 'twitter:image:alt', :content => "Got Gastro logo."
+- meta_tag :name => 'twitter:image:alt', :content => 'Got Gastro logo.'
 
 %div.container
   %div.page-header
@@ -32,7 +32,7 @@
         = description
     %div.col-md-12.locate
       %p
-        %button.btn.btn-success.geolocation{:type => "submit"}
+        %button.btn.btn-success.geolocation{type: 'submit'}
           %i.fa.fa-fw.fa-location-arrow
           Find food safety problems near me
     %div.col-md-12
@@ -40,7 +40,7 @@
         %strong – OR –
     %div.col-md-12.search
       %p
-        %input#autocomplete.input-lg.form-control{:placeholder => "Search for food safety problems near...", :type => "text", :onFocus => "geolocate()"}/
+        %input#autocomplete.input-lg.form-control{placeholder: 'Search for food safety problems near...', type: 'text', onFocus: 'geolocate()'}/
 
 %div.container.weekly-stats
   %div.panel.panel-primary
@@ -50,22 +50,22 @@
       %div.col-md-3.text-center.stat.new-offences
         we collected
         %span.number
-          = Offence.where(:created_at => Date.today.beginning_of_week.to_time..Time.now).count
+          = Offence.where(created_at: Date.today.beginning_of_week.to_time..Time.now).count
         new offences
       %div.col-md-3.text-center.stat.new-businesses
         we collected
         %span.number
-          = Business.where(:created_at => Date.today.beginning_of_week.to_time..Time.now).count
+          = Business.where(created_at: Date.today.beginning_of_week.to_time..Time.now).count
         new businesses
       %div.col-md-3.text-center.stat.received
         you received
         %span.number
-          = AlertsOffences.where(:created_at => (Date.today - 7).to_time..Time.now).group_by(:alert_id,:import_id).count
+          = AlertsOffences.where(created_at: (Date.today - 7).to_time..Time.now).group_by(:alert_id,:import_id).count
         email alerts
       %div.col-md-3.text-center.stat.signups
         you signed up for
         %span.number
-          = Alert.where(:created_at => Date.today.beginning_of_week.to_time..Time.now).count
+          = Alert.where(created_at: Date.today.beginning_of_week.to_time..Time.now).count
         new email alerts
 
   = haml :footer
@@ -73,4 +73,4 @@
 
 -# FIXME(auxesis): refactor api key into a variable
 - google_api_key = 'AIzaSyDBvlmNsUERDKkeQWX6OCsfR5VoPaD3nWo'
-- require_js("https://maps.googleapis.com/maps/api/js?key=#{google_api_key}&libraries=places&callback=initAutocomplete",:async => :async, :defer => :defer)
+- require_js("https://maps.googleapis.com/maps/api/js?key=#{google_api_key}&libraries=places&callback=initAutocomplete", async: :async, defer: :defer)

@@ -1,6 +1,6 @@
 - title = 'About Got Gastro'
 - description = 'Got Gastro combines food safety data from various jurisdictions and makes it easily searchable.'
-- image_url = link_to('/img/apple-touch-icon-precomposed.png?1', :asset => true)
+- image_url = link_to('/img/apple-touch-icon-precomposed.png?1', asset: true)
 
 - page_title(title)
 
@@ -20,7 +20,7 @@
 - meta_tag :name => 'twitter:title', :content => title
 - meta_tag :name => 'twitter:description', :content => description
 - meta_tag :name => 'twitter:image', :content => image_url
-- meta_tag :name => 'twitter:image:alt', :content => "Got Gastro logo."
+- meta_tag :name => 'twitter:image:alt', :content => 'Got Gastro logo.'
 
 %div.container
   %h1 About
@@ -39,37 +39,37 @@
           %li
             %strong> Australian Capital Territory
             , from ACT Health's
-            %a{:href => "http://www.health.act.gov.au/public-information/businesses/food-safety-regulation/register-food-offences"} register of food offences.
+            %a{href: 'http://www.health.act.gov.au/public-information/businesses/food-safety-regulation/register-food-offences'} register of food offences.
           %li
             %strong> New South Wales
             , from the NSW Food Authority's
-            %a{:href => "http://foodauthority.nsw.gov.au/offences/prosecutions/"} prosecution
+            %a{href: 'http://foodauthority.nsw.gov.au/offences/prosecutions/'} prosecution
             and
-            %a{:href => "http://foodauthority.nsw.gov.au/penalty-notices/default.aspx?template=results"} penalty
+            %a{href: 'http://foodauthority.nsw.gov.au/penalty-notices/default.aspx?template=results'} penalty
             notices.
           %li
             %strong> South Australia
             , from SA Health's
-            %a{:href => "http://www.sahealth.sa.gov.au/wps/wcm/connect/public+content/sa+health+internet/about+us/legislation/food+legislation/food+prosecution+register"} food prosecution register.
+            %a{href: 'http://www.sahealth.sa.gov.au/wps/wcm/connect/public+content/sa+health+internet/about+us/legislation/food+legislation/food+prosecution+register'} food prosecution register.
           %li
             %strong> Victoria
             , from vic.health's
-            %a{:href => "https://www2.health.vic.gov.au/public-health/food-safety/convictions-register"} convictions register.
+            %a{href: 'https://www2.health.vic.gov.au/public-health/food-safety/convictions-register'} convictions register.
           %li
             %strong> Western Australia
             , from the Government of Western Australia's Department of Health's
-            %a{:href => "http://ww2.health.wa.gov.au/Articles/F_I/Food-offenders/Publication-of-names-of-offenders-list"} names of offenders list.
+            %a{href: 'http://ww2.health.wa.gov.au/Articles/F_I/Food-offenders/Publication-of-names-of-offenders-list'} names of offenders list.
         %li
           %strong UK
         %ul
           %li
             %strong> England, Wales and Northern Ireland
             , from the Food Standard Agency's
-            %a{:href => "https://www.food.gov.uk/enforcement/prosecutions"}
+            %a{href: 'https://www.food.gov.uk/enforcement/prosecutions'}
               food law prosecution outcomes database.
       %p
         Learn how to
-        %a{:href => 'https://github.com/auxesis/gastro/blob/master/docs/contributing-datasets.markdown'}
+        %a{href: 'https://github.com/auxesis/gastro/blob/master/docs/contributing-datasets.markdown'}
           add more datasets
         to Got Gastro.
 
@@ -79,29 +79,29 @@
     %div.col-md-12
       %ul
         %li
-          %a{:href => "https://morph.io/"} Morph
+          %a{href: 'https://morph.io/'} Morph
           for providing a reliable scraping and data infrastructure, for
           getting the published notices from the states from
-          %a{:href => "https://morph.io/auxesis/vic_health_register_of_convictions"} many
-          %a{:href => "https://morph.io/auxesis/nsw_food_authority_penalty_notices"} different
-          %a{:href => "https://morph.io/auxesis/nsw_food_authority_prosecution_notices"} sources
+          %a{href: 'https://morph.io/auxesis/vic_health_register_of_convictions'} many
+          %a{href: 'https://morph.io/auxesis/nsw_food_authority_penalty_notices'} different
+          %a{href: 'https://morph.io/auxesis/nsw_food_authority_prosecution_notices'} sources
           into
-          %a{:href => "https://morph.io/auxesis/gotgastro_scraper"} one format.
+          %a{href: 'https://morph.io/auxesis/gotgastro_scraper'} one format.
         %li
           Source code is
-          %a{:href => "https://github.com/auxesis/gastro/"} on GitHub
+          %a{href: 'https://github.com/auxesis/gastro/'} on GitHub
           and available under the MIT license.
         %li
           All code changes to Got Gastro are
-          %a{:href => "https://circleci.com/gh/auxesis/gastro"} continuously deployed
+          %a{href: 'https://circleci.com/gh/auxesis/gastro'} continuously deployed
           using CircleCI.
 
 
   %div.row.nav
     %div.col-md-12
       %p
-        %a{:href => "/"}
-          %button.btn.btn-default.btn-lg{:type => "button"}
+        %a{href: '/'}
+          %button.btn.btn-default.btn-lg{type: 'button'}
             %i.fa.fa-fw.fa-arrow-circle-o-left
             Back
 
