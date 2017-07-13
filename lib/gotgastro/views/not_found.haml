@@ -8,13 +8,16 @@
       %p
         Maybe
         %strong
-          %a{:href => link_to('/')}
+          %a{href: link_to('/')}
             start a new search?
       %p
         Think there should be something here?
-        - issue = { :title => "Couldn't find content at #{request.path}",
-                    :body => "When I went to #{request.path}, I expected to see <SOMETHING>" }
-        - query = nav_query(issue)
-        - bug_url = 'https://github.com/auxesis/gastro/issues/new?' + query
-        %a{:target => '_bug', :href => bug_url}
+        :ruby
+          issue = {
+            title: "Couldn't find content at #{request.url}",
+            body:  "When I went to #{request.url}, I expected to see <SOMETHING>"
+          }
+          query = nav_query(issue)
+          bug_url = 'https://github.com/auxesis/gastro/issues/new?' + query
+        %a{href: bug_url, target: '_bug'}
           Report a bug.

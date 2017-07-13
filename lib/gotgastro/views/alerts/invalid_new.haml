@@ -8,24 +8,24 @@
         There was a problem creating your alert.
     %div.col-md-12
       %div.well.well-lg
-        %form{:action => link_to('/alert'), :method => 'post'}
+        %form{action: link_to('/alert'), method: 'post'}
           %div.form-group.has-error
             - @alert.errors.messages.each_pair do |field, errors|
               - errors.each do |error|
-                %label{:class => "control-label #{field}"}= error
-            %input.form-control.input-lg{:name => 'alert[email]', :placeholder => 'me@example.org', :type => 'email', :value => @alert.email}
-            %input{:type => 'hidden', :name => 'alert[location]', :value => "#{@location.lat},#{@location.lng}"}
-            %input{:type => 'hidden', :name => 'alert[distance]', :value => @alert.distance}
-            %input{:type => 'hidden', :name => 'alert[address]', :value => @alert.address}
-          %button{:class => 'btn btn-success btn-lg btn-block', :type => 'submit'}
+                %label{class: "control-label #{field}"}= error
+            %input.form-control.input-lg{name: 'alert[email]', placeholder: 'me@example.org', type: 'email', value: @alert.email}
+            %input{type: 'hidden', name: 'alert[location]', value: "#{@location.lat},#{@location.lng}"}
+            %input{type: 'hidden', name: 'alert[distance]', value: @alert.distance}
+            %input{type: 'hidden', name: 'alert[address]', value: @alert.address}
+          %button{class: 'btn btn-success btn-lg btn-block', type: 'submit'}
             %i.fa.fa-fw.fa-envelope
             Create alert
 
   %div.row.nav
     %div.col-md-12
       %p
-        %a{:href => "/search?#{nav_query(@location)}"}
-          %button.btn.btn-default{:type => 'button'}
+        %a{href: "/search?#{nav_query(@location)}"}
+          %button.btn.btn-default{type: 'button'}
             %i.fa.fa-fw.fa-arrow-circle-o-left
             Back to search results
 

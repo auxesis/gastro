@@ -1,23 +1,23 @@
 !!!
-%html{:lang => 'en'}
+%html{lang: 'en'}
   %head
-    %meta{:content => 'text/html; charset=UTF-8', 'http-equiv' => 'Content-Type'}/
-    %meta{:charset => 'utf-8'}/
-    %meta{:content => 'IE=edge', 'http-equiv' => 'X-UA-Compatible'}/
-    %meta{:content => 'minimal-ui, width=device-width, initial-scale=1.0 maximum-scale=1.0, user-scalable=no', :name => 'viewport'}/
+    %meta{content: 'text/html; charset=UTF-8', 'http-equiv': 'Content-Type'}/
+    %meta{charset: 'utf-8'}/
+    %meta{content: 'IE=edge', 'http-equiv': 'X-UA-Compatible'}/
+    %meta{content: 'minimal-ui, width=device-width, initial-scale=1.0 maximum-scale=1.0, user-scalable=no', name: 'viewport'}/
     %meta{name: 'apple-mobile-web-app-capable', content: 'yes'}/
     %meta{name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent'}/
     = include_meta
     = include_page_title
     - # FIXME(auxesis): add helpers to set page description
-    %meta{:content => 'Got Gastro helps you find out about potential food safety problems when eating out or buying food.'}
+    %meta{name: 'description', content: 'Got Gastro helps you find out about potential food safety problems when eating out or buying food.'}
     - require_css('vendor/font-awesome.min')
     - require_css('vendor/bootstrap.min')
     - require_css('main.min')
     = include_required_css
-    %link{:href => "#{request.path}?#{request.query_string}", :rel => 'canonical'}/
-    %link{:href => link_to('/img/favicon.png?1', :asset => true), :rel => 'icon'}/
-    %link{:href => link_to('/img/apple-touch-icon-precomposed.png?1', :asset => true), :rel => 'apple-touch-icon-precomposed'}/
+    %link{href: request.url, rel: 'canonical'}/
+    %link{href: link_to('/img/favicon.png?1', asset: true), rel: 'icon'}/
+    %link{href: link_to('/img/apple-touch-icon-precomposed.png?1', asset: true), rel: 'apple-touch-icon-precomposed'}/
     - require_js('vendor/jquery.min')
   %body
     = yield
