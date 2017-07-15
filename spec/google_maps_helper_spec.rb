@@ -10,9 +10,8 @@ describe GotGastro::Helpers::GoogleMapsHelpers do
     thousands_of_results && some_prosecutions
 
     businesses = Business.all
-    gmaps_api_key = config['settings']['gmaps_api_key']
 
-    map_url = google_map(:api_key => gmaps_api_key, :businesses => businesses, :location => origin)
+    map_url = google_map(:api_key => config.gmaps_api_key, :businesses => businesses, :location => origin)
     expect(map_url.size).to be <= 2000
   end
 
@@ -20,8 +19,7 @@ describe GotGastro::Helpers::GoogleMapsHelpers do
     thousands_of_results && some_prosecutions
 
     businesses = Business.all
-    gmaps_api_key = config['settings']['gmaps_api_key']
-    map_url = google_map(:api_key => gmaps_api_key, :businesses => businesses, :location => origin)
+    map_url = google_map(:api_key => config.gmaps_api_key, :businesses => businesses, :location => origin)
     expect(map_url.size).to be <= 2000
 
     # Parse the url into an array of markers
