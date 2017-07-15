@@ -5,11 +5,6 @@ include Rack::Test::Methods
 describe 'Business', :type => :feature do
   include_context 'test data'
 
-  before(:each) do
-    set_environment_variable('GASTRO_RESET_TOKEN', gastro_reset_token)
-    set_environment_variable('MORPH_API_KEY', morph_api_key)
-  end
-
   describe 'search' do
     it 'should only show results in the surrounding 25km' do
       within_25km && within_150km

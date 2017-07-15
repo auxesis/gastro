@@ -5,11 +5,6 @@ include Rack::Test::Methods
 describe 'Location tracking', :type => :feature do
   include_context 'test data'
 
-  before(:each) do
-    set_environment_variable('GASTRO_RESET_TOKEN', gastro_reset_token)
-    set_environment_variable('MORPH_API_KEY', morph_api_key)
-  end
-
   it 'should default to Sydney' do
     visit '/search'
     map_url = URI.decode(find('img')['src'])

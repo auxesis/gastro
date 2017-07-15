@@ -6,8 +6,6 @@ describe 'Social', :type => :feature do
   include_context 'test data'
 
   before(:each) do
-    set_environment_variable('GASTRO_RESET_TOKEN', gastro_reset_token)
-    set_environment_variable('MORPH_API_KEY', morph_api_key)
     set_environment_variable('FB_APP_ID', fb_app_id)
   end
 

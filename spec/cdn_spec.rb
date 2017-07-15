@@ -8,11 +8,6 @@ describe 'CDN', :type => :feature do
 
   let(:cdn_base) { "https://" + Faker::Internet.domain_name }
 
-  before(:each) do
-    set_environment_variable('GASTRO_RESET_TOKEN', gastro_reset_token)
-    set_environment_variable('MORPH_API_KEY', morph_api_key)
-  end
-
   it 'should cache static pages' do
     urls = [
       '/',
