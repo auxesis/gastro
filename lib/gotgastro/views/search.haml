@@ -1,7 +1,7 @@
 - require_js 'search.min'
 
 - # Images
-- map_url = google_map(:api_key => config.gmaps_api_key, :businesses => @businesses, :location => @location)
+- map_url = google_map(api_key: config.gmaps_api_key, businesses: @businesses, location: @location)
 
 - # Variables
 - problem = @businesses.size == 1 ? 'problem' : 'problems'
