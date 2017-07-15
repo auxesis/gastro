@@ -159,7 +159,7 @@ module GotGastro
     end
 
     get_or_post '/reset' do
-      if params[:token] != config.reset_token
+      if params[:token] != config.gastro_reset_token
         halt 404
         return 'ERROR'
       end
@@ -212,7 +212,7 @@ module GotGastro
     end
 
     get '/env' do
-      if params[:token] != config.reset_token
+      if params[:token] != config.gastro_reset_token
         halt 404
       end
 
@@ -226,7 +226,7 @@ module GotGastro
     end
 
     get '/alerts' do
-      if params[:token] != config.reset_token
+      if params[:token] != config.gastro_reset_token
         halt 404
       end
 
@@ -237,7 +237,7 @@ module GotGastro
     end
 
     get '/offences' do
-      if params[:token] != config.reset_token
+      if params[:token] != config.gastro_reset_token
         halt 404
       end
       limit = params[:limit] || 10
