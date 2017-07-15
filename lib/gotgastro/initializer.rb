@@ -5,6 +5,7 @@ require 'erb'
 require 'json'
 require 'mail'
 require 'newrelic_rpm'
+require 'configatron'
 
 def root
   @root ||= Pathname.new(__FILE__).parent.parent.parent
@@ -27,11 +28,11 @@ def test?
 end
 
 def cdn?
-  !!config['settings']['cdn_base']
+  config.has_key?(:cdn_base)
 end
 
 def fb_app_id?
-  !!config['settings']['fb_app_id']
+  !!config.fb_app_id
 end
 
 # FIXME(auxesis) how about we don't roll our own logging implementation?
@@ -53,64 +54,50 @@ def info(msg)
   end
 end
 
-def set_or_error(config, key, value)
-  case
-  when value.nil? || value.blank?
-    raise ArgumentError, "Value for '#{key}' was not specified"
-  when value.respond_to?(:[]) && value[:env]
-    v = value[:env]
-    if ENV[v]
-      config[key] = ENV[v]
-    else
-      raise ArgumentError, "'#{v}' envvar (value for '#{key}') was not specified"
-    end
-  else
-    config[key] = value
-  end
+def database_config
+  config_file = root + 'config' + 'database.yml'
+  template = ERB.new(config_file.read, nil, '%')
+  YAML.load(template.result(binding))[environment]
 end
 
 def config
-  return @vcap if @vcap
+  return configatron if configatron.locked?
 
-  @vcap = {}
-  debug("VCAP_APPLICATION: #{ENV['VCAP_APPLICATION'].inspect}")
-  debug("VCAP_SERVICES: #{ENV['VCAP_SERVICES'].inspect}")
-  @vcap.merge!('vcap_application' => JSON.parse(ENV['VCAP_APPLICATION'])) if ENV['VCAP_APPLICATION']
-  @vcap.merge!('vcap_services' => JSON.parse(ENV['VCAP_SERVICES'])) if ENV['VCAP_SERVICES']
+  configatron.vcap_applications = JSON.parse(ENV['VCAP_APPLICATION']) if ENV['VCAP_APPLICATION']
+  configatron.vcap_services     = JSON.parse(ENV['VCAP_SERVICES'])    if ENV['VCAP_SERVICES']
 
-  # FIXME(auxesis): refactor this to recursive openstruct
-  settings = {}
-  settings['baseurl'] = production? ? 'https://gotgastroagain.com' : 'http://localhost:9292'
-  settings['cdn_base']  = ENV['CDN_BASE']
-  settings['fb_app_id'] = ENV['FB_APP_ID']
-  settings['gmaps_api_key'] = ENV['GMAPS_API_KEY'] || 'AIzaSyBxaCRguM2pvw9HOLybx5ZP6Cuo94KnJwg'
-  begin
-    set_or_error(settings, 'reset_token',   :env => 'GASTRO_RESET_TOKEN')
-    set_or_error(settings, 'morph_api_key', :env => 'MORPH_API_KEY')
-    set_or_error(settings, 'newrelic_license_key', :env => 'NEWRELIC_LICENSE_KEY') if production?
-  rescue ArgumentError => e
-    @vcap = nil
-    raise e
-  end
-  debug("settings: #{settings.inspect}")
-  @vcap.merge!('settings' => settings)
-end
+  configatron.baseurl       = production? ? 'https://gotgastroagain.com' : 'http://localhost:9292'
+  configatron.gmaps_api_key = ENV['GMAPS_API_KEY'] || 'AIzaSyDBvlmNsUERDKkeQWX6OCsfR5VoPaD3nWo'
 
-def database_config
-  if not @database_config
-    config_file = root + 'config' + 'database.yml'
-    template = ERB.new(config_file.read, nil, '%')
-    @database_config = YAML.load(template.result(binding))[environment]
+  [
+    'CDN_BASE',
+    'FB_APP_ID',
+    'GASTRO_RESET_TOKEN',
+    'MORPH_API_KEY',
+    'NEWRELIC_LICENSE_KEY',
+  ].each do |var|
+    key, value = var.downcase, ENV[var]
+    if ENV[var]
+      configatron[key] = value
+    else
+      debug("Warning: environment variable #{var} for key '#{key}' was nil.")
+    end
   end
 
   case
-  when @database_config['database_uri']
-    @database_config['database_uri']
-  when @database_config
-    @database_config
+  when database_config['database_uri']
+    configatron.database = database_config['database_uri']
+  when database_config
+    configatron.database = database_config
   else
-    raise "No database config present"
+    raise 'No database config present'
   end
+
+  configatron.lock! if production?
+
+  debug("config: #{configatron.to_hash}")
+
+  configatron
 end
 
 # Silence deprecation warnings
@@ -122,8 +109,8 @@ require 'sequel'
 # Setup New Relic instrumentation for Sequel
 Sequel.extension :newrelic_instrumentation
 Sequel.extension :core_extensions
-debug("database_config: #{database_config.inspect}")
-DB = ::Sequel.connect(database_config)
+debug("config.database: #{config.database}")
+DB = ::Sequel.connect(config.database)
 
 # Run the migrations in all environments. YOLO.
 Sequel.extension :migration

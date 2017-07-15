@@ -73,4 +73,4 @@ def app
   return app
 end
 
-Capybara.app, _ = app
+Capybara.app = app

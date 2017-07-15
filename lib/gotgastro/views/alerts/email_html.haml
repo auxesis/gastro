@@ -33,8 +33,7 @@
             = business.address
 
           %p
-            - gmaps_api_key = config['settings']['gmaps_api_key']
-            - map_url = google_map(api_key: gmaps_api_key, businesses: [ business ], zoom: 15, marker_size: 'mid', width: 200, height: 100)
+            - map_url = google_map(api_key: config.gmaps_api_key, businesses: [ business ], zoom: 15, marker_size: 'mid', width: 200, height: 100)
             %img{src: map_url}/
           %table
             %tr.distance
@@ -61,7 +60,7 @@
                     = offence.description.strip
 
           %p
-            - link = "#{config['settings']['baseurl']}/business/#{business.id}"
+            - link = "#{config.baseurl}/business/#{business.id}"
             %a{href: link, style: styles[:link]}
               See all food safety problems at this address
 
@@ -71,9 +70,9 @@
       Got Gastro
 
     %p{style: styles[:edit]}
-      %a{style: styles[:link], href: "#{config['settings']['baseurl']}/alert/#{alert.confirmation_id}/unsubscribe"}<
+      %a{style: styles[:link], href: "#{config.baseurl}/alert/#{alert.confirmation_id}/unsubscribe"}<
         Unsubscribe
       or
-      %a{style: styles[:link], href: "#{config['settings']['baseurl']}/alert/#{alert.confirmation_id}/edit"}<
+      %a{style: styles[:link], href: "#{config.baseurl}/alert/#{alert.confirmation_id}/edit"}<
         change
       your alert preferences.

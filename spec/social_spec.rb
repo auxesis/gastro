@@ -6,8 +6,6 @@ describe 'Social', :type => :feature do
   include_context 'test data'
 
   before(:each) do
-    set_environment_variable('GASTRO_RESET_TOKEN', gastro_reset_token)
-    set_environment_variable('MORPH_API_KEY', morph_api_key)
     set_environment_variable('FB_APP_ID', fb_app_id)
   end
 
@@ -29,7 +27,7 @@ describe 'Social', :type => :feature do
   end
 
   describe 'Facebook Open Graph' do
-    it 'should have a title and description' do
+    it 'should have a title and description', :aggregate_failures do
       within_25km && within_150km
 
       urls = [
@@ -50,7 +48,7 @@ describe 'Social', :type => :feature do
       end
     end
 
-    it 'should link to the canonical URL' do
+    it 'should link to the canonical URL', :aggregate_failures do
       within_25km && within_150km
 
       urls = [
@@ -70,7 +68,7 @@ describe 'Social', :type => :feature do
       end
     end
 
-    it 'should have an image' do
+    it 'should have an image', :aggregate_failures do
       within_25km && within_150km
 
       urls = [
@@ -88,7 +86,7 @@ describe 'Social', :type => :feature do
       end
     end
 
-    it 'should have a map image if search or business result' do
+    it 'should have a map image if search or business result', :aggregate_failures do
       within_25km && within_150km
 
       urls = [
@@ -104,7 +102,7 @@ describe 'Social', :type => :feature do
       end
     end
 
-    it 'should have a Facebook App ID' do
+    it 'should have a Facebook App ID', :aggregate_failures do
       within_25km && within_150km
 
       urls = [
@@ -118,14 +116,15 @@ describe 'Social', :type => :feature do
 
       urls.each do |url|
         visit(url)
-        fb_app_id = first(:xpath, "//meta[@property='fb:app_id']", :visible => false)
-        expect(fb_app_id).to_not eq(nil), "missing fb:app_id at #{url}"
+        element= first(:xpath, "//meta[@property='fb:app_id']", :visible => false)
+        expect(element).to_not eq(nil), "missing fb:app_id at #{url}"
+        expect(element['content']).to eq(fb_app_id)
       end
     end
   end
 
   describe 'Twitter' do
-    it 'should have a title, description, and site' do
+    it 'should have a title, description, and site', :aggregate_failures do
       within_25km && within_150km
 
       urls = [
@@ -148,7 +147,7 @@ describe 'Social', :type => :feature do
       end
     end
 
-    it 'should have an image' do
+    it 'should have an image', :aggregate_failures do
       within_25km && within_150km
 
       urls = [
@@ -171,7 +170,7 @@ describe 'Social', :type => :feature do
       end
     end
 
-    it 'should have a map image if search or business result' do
+    it 'should have a map image if search or business result', :aggregate_failures do
       within_25km && within_150km
 
       urls = [

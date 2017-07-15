@@ -44,8 +44,8 @@ module GotGastro
       def businesses
         return @businesses if @businesses
         params = {
-          :key => config['settings']['morph_api_key'],
-          :query => "select * from 'businesses'"
+          key:   config.morph_api_key,
+          query: "select * from 'businesses'"
         }
         result = RestClient.get(url, :params => params)
         @businesses = JSON.parse(result)
@@ -54,8 +54,8 @@ module GotGastro
       def offences
         return @offences if @offences
         params = {
-          :key => config['settings']['morph_api_key'],
-          :query => "select * from 'offences'"
+          key:   config.morph_api_key,
+          query: "select * from 'offences'"
         }
         result = RestClient.get(url, :params => params)
         @offences = JSON.parse(result)

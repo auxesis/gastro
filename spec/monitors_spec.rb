@@ -8,8 +8,6 @@ describe 'Monitor' do
     include_context 'test data'
 
     before(:each) {
-      set_environment_variable('GASTRO_RESET_TOKEN', gastro_reset_token)
-      set_environment_variable('MORPH_API_KEY', morph_api_key)
       LOG.clear
     }
 
