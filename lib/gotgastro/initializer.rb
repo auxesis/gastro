@@ -28,7 +28,7 @@ def test?
 end
 
 def cdn?
-  !!config.cdn_base
+  config.has_key?(:cdn_base)
 end
 
 def fb_app_id?
