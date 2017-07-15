@@ -67,7 +67,7 @@ def config
   configatron.vcap_services     = JSON.parse(ENV['VCAP_SERVICES'])    if ENV['VCAP_SERVICES']
 
   configatron.baseurl       = production? ? 'https://gotgastroagain.com' : 'http://localhost:9292'
-  configatron.gmaps_api_key = ENV['GMAPS_API_KEY'] || 'AIzaSyBxaCRguM2pvw9HOLybx5ZP6Cuo94KnJwg'
+  configatron.gmaps_api_key = ENV['GMAPS_API_KEY'] || 'AIzaSyDBvlmNsUERDKkeQWX6OCsfR5VoPaD3nWo'
 
   [
     'CDN_BASE',
