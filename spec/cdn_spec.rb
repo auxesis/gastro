@@ -86,6 +86,7 @@ describe 'CDN', :type => :feature do
 
       expect(scripts.size).to be > 0
       scripts.each { |value| expect(value).to_not match(/^#{cdn_base}/) }
+      scripts.each { |value| expect(value).to_not match(/cdn_base/) } # regression
     end
 
     it 'should not serve CSS from a CDN', :aggregate_failures do
@@ -100,6 +101,7 @@ describe 'CDN', :type => :feature do
 
       expect(links.size).to be > 0
       links.each { |value| expect(value).to_not match(/^#{cdn_base}/) }
+      links.each { |value| expect(value).to_not match(/cdn_base/) } # regression
     end
 
     it 'should not serve images from a CDN', :aggregate_failures do
@@ -116,6 +118,7 @@ describe 'CDN', :type => :feature do
 
       expect(icons.size).to be > 0
       icons.each { |value| expect(value).to_not match(/^#{cdn_base}/) }
+      icons.each { |value| expect(value).to_not match(/cdn_base/) } # regression
     end
   end
 end
