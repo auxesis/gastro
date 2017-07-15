@@ -17,7 +17,7 @@ describe 'CDN', :type => :feature do
     ]
     urls.each do |url|
       visit(url)
-      expect(page.response_headers).to include('Cache-Control')
+      expect(page.response_headers['Cache-Control']).to eq('public, max-age=86400')
     end
   end
 
