@@ -116,8 +116,9 @@ describe 'Social', :type => :feature do
 
       urls.each do |url|
         visit(url)
-        fb_app_id = first(:xpath, "//meta[@property='fb:app_id']", :visible => false)
-        expect(fb_app_id).to_not eq(nil), "missing fb:app_id at #{url}"
+        element= first(:xpath, "//meta[@property='fb:app_id']", :visible => false)
+        expect(element).to_not eq(nil), "missing fb:app_id at #{url}"
+        expect(element['content']).to eq(fb_app_id)
       end
     end
   end
