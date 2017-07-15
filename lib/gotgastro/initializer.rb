@@ -54,14 +54,6 @@ def info(msg)
   end
 end
 
-def config_or_error(key, env:)
-  if env
-    configatron[key] = ENV[env]
-  else
-    raise ArgumentError, "Value for key '#{key}' was not specified."
-  end
-end
-
 def database_config
   config_file = root + 'config' + 'database.yml'
   template = ERB.new(config_file.read, nil, '%')
@@ -75,13 +67,22 @@ def config
   configatron.vcap_services     = JSON.parse(ENV['VCAP_SERVICES'])    if ENV['VCAP_SERVICES']
 
   configatron.baseurl       = production? ? 'https://gotgastroagain.com' : 'http://localhost:9292'
-  configatron.cdn_base      = ENV['CDN_BASE']
-  configatron.fb_app_id     = ENV['FB_APP_ID']
   configatron.gmaps_api_key = ENV['GMAPS_API_KEY'] || 'AIzaSyBxaCRguM2pvw9HOLybx5ZP6Cuo94KnJwg'
 
-  config_or_error(:reset_token,          env: 'GASTRO_RESET_TOKEN')
-  config_or_error(:morph_api_key,        env: 'MORPH_API_KEY')
-  config_or_error(:newrelic_license_key, env: 'NEWRELIC_LICENSE_KEY') if production?
+  [
+    'CDN_BASE',
+    'FB_APP_ID',
+    'GASTRO_RESET_TOKEN',
+    'MORPH_API_KEY',
+    'NEWRELIC_LICENSE_KEY',
+  ].each do |var|
+    key, value = var.downcase, ENV[var]
+    if ENV[var]
+      configatron[key] = value
+    else
+      debug("Warning: environment variable #{var} for key '#{key}' was nil.")
+    end
+  end
 
   case
   when database_config['database_uri']
@@ -92,7 +93,7 @@ def config
     raise 'No database config present'
   end
 
-  configatron.lock!
+  configatron.lock! if production?
 
   debug("config: #{configatron.to_hash}")
 
