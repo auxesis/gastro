@@ -106,6 +106,7 @@ I18n.enforce_available_locales = true
 
 # Setup database connection + models
 require 'sequel'
+require 'sequel_mappable'
 # Setup New Relic instrumentation for Sequel
 Sequel.extension :newrelic_instrumentation
 Sequel.extension :core_extensions
